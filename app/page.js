@@ -8,7 +8,12 @@ import ExecutiveDashboard from "@/components/views/ExecutiveDashboard";
 import MembersView from "@/components/views/MembersView";
 import AgentsView from "@/components/views/AgentsView";
 import ChitFundsView from "@/components/views/ChitFundsView";
-import PlaceholderView from "@/components/views/PlaceholderView";
+import LoansView from "@/components/views/LoansView";
+import DepositsView from "@/components/views/DepositsView";
+import ComplianceView from "@/components/views/ComplianceView";
+import FraudIntelView from "@/components/views/FraudIntelView";
+import ReportsView from "@/components/views/ReportsView";
+import ConfigView from "@/components/views/ConfigView";
 import { navItems } from "@/data/mockData";
 
 const viewMap = {
@@ -16,12 +21,12 @@ const viewMap = {
   members: <MembersView />,
   chitfunds: <ChitFundsView />,
   agents: <AgentsView />,
-  loans: <PlaceholderView label="Loans Management" />,
-  deposits: <PlaceholderView label="Deposits Management" />,
-  compliance: <PlaceholderView label="Compliance Center" />,
-  fraud: <PlaceholderView label="Fraud Intelligence" />,
-  reports: <PlaceholderView label="Reports & Analytics" />,
-  config: <PlaceholderView label="Admin & Configuration" />,
+  loans: <LoansView />,
+  deposits: <DepositsView />,
+  compliance: <ComplianceView />,
+  fraud: <FraudIntelView />,
+  reports: <ReportsView />,
+  config: <ConfigView />,
 };
 
 export default function Home() {

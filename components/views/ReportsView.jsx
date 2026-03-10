@@ -33,19 +33,19 @@ function OverviewTab() {
             {reportAnalytics.memberGrowth.map((d) => {
               const maxVal = 600;
               return (
-                <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
+                <div key={d.month} className="flex-1 flex flex-col items-center gap-1 group">
                   <div className="w-full flex gap-1 items-end" style={{ height: "120px" }}>
-                    <div className="flex-1 bg-indigo-200 rounded-t-lg transition-all duration-500" style={{ height: `${(d.newMembers / maxVal) * 100}%` }} title={`New: ${d.newMembers}`} />
-                    <div className="flex-1 bg-red-200 rounded-t-lg transition-all duration-500" style={{ height: `${(d.churned / maxVal) * 100}%` }} title={`Churned: ${d.churned}`} />
+                    <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.newMembers / maxVal) * 100}%`, background: "linear-gradient(to top, #0D9488, #14B8A6)" }} title={`New: ${d.newMembers}`} />
+                    <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.churned / maxVal) * 100}%`, background: "linear-gradient(to top, #DC2626, #F87171)" }} title={`Churned: ${d.churned}`} />
                   </div>
-                  <span className="text-[10px] text-slate-400">{d.month}</span>
+                  <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">{d.month}</span>
                 </div>
               );
             })}
           </div>
           <div className="flex items-center gap-4 mt-4 justify-center">
-            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-indigo-200" /><span className="text-[11px] text-slate-400">New Members</span></div>
-            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-red-200" /><span className="text-[11px] text-slate-400">Churned</span></div>
+            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to top, #0D9488, #14B8A6)" }} /><span className="text-[11px] text-slate-500">New Members</span></div>
+            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to top, #DC2626, #F87171)" }} /><span className="text-[11px] text-slate-500">Churned</span></div>
           </div>
         </div>
 
@@ -62,8 +62,8 @@ function OverviewTab() {
                     <span className="text-[11px] text-slate-400 font-mono">{r.pct}%</span>
                   </div>
                 </div>
-                <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                  <div className="h-full rounded-full bg-indigo-400 transition-all duration-700" style={{ width: `${r.pct}%` }} />
+                <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
+                  <div className="h-full rounded-full transition-all duration-700" style={{ width: `${r.pct}%`, background: "linear-gradient(to right, #4F46E5, #6366F1, #818CF8)" }} />
                 </div>
               </div>
             ))}

@@ -66,22 +66,22 @@ function DashboardTab() {
       {/* Fraud Trend */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 mb-6">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Fraud Alert Trend</h3>
-        <div className="flex items-end gap-3 h-40">
+        <div className="flex items-end gap-3 h-44">
           {fraudTrend.map((d) => (
-            <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-              <div className="w-full flex gap-0.5 items-end" style={{ height: "120px" }}>
-                <div className="flex-1 bg-red-200 rounded-t-lg transition-all duration-500" style={{ height: `${(d.alerts / maxVal) * 100}%` }} title={`Alerts: ${d.alerts}`} />
-                <div className="flex-1 bg-emerald-300 rounded-t-lg transition-all duration-500" style={{ height: `${(d.resolved / maxVal) * 100}%` }} title={`Resolved: ${d.resolved}`} />
-                <div className="flex-1 bg-amber-200 rounded-t-lg transition-all duration-500" style={{ height: `${(d.falsePositive / maxVal) * 100}%` }} title={`False Positive: ${d.falsePositive}`} />
+            <div key={d.month} className="flex-1 flex flex-col items-center gap-1 group">
+              <div className="w-full flex gap-0.5 items-end" style={{ height: "140px" }}>
+                <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.alerts / maxVal) * 100}%`, background: "linear-gradient(to top, #DC2626, #F87171)" }} title={`Alerts: ${d.alerts}`} />
+                <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.resolved / maxVal) * 100}%`, background: "linear-gradient(to top, #059669, #10B981)" }} title={`Resolved: ${d.resolved}`} />
+                <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.falsePositive / maxVal) * 100}%`, background: "linear-gradient(to top, #C9982E, #E8C65A)" }} title={`False Positive: ${d.falsePositive}`} />
               </div>
-              <span className="text-[10px] text-slate-400">{d.month}</span>
+              <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">{d.month}</span>
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-4 mt-4 justify-center">
-          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-red-200" /><span className="text-[11px] text-slate-400">Total Alerts</span></div>
-          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-emerald-300" /><span className="text-[11px] text-slate-400">Resolved</span></div>
-          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-amber-200" /><span className="text-[11px] text-slate-400">False Positive</span></div>
+        <div className="flex items-center gap-5 mt-4 justify-center">
+          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to top, #DC2626, #F87171)" }} /><span className="text-[11px] text-slate-500">Total Alerts</span></div>
+          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to top, #059669, #10B981)" }} /><span className="text-[11px] text-slate-500">Resolved</span></div>
+          <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to top, #C9982E, #E8C65A)" }} /><span className="text-[11px] text-slate-500">False Positive</span></div>
         </div>
       </div>
 

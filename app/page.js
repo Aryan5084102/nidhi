@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginPage from "@/components/LoginPage";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
@@ -31,11 +31,40 @@ const viewMap = {
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeNav, setActiveNav] = useState("executive");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
+  // On mount, check localStorage for an existing logged-in session
+  useEffect(() => {
+    const storedUser = localStorage.getItem("glimmora_current_user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem("glimmora_current_user");
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("glimmora_current_user");
+  };
+
+  // Show nothing while checking localStorage to avoid login page flash
+  if (isLoading) {
+    return null;
+  }
+
   if (!user) {
-    return <LoginPage onLogin={setUser} />;
+    return <LoginPage onLogin={handleLogin} />;
   }
 
   const pageTitle =
@@ -49,11 +78,11 @@ export default function Home() {
         expanded={sidebarExpanded}
         setExpanded={setSidebarExpanded}
         userName={user.name}
-        onLogout={() => setUser(null)}
+        onLogout={handleLogout}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header pageTitle={pageTitle} userName={user.name} onLogout={() => setUser(null)} />
+        <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
 
         <main className="flex-1 overflow-auto p-6">
           {viewMap[activeNav]}

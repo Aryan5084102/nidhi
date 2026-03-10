@@ -205,7 +205,18 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      onLogin({ email: data.email, name: data.email.split("@")[0] });
+      // Check if user exists in localStorage
+      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+      const existingUser = users.find((u) => u.email === data.email);
+      if (existingUser) {
+        if (existingUser.password !== data.password) {
+          setServerError("Invalid email or password");
+          return;
+        }
+        onLogin({ email: existingUser.email, name: existingUser.name });
+      } else {
+        setServerError("No account found with this email. Please sign up first.");
+      }
     }, 1200);
   };
 
@@ -332,7 +343,23 @@ function SignupForm({ onLogin, onSwitch, onGoogleLogin }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      onLogin({ email: data.email, name: data.fullName });
+      // Check if user already exists
+      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+      const existingUser = users.find((u) => u.email === data.email);
+      if (existingUser) {
+        setServerError("An account with this email already exists. Please sign in.");
+        return;
+      }
+      // Save new user to localStorage
+      const newUser = {
+        email: data.email,
+        name: data.fullName,
+        phone: data.phone,
+        password: data.password,
+      };
+      users.push(newUser);
+      localStorage.setItem("glimmora_users", JSON.stringify(users));
+      onLogin({ email: newUser.email, name: newUser.name });
     }, 1500);
   };
 
@@ -700,6 +727,12 @@ export default function LoginPage({ onLogin }) {
       email: "user@gmail.com",
       name: "Google User",
     };
+    // Save google user if not already in localStorage
+    const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+    if (!users.find((u) => u.email === googleUser.email)) {
+      users.push({ ...googleUser, password: null });
+      localStorage.setItem("glimmora_users", JSON.stringify(users));
+    }
     onLogin(googleUser);
   };
 

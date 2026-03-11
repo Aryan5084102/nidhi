@@ -23,12 +23,24 @@ export const metrics = [
 ];
 
 export const members = [
-  { id: "M-1001", name: "Rajesh Kumar", deposits: "₹50,000", loans: "₹10,000", risk: "Low", sti: 92, kyc: "Verified" },
-  { id: "M-1002", name: "Anita Sharma", deposits: "₹70,000", loans: "₹20,000", risk: "Medium", sti: 74, kyc: "Verified" },
-  { id: "M-1003", name: "Vikram Nair", deposits: "₹30,000", loans: "₹15,000", risk: "High", sti: 45, kyc: "Pending" },
-  { id: "M-1004", name: "Priya Venkat", deposits: "₹90,000", loans: "₹5,000", risk: "Low", sti: 88, kyc: "Verified" },
-  { id: "M-1005", name: "Suresh Iyer", deposits: "₹25,000", loans: "₹12,000", risk: "High", sti: 38, kyc: "Review" },
-  { id: "M-1006", name: "Meena Pillai", deposits: "₹60,000", loans: "₹8,000", risk: "Low", sti: 95, kyc: "Verified" },
+  { id: "M-1001", name: "Rajesh Kumar", phone: "9876543210", email: "rajesh@email.com", address: "12, MG Road, Bengaluru", deposits: "₹50,000", loans: "₹10,000", risk: "Low", sti: 92, kyc: "Verified", joinDate: "15 Jan 2025" },
+  { id: "M-1002", name: "Anita Sharma", phone: "9876543211", email: "anita@email.com", address: "45, Jayanagar, Bengaluru", deposits: "₹70,000", loans: "₹20,000", risk: "Medium", sti: 74, kyc: "Verified", joinDate: "20 Feb 2025" },
+  { id: "M-1003", name: "Vikram Nair", phone: "9876543212", email: "vikram@email.com", address: "78, Koramangala, Bengaluru", deposits: "₹30,000", loans: "₹15,000", risk: "High", sti: 45, kyc: "Pending", joinDate: "10 Mar 2025" },
+  { id: "M-1004", name: "Priya Venkat", phone: "9876543213", email: "priya@email.com", address: "23, Indiranagar, Bengaluru", deposits: "₹90,000", loans: "₹5,000", risk: "Low", sti: 88, kyc: "Verified", joinDate: "05 Apr 2025" },
+  { id: "M-1005", name: "Suresh Iyer", phone: "9876543214", email: "suresh@email.com", address: "56, HSR Layout, Bengaluru", deposits: "₹25,000", loans: "₹12,000", risk: "High", sti: 38, kyc: "Review", joinDate: "12 May 2025" },
+  { id: "M-1006", name: "Meena Pillai", phone: "9876543215", email: "meena@email.com", address: "89, Whitefield, Bengaluru", deposits: "₹60,000", loans: "₹8,000", risk: "Low", sti: 95, kyc: "Verified", joinDate: "18 Jun 2025" },
+  { id: "M-1007", name: "Karthik Menon", phone: "9876543216", email: "karthik@email.com", address: "34, BTM Layout, Bengaluru", deposits: "₹45,000", loans: "₹18,000", risk: "Medium", sti: 68, kyc: "Verified", joinDate: "22 Jul 2025" },
+  { id: "M-1008", name: "Deepa Reddy", phone: "9876543217", email: "deepa@email.com", address: "67, Electronic City, Bengaluru", deposits: "₹80,000", loans: "₹7,000", risk: "Low", sti: 85, kyc: "Verified", joinDate: "01 Aug 2025" },
+  { id: "M-1009", name: "Arun Prasad", phone: "9876543218", email: "arun@email.com", address: "90, Marathahalli, Bengaluru", deposits: "₹35,000", loans: "₹22,000", risk: "High", sti: 42, kyc: "Pending", joinDate: "15 Sep 2025" },
+  { id: "M-1010", name: "Lakshmi Devi", phone: "9876543219", email: "lakshmi@email.com", address: "11, Banashankari, Bengaluru", deposits: "₹55,000", loans: "₹9,000", risk: "Low", sti: 90, kyc: "Verified", joinDate: "20 Oct 2025" },
+  { id: "M-1011", name: "Ramesh Babu", phone: "9876543220", email: "ramesh@email.com", address: "44, Rajajinagar, Bengaluru", deposits: "₹40,000", loans: "₹14,000", risk: "Medium", sti: 65, kyc: "Verified", joinDate: "05 Nov 2025" },
+  { id: "M-1012", name: "Sunita Rao", phone: "9876543221", email: "sunita@email.com", address: "77, Malleshwaram, Bengaluru", deposits: "₹95,000", loans: "₹3,000", risk: "Low", sti: 96, kyc: "Verified", joinDate: "10 Dec 2025" },
+  { id: "M-1013", name: "Ganesh Hegde", phone: "9876543222", email: "ganesh@email.com", address: "22, Yelahanka, Bengaluru", deposits: "₹28,000", loans: "₹16,000", risk: "High", sti: 40, kyc: "Review", joinDate: "18 Jan 2026" },
+  { id: "M-1014", name: "Kavitha Nair", phone: "9876543223", email: "kavitha@email.com", address: "55, JP Nagar, Bengaluru", deposits: "₹72,000", loans: "₹11,000", risk: "Medium", sti: 72, kyc: "Verified", joinDate: "25 Jan 2026" },
+  { id: "M-1015", name: "Mohan Das", phone: "9876543224", email: "mohan@email.com", address: "88, Vijayanagar, Bengaluru", deposits: "₹65,000", loans: "₹6,000", risk: "Low", sti: 87, kyc: "Verified", joinDate: "02 Feb 2026" },
+  { id: "M-1016", name: "Savitha Kulkarni", phone: "9876543225", email: "savitha@email.com", address: "33, Basavanagudi, Bengaluru", deposits: "₹48,000", loans: "₹19,000", risk: "Medium", sti: 70, kyc: "Verified", joinDate: "10 Feb 2026" },
+  { id: "M-1017", name: "Vinod Shetty", phone: "9876543226", email: "vinod@email.com", address: "66, Hebbal, Bengaluru", deposits: "₹22,000", loans: "₹25,000", risk: "High", sti: 35, kyc: "Pending", joinDate: "18 Feb 2026" },
+  { id: "M-1018", name: "Padma Krishnan", phone: "9876543227", email: "padma@email.com", address: "99, Sadashivanagar, Bengaluru", deposits: "₹85,000", loans: "₹4,000", risk: "Low", sti: 93, kyc: "Verified", joinDate: "25 Feb 2026" },
 ];
 
 export const agents = [

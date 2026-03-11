@@ -1,6 +1,8 @@
 import MetricCard from "../MetricCard";
 import LiquidityChart from "../LiquidityChart";
-import Roadmap from "../Roadmap";
+import LoanPortfolioChart from "../LoanPortfolioChart";
+import DepositGrowthChart from "../DepositGrowthChart";
+import RiskHeatmap from "../RiskHeatmap";
 import AgentCard from "../AgentCard";
 import FraudAlerts from "../FraudAlerts";
 import { metrics, agents } from "@/data/mockData";
@@ -18,7 +20,13 @@ export default function ExecutiveDashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <LiquidityChart />
-        <Roadmap />
+        <LoanPortfolioChart />
+      </div>
+
+      {/* Deposit & Risk Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <DepositGrowthChart />
+        <RiskHeatmap />
       </div>
 
       {/* AI Agents Control Center */}

@@ -1,4 +1,5 @@
 import "./globals.css";
+import ToastProvider from "@/components/ToastProvider";
 
 export const metadata = {
   title: "Glimmora Nidhi - Agentic AI Dashboard",
@@ -14,7 +15,10 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <ToastProvider />
+      </body>
     </html>
   );
 }

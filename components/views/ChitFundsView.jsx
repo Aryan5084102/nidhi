@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { chitSchemes, members } from "@/data/mockData";
 
 function SchemeCard({ scheme, onEnroll }) {
@@ -542,11 +543,12 @@ export default function ChitFundsView() {
       </div>
 
       {/* Enrollment Modal */}
-      {enrollScheme && (
+      {enrollScheme && createPortal(
         <EnrollmentModal
           scheme={enrollScheme}
           onClose={() => setEnrollScheme(null)}
-        />
+        />,
+        document.body
       )}
     </div>
   );

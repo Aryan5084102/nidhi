@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 // ─── Validation Schemas ────────────────────────────────────────────────────────
 
@@ -213,6 +214,7 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
           setServerError("Invalid email or password");
           return;
         }
+        toast.success("Sign in successful! Welcome back.");
         onLogin({ email: existingUser.email, name: existingUser.name });
       } else {
         setServerError("No account found with this email. Please sign up first.");
@@ -323,7 +325,7 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
 
 // ─── Signup Form ────────────────────────────────────────────────────────────────
 
-function SignupForm({ onLogin, onSwitch, onGoogleLogin }) {
+function SignupForm({ onSwitch, onGoogleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -359,7 +361,8 @@ function SignupForm({ onLogin, onSwitch, onGoogleLogin }) {
       };
       users.push(newUser);
       localStorage.setItem("glimmora_users", JSON.stringify(users));
-      onLogin({ email: newUser.email, name: newUser.name });
+      toast.success("Signup successful! Please sign in with your email and password.");
+      onSwitch("login");
     }, 1500);
   };
 
@@ -718,28 +721,91 @@ function MobileLogo() {
 
 // ─── Main LoginPage Component ───────────────────────────────────────────────────
 
+// ─── Google Client ID ────────────────────────────────────────────────────────
+// Replace this with your actual Google OAuth Client ID from Google Cloud Console
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
 export default function LoginPage({ onLogin }) {
   const [view, setView] = useState("login"); // login | signup | forgot-password | reset-password
 
-  const handleGoogleLogin = () => {
-    // Simulate Google OAuth login
-    const googleUser = {
-      email: "user@gmail.com",
-      name: "Google User",
+  const handleGoogleCredential = useCallback(
+    (response) => {
+      // Decode JWT token from Google
+      const base64Url = response.credential.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const payload = JSON.parse(atob(base64));
+
+      const googleUser = {
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture,
+      };
+
+      // Save google user if not already in localStorage
+      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+      if (!users.find((u) => u.email === googleUser.email)) {
+        users.push({ ...googleUser, password: null });
+        localStorage.setItem("glimmora_users", JSON.stringify(users));
+      }
+
+      toast.success(`Welcome, ${googleUser.name}! Signed in with Google.`);
+      onLogin(googleUser);
+    },
+    [onLogin]
+  );
+
+  // Load Google Identity Services script
+  useEffect(() => {
+    if (document.getElementById("google-gsi-script")) return;
+
+    const script = document.createElement("script");
+    script.id = "google-gsi-script";
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCredential,
+        });
+      }
     };
-    // Save google user if not already in localStorage
-    const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
-    if (!users.find((u) => u.email === googleUser.email)) {
-      users.push({ ...googleUser, password: null });
-      localStorage.setItem("glimmora_users", JSON.stringify(users));
+    document.head.appendChild(script);
+  }, [handleGoogleCredential]);
+
+  const handleGoogleLogin = () => {
+    if (window.google) {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          // Fallback: use popup mode if One Tap is blocked
+          window.google.accounts.id.renderButton(
+            document.createElement("div"),
+            { type: "standard" }
+          );
+          // Use OAuth2 popup as fallback
+          const client = window.google.accounts.oauth2.initCodeClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: "email profile",
+            ux_mode: "popup",
+            callback: (response) => {
+              if (response.code) {
+                toast.info("Google sign-in processing...");
+              }
+            },
+          });
+          client.requestCode();
+        }
+      });
+    } else {
+      toast.error("Google sign-in is loading. Please try again in a moment.");
     }
-    onLogin(googleUser);
   };
 
   const renderForm = () => {
     switch (view) {
       case "signup":
-        return <SignupForm onLogin={onLogin} onSwitch={setView} onGoogleLogin={handleGoogleLogin} />;
+        return <SignupForm onSwitch={setView} onGoogleLogin={handleGoogleLogin} />;
       case "forgot-password":
         return <ForgotPasswordForm onSwitch={setView} />;
       case "reset-password":

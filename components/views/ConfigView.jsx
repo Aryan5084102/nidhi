@@ -196,7 +196,7 @@ function ConfigSection({ title, description, configs }) {
         <p className="text-[13px] text-slate-400">{description}</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="flex flex-col divide-y divide-slate-100">
           {configs.map((config) => (
             <div key={config.key} className="flex items-center justify-between px-5 py-4 hover:bg-slate-50/50 transition-colors">
@@ -234,7 +234,7 @@ function AuditLogTab() {
         <p className="text-[13px] text-slate-400">Track all administrative actions, configuration changes, and system events.</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -339,7 +339,7 @@ function UserManagementTab() {
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -443,7 +443,7 @@ function RolesPermissionsTab() {
         <p className="text-[13px] text-slate-400">Overview of all roles and their access across modules.</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -491,7 +491,7 @@ function AIAgentConfigTab() {
       </div>
 
       {/* Existing AI config rows */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-5">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-5">
         <div className="px-5 py-3 border-b border-slate-100">
           <h4 className="text-[13px] font-bold text-slate-700">Global AI Settings</h4>
         </div>
@@ -577,7 +577,7 @@ function AIAgentConfigTab() {
         <p className="text-[11px] text-slate-400">Performance and operational limits for each agent.</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -636,7 +636,7 @@ function RiskThresholdTab() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+              <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
                 <div className="flex flex-col divide-y divide-slate-100">
                   {cat.settings.map((s, i) => (
                     <div key={i} className="flex items-center justify-between px-5 py-4 hover:bg-slate-50/50 transition-colors">
@@ -725,7 +725,7 @@ function SystemConfigTab() {
         <p className="text-[11px] text-slate-400">Retention periods and purge schedules for different data categories.</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-5">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-5">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -760,7 +760,7 @@ function SystemConfigTab() {
         <p className="text-[11px] text-slate-400">Automated backup configuration and execution history.</p>
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -829,7 +829,7 @@ export default function ConfigView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Admin & Configuration</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -838,7 +838,7 @@ export default function ConfigView() {
               All settings are audited and comply with Nidhi Company regulatory requirements.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
               <div className="text-lg font-bold text-slate-600 font-mono">v2.4</div>
               <div className="text-slate-400 text-[10px]">System Version</div>
@@ -847,7 +847,7 @@ export default function ConfigView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

@@ -54,7 +54,7 @@ function DashboardTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         {metrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{m.label}</div>
@@ -134,7 +134,7 @@ function CasesTab() {
       <div className="flex gap-3 mb-5 flex-wrap">
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search cases..."
           className="flex-1 min-w-[200px] bg-white border border-slate-200 rounded-xl py-2.5 px-4 text-slate-700 text-[13px] outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300" />
-        <div className="flex gap-2">
+        <div className="flex gap-2 tab-scroll">
           {["All", "Critical", "High", "Medium"].map((f) => (
             <button key={f} onClick={() => setFilterSeverity(f)}
               className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterSeverity === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -158,7 +158,7 @@ function CasesTab() {
               <CaseStatusBadge status={fc.status} />
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed mb-3">{fc.description}</p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="bg-slate-50 rounded-xl p-3">
                 <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Involved Members</div>
                 <div className="text-[12px] font-semibold text-slate-700 font-mono">{fc.member}</div>
@@ -275,7 +275,7 @@ export default function FraudIntelView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Fraud Intelligence Center</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -284,7 +284,7 @@ export default function FraudIntelView() {
               across all member activities.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-red-50 rounded-xl px-3 py-2 text-center border border-red-200/60">
               <div className="text-lg font-bold text-red-500 font-mono">{fraudMetrics.criticalAlerts}</div>
               <div className="text-slate-400 text-[10px]">Critical</div>
@@ -297,7 +297,7 @@ export default function FraudIntelView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

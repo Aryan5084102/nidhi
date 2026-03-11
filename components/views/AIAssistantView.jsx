@@ -466,7 +466,7 @@ function ChatAssistantTab() {
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-[75%] rounded-2xl px-4 py-3 ${
+              className={`max-w-[90%] sm:max-w-[75%] rounded-2xl px-4 py-3 ${
                 msg.role === "user"
                   ? "bg-indigo-600 text-white rounded-br-md"
                   : "bg-slate-50 border border-slate-100 text-slate-700 rounded-bl-md"
@@ -1185,7 +1185,7 @@ export default function AIAssistantView() {
         <p className="text-[13px] text-slate-400 mt-1">
           Intelligent insights, natural language queries, and automated reports for your Nidhi company
         </p>
-        <div className="flex gap-4 mt-3">
+        <div className="hidden sm:flex gap-4 mt-3">
           {[
             { label: "Queries Today", value: "47" },
             { label: "Reports Generated", value: "12" },
@@ -1201,7 +1201,7 @@ export default function AIAssistantView() {
       </div>
 
       {/* Tab switcher */}
-      <div className="flex flex-wrap gap-2 mb-5">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((tab) => (
           <button
             key={tab.id}

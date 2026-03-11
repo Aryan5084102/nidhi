@@ -848,7 +848,7 @@ function PDFReportsTab() {
   return (
     <div className="animate-fade-in">
       {/* Filter Buttons */}
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {categories.map((c) => (
           <button key={c} onClick={() => setFilterCategory(c)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterCategory === c ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -1335,7 +1335,7 @@ export default function ReportsView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Reports & Analytics</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -1343,7 +1343,7 @@ export default function ReportsView() {
               member reports, compliance summaries, and AI-powered business intelligence analytics.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
               <div className="text-lg font-bold text-indigo-600 font-mono">{reportsList.length}</div>
               <div className="text-slate-400 text-[10px]">Available Reports</div>
@@ -1356,7 +1356,7 @@ export default function ReportsView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

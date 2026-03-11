@@ -190,7 +190,7 @@ function DashboardTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         {metrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{m.label}</div>
@@ -257,7 +257,7 @@ function ScheduleTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 tab-scroll">
         {["All", "Paid", "Pending", "Overdue", "Partial"].map((f) => (
           <button key={f} onClick={() => setFilterStatus(f)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -267,6 +267,7 @@ function ScheduleTab() {
       </div>
 
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -293,6 +294,7 @@ function ScheduleTab() {
             ))}
           </tbody>
         </table>
+        </div>
         <div className="px-5 py-3 border-t border-slate-100 text-xs text-slate-400">
           Showing {filtered.length} of {paymentSchedule.length} payments
         </div>
@@ -317,7 +319,7 @@ function OverdueTab() {
             <h3 className="text-[15px] font-bold text-slate-900 mb-1">Overdue Loan Tracker</h3>
             <p className="text-[13px] text-slate-400">Monitor all overdue loans with severity-based prioritisation for collection action.</p>
           </div>
-          <div className="flex gap-2">
+          <div className="hidden sm:flex gap-2">
             <div className="bg-red-50 rounded-xl px-3 py-2 text-center border border-red-200/60">
               <div className="text-lg font-bold text-red-500 font-mono">{overdueLoans.filter((l) => l.daysOverdue >= 90).length}</div>
               <div className="text-slate-400 text-[10px]">90+ Days</div>
@@ -454,7 +456,7 @@ function RecoveryTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 tab-scroll">
         {["All", "Active", "Settled", "Legal", "Written Off"].map((f) => (
           <button key={f} onClick={() => setFilterStatus(f)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -464,6 +466,7 @@ function RecoveryTab() {
       </div>
 
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -506,6 +509,7 @@ function RecoveryTab() {
             ))}
           </tbody>
         </table>
+        </div>
         <div className="px-5 py-3 border-t border-slate-100 text-xs text-slate-400">
           Showing {filtered.length} of {recoveryCases.length} recovery cases
         </div>
@@ -629,7 +633,7 @@ export default function CollectionsView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Collections Management</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -638,7 +642,7 @@ export default function CollectionsView() {
               across all member obligations.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-emerald-50 rounded-xl px-3 py-2 text-center border border-emerald-200/60">
               <div className="text-lg font-bold text-emerald-600 font-mono">{collectionsDashboard.collectionRate}</div>
               <div className="text-slate-400 text-[10px]">Collection Rate</div>
@@ -651,7 +655,7 @@ export default function CollectionsView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

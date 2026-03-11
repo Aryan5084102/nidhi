@@ -166,12 +166,12 @@ export default function LiquidityChart() {
   return (
     <div className="bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-300 card-shadow border border-slate-100">
       {/* Header */}
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-0 mb-4">
         <div>
           <h3 className="text-sm font-semibold text-slate-800 mb-1">
             Liquidity Trend
           </h3>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
               <span className="text-[11px] text-slate-500">Inflow</span>
@@ -191,7 +191,7 @@ export default function LiquidityChart() {
         </div>
 
         {/* Time Frame Selector */}
-        <div className="flex bg-slate-100 rounded-lg p-0.5">
+        <div className="flex bg-slate-100 rounded-lg p-0.5 self-start shrink-0">
           {timeFrames.map((tf) => (
             <button
               key={tf}

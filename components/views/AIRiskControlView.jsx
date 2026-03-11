@@ -70,7 +70,7 @@ function DashboardTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         {metrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{m.label}</div>
@@ -196,7 +196,7 @@ function FraudDetectionTab() {
       </div>
 
       {/* Detection Accuracy by Fraud Type */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Detection Accuracy by Fraud Type</h3>
         </div>
@@ -223,7 +223,7 @@ function FraudDetectionTab() {
       </div>
 
       {/* Recent AI-Flagged Transactions */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Recent AI-Flagged Transactions</h3>
         </div>
@@ -335,7 +335,7 @@ function LiquidityRiskTab() {
       </div>
 
       {/* Deposit Maturity Analysis */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Deposit Maturity Analysis</h3>
         </div>
@@ -368,7 +368,7 @@ function LiquidityRiskTab() {
       </div>
 
       {/* Stress Test Scenarios */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Stress Test Scenarios</h3>
         </div>
@@ -452,7 +452,7 @@ function ComplianceRiskTab() {
   return (
     <div className="animate-fade-in">
       {/* AI-Monitored Compliance Rules */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">AI-Monitored Compliance Rules</h3>
         </div>
@@ -512,7 +512,7 @@ function ComplianceRiskTab() {
       </div>
 
       {/* Regulatory Change Impact */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Regulatory Change Impact Analysis</h3>
         </div>
@@ -539,7 +539,7 @@ function ComplianceRiskTab() {
       </div>
 
       {/* Filing Deadline Tracker */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Filing Deadline Tracker with AI Reminders</h3>
         </div>
@@ -645,7 +645,7 @@ function MemberRiskTab() {
       </div>
 
       {/* STI Score Analytics */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">STI Score Analytics</h3>
         </div>
@@ -697,7 +697,7 @@ function MemberRiskTab() {
       </div>
 
       {/* Risk Migration Matrix */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Risk Migration Matrix (Last 90 Days)</h3>
         </div>
@@ -846,7 +846,7 @@ function AnomalyDetectionTab() {
       </div>
 
       {/* Anomaly Classification */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Anomaly Classification Breakdown</h3>
         </div>
@@ -1047,7 +1047,7 @@ function AgentFraudSentinelTab() {
       </div>
 
       {/* Detection Log */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Detection Log (Recent 10)</h3>
         </div>
@@ -1087,7 +1087,7 @@ function AgentFraudSentinelTab() {
       {/* Performance Metrics */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Performance Metrics</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {[
             { label: "Total Loss Prevented", value: "Rs 42.8L", color: "#059669" },
             { label: "Cases Auto-Resolved", value: "68%", color: "#4F46E5" },
@@ -1141,7 +1141,7 @@ function AgentComplianceAuditorTab() {
       </div>
 
       {/* Compliance Check Results */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Latest Compliance Check Results</h3>
         </div>
@@ -1266,7 +1266,7 @@ function AgentMemberRiskTab() {
       </div>
 
       {/* Risk Reassessment Queue */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Risk Reassessment Queue</h3>
         </div>
@@ -1390,7 +1390,7 @@ export default function AIRiskControlView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">AI Risk Control Center</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -1399,7 +1399,7 @@ export default function AIRiskControlView() {
               across all operational dimensions.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-emerald-50 rounded-xl px-3 py-2 text-center border border-emerald-200/60">
               <div className="text-lg font-bold text-emerald-600 font-mono">4</div>
               <div className="text-slate-400 text-[10px]">Agents Online</div>
@@ -1412,7 +1412,7 @@ export default function AIRiskControlView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

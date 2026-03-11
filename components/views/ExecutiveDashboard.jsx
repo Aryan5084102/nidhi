@@ -11,27 +11,27 @@ export default function ExecutiveDashboard() {
   return (
     <div className="animate-fade-in">
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
         {metrics.map((m, i) => (
           <MetricCard key={i} metric={m} />
         ))}
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
         <LiquidityChart />
         <LoanPortfolioChart />
       </div>
 
       {/* Deposit & Risk Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
         <DepositGrowthChart />
         <RiskHeatmap />
       </div>
 
       {/* AI Agents Control Center */}
-      <div className="bg-white rounded-2xl p-5 mb-6 hover:shadow-md transition-all duration-300 card-shadow border border-slate-100">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white rounded-2xl p-3 md:p-5 mb-4 md:mb-6 hover:shadow-md transition-all duration-300 card-shadow border border-slate-100">
+        <div className="flex justify-between items-center mb-3 md:mb-4">
           <h3 className="text-sm font-semibold text-slate-800">
             Agentic AI Control Center
           </h3>
@@ -39,7 +39,7 @@ export default function ExecutiveDashboard() {
             5/6 Active
           </span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {agents.map((a, i) => (
             <AgentCard key={i} agent={a} />
           ))}

@@ -422,8 +422,8 @@ export default function MembersView() {
   return (
     <div className="animate-fade-in">
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-3 mb-5 items-center">
-        <div className="flex-1 min-w-[200px] relative">
+      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-5 items-center">
+        <div className="w-full sm:flex-1 sm:w-auto min-w-0 sm:min-w-[200px] relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
             🔍
           </span>
@@ -435,30 +435,83 @@ export default function MembersView() {
           />
         </div>
 
-        {filterOptions.map((f) => (
-          <button
-            key={f}
-            onClick={() => handleFilter(f)}
-            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
-              filter === f
-                ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-                : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
+        <div className="flex gap-1.5 sm:gap-2 flex-wrap">
+          {filterOptions.map((f) => (
+            <button
+              key={f}
+              onClick={() => handleFilter(f)}
+              className={`rounded-xl px-3 sm:px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
+                filter === f
+                  ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
+                  : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-emerald-50 border border-emerald-300 rounded-xl px-4 py-2 text-emerald-600 text-xs font-semibold cursor-pointer hover:bg-emerald-100 transition-colors"
+          className="bg-emerald-50 border border-emerald-300 rounded-xl px-3 sm:px-4 py-2 text-emerald-600 text-xs font-semibold cursor-pointer hover:bg-emerald-100 transition-colors"
         >
           + Add Member
         </button>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-2xl overflow-hidden card-shadow border border-slate-100">
+      {/* Mobile Card View */}
+      <div className="md:hidden flex flex-col gap-3">
+        {paginatedMembers.map((m) => (
+          <div key={m.id} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-sm">
+                  {m.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="text-[13px] font-semibold text-slate-700">{m.name}</div>
+                  <div className="text-[11px] text-slate-400 font-mono">{m.id}</div>
+                </div>
+              </div>
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                m.status === "Active"
+                  ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                  : "bg-red-50 text-red-500 border border-red-200"
+              }`}>
+                {m.status || "Active"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <div className="bg-slate-50 rounded-lg p-2">
+                <div className="text-[10px] text-slate-400">Deposits</div>
+                <div className="text-[12px] font-mono text-emerald-600 font-semibold">{m.deposits}</div>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-2">
+                <div className="text-[10px] text-slate-400">Loans</div>
+                <div className="text-[12px] font-mono text-indigo-600 font-semibold">{m.loans}</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <RiskBadge risk={m.risk} />
+                <STIBadge score={m.sti} />
+              </div>
+              <div className="flex gap-1.5">
+                <button onClick={() => setViewMember(m)} className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-[11px] text-slate-500 cursor-pointer">View</button>
+                <button onClick={() => setEditMember(m)} className="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-[11px] text-slate-500 cursor-pointer">Edit</button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {paginatedMembers.length === 0 && (
+          <div className="bg-white rounded-2xl p-8 text-center text-sm text-slate-400 card-shadow border border-slate-100">
+            No members found
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table */}
+      <div className="hidden md:block bg-white rounded-2xl overflow-hidden card-shadow border border-slate-100">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -603,6 +656,30 @@ export default function MembersView() {
               →
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Pagination */}
+      <div className="md:hidden flex justify-between items-center mt-3 px-1">
+        <span className="text-xs text-slate-400">
+          {filtered.length === 0 ? 0 : startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
+        </span>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={safeCurrentPage === 1}
+            className={`rounded-lg px-3 py-1.5 text-xs cursor-pointer border ${safeCurrentPage === 1 ? "text-slate-200 border-slate-100" : "text-slate-500 border-slate-200"}`}
+          >
+            Prev
+          </button>
+          <span className="text-xs text-slate-400 flex items-center">{safeCurrentPage}/{totalPages}</span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={safeCurrentPage === totalPages}
+            className={`rounded-lg px-3 py-1.5 text-xs cursor-pointer border ${safeCurrentPage === totalPages ? "text-slate-200 border-slate-100" : "text-slate-500 border-slate-200"}`}
+          >
+            Next
+          </button>
         </div>
       </div>
 

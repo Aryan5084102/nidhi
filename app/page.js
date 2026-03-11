@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import LoginPage from "@/components/LoginPage";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import MobileDrawer from "@/components/MobileDrawer";
+import FloatingAIButton from "@/components/FloatingAIButton";
 import ExecutiveDashboard from "@/components/views/ExecutiveDashboard";
 import MembersView from "@/components/views/MembersView";
 import AgentsView from "@/components/views/AgentsView";
@@ -40,6 +43,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeNav, setActiveNav] = useState("executive");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // On mount, check localStorage for an existing logged-in session
   useEffect(() => {
@@ -52,6 +56,17 @@ export default function Home() {
       }
     }
     setIsLoading(false);
+  }, []);
+
+  // Auto-collapse sidebar on tablet
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1280) setSidebarExpanded(false);
+      else setSidebarExpanded(true);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogin = (userData) => {
@@ -78,6 +93,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      {/* Desktop/Tablet Sidebar */}
       <Sidebar
         activeNav={activeNav}
         setActiveNav={setActiveNav}
@@ -87,13 +103,35 @@ export default function Home() {
         onLogout={handleLogout}
       />
 
+      {/* Mobile Drawer */}
+      <MobileDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        activeNav={activeNav}
+        setActiveNav={setActiveNav}
+        userName={user.name}
+        onLogout={handleLogout}
+      />
+
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
 
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
           {viewMap[activeNav]}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav
+        activeNav={activeNav}
+        setActiveNav={setActiveNav}
+        onMorePress={() => setDrawerOpen(true)}
+      />
+
+      {/* Floating AI Assistant Button - hidden when on AI Assistant view */}
+      {activeNav !== "aiassistant" && (
+        <FloatingAIButton onClick={() => setActiveNav("aiassistant")} />
+      )}
     </div>
   );
 }

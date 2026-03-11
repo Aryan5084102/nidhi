@@ -13,7 +13,7 @@ export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded
     <div
       className={`${
         expanded ? "w-[240px]" : "w-[68px]"
-      } bg-gradient-to-b from-[#0F172A] to-[#1a2744] flex flex-col transition-all duration-300 shrink-0 z-10 relative`}
+      } bg-gradient-to-b from-[#0F172A] to-[#1a2744] flex-col transition-all duration-300 shrink-0 z-10 relative hidden md:flex`}
     >
       {/* Subtle right edge glow */}
       <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-indigo-500/20 via-emerald-500/10 to-transparent" />

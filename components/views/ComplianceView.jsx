@@ -191,7 +191,7 @@ function ChecklistTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {["All", "Compliant", "Warning", "Action Required"].map((f) => (
           <button key={f} onClick={() => setFilterStatus(f)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -200,7 +200,7 @@ function ChecklistTab() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -281,7 +281,7 @@ function KycMonitoringTab() {
       </div>
 
       {/* Re-verification Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Members Due for KYC Re-verification</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Members requiring annual KYC update as per Nidhi (Amendment) Rules 2022</p>
@@ -315,7 +315,7 @@ function KycMonitoringTab() {
       </div>
 
       {/* Document Verification Queue */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Document Verification Queue</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Pending KYC documents awaiting manual or AI-assisted verification</p>
@@ -452,7 +452,7 @@ function AmlMonitoringTab() {
       </div>
 
       {/* STR Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Suspicious Transaction Reports (STR)</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Filed with FIU-IND within 7 days of detection as per PMLA guidelines</p>
@@ -497,12 +497,12 @@ function FilingsTab() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h3 className="text-[15px] font-bold text-slate-900 mb-1">Regulatory Filing Tracker</h3>
             <p className="text-[13px] text-slate-400">Track all mandatory filings with MCA/ROC as per Nidhi Company regulations.</p>
           </div>
-          <div className="flex gap-2">
+          <div className="hidden sm:flex gap-2">
             <div className="bg-emerald-50 rounded-xl px-3 py-2 text-center border border-emerald-200/60">
               <div className="text-lg font-bold text-emerald-600 font-mono">{regulatoryFilings.filter((f) => f.status === "Filed").length}</div>
               <div className="text-slate-400 text-[10px]">Filed</div>
@@ -591,7 +591,7 @@ function AlertsTab() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {["All", "Critical", "High", "Medium", "Low"].map((f) => (
           <button key={f} onClick={() => setFilterSeverity(f)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterSeverity === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -675,7 +675,7 @@ function AuditLogsTab() {
         />
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {logCategories.map((f) => (
           <button key={f} onClick={() => setFilterCategory(f)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterCategory === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
@@ -685,7 +685,7 @@ function AuditLogsTab() {
       </div>
 
       {/* Audit Log Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -827,7 +827,7 @@ function PanelsTab() {
       </div>
 
       {/* Meeting Minutes */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Meeting Minutes Tracker</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Minutes filed with ROC as per Section 118 of Companies Act 2013</p>
@@ -893,7 +893,7 @@ function SuspiciousTransactionsTab() {
       {/* Pattern Summary */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 mb-6">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Transaction Pattern Summary</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {patternSummary.map((p) => (
             <div key={p.pattern} className="bg-slate-50 rounded-xl p-4">
               <div className="flex justify-between items-start mb-2">
@@ -953,7 +953,7 @@ function SuspiciousTransactionsTab() {
       </div>
 
       {/* Flagged Transactions Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Flagged Transactions</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Individual transactions flagged by AI pattern detection engine</p>
@@ -1081,7 +1081,7 @@ function HighRiskMembersTab() {
       </div>
 
       {/* Watch List */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Watch List</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Members under continued observation after risk de-escalation or emerging concerns</p>
@@ -1192,7 +1192,7 @@ export default function ComplianceView() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Compliance Center</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -1201,7 +1201,7 @@ export default function ComplianceView() {
               Nidhi (Amendment) Rules 2022, and MCA filing requirements.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
               <div className="text-lg font-bold text-emerald-600 font-mono">{complianceScore.overall}%</div>
               <div className="text-slate-400 text-[10px]">Compliance Score</div>
@@ -1210,7 +1210,7 @@ export default function ComplianceView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>

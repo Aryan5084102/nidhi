@@ -131,7 +131,7 @@ function DashboardTab() {
   return (
     <div className="animate-fade-in">
       {/* Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-6">
         {dashMetrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{m.label}</div>
@@ -146,7 +146,7 @@ function DashboardTab() {
       {/* Loan Process Flow */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 mb-6">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Loan Process Flow</h3>
-        <div className="flex items-start gap-0">
+        <div className="flex items-start gap-0 overflow-x-auto pb-2">
           {processSteps.map((ps, idx) => {
             const c = colorMap[ps.color];
             return (
@@ -251,7 +251,7 @@ function ApplicationsTab() {
           placeholder="Search by name or ID..."
           className="flex-1 min-w-[200px] bg-white border border-slate-200 rounded-xl py-2.5 px-4 text-slate-700 text-[13px] outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
         />
-        <div className="flex gap-2">
+        <div className="flex gap-2 tab-scroll">
           {["All", "Pending", "Under Review", "Approved", "Rejected"].map((f) => (
             <button
               key={f}
@@ -270,6 +270,7 @@ function ApplicationsTab() {
 
       {/* Applications Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -308,6 +309,7 @@ function ApplicationsTab() {
             ))}
           </tbody>
         </table>
+        </div>
         {filtered.length === 0 && (
           <div className="text-center py-10 text-[13px] text-slate-400">No applications found</div>
         )}
@@ -439,6 +441,7 @@ function RiskAnalysisTab() {
           <h3 className="text-[15px] font-bold text-slate-900">Risk Factors Analysis</h3>
           <p className="text-[12px] text-slate-400 mt-1">AI-powered risk factor identification across the loan portfolio</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -465,6 +468,7 @@ function RiskAnalysisTab() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
@@ -647,6 +651,7 @@ function DefaultsTab() {
           <h3 className="text-[15px] font-bold text-slate-900">Defaulted Loans</h3>
           <p className="text-[12px] text-slate-400 mt-1">Track and manage loan defaults and recovery process</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -681,6 +686,7 @@ function DefaultsTab() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
@@ -707,7 +713,7 @@ export default function LoansView() {
     <div className="animate-fade-in">
       {/* Page Header */}
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">Loans Management</h2>
             <p className="text-[13px] text-slate-400 leading-relaxed max-w-xl">
@@ -716,7 +722,7 @@ export default function LoansView() {
               All loans comply with Nidhi Company (Amendment) Rules, 2022.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
               <div className="text-lg font-bold text-indigo-600 font-mono">5,200</div>
               <div className="text-slate-400 text-[10px]">Active Loans</div>
@@ -730,7 +736,7 @@ export default function LoansView() {
       </div>
 
       {/* Sub-tabs */}
-      <div className="flex gap-2 mb-5 flex-wrap">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {tabs.map((t) => (
           <button
             key={t.id}

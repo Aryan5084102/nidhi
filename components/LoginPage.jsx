@@ -759,7 +759,7 @@ export default function LoginPage({ onLogin }) {
   return (
     <div className="min-h-screen flex">
       <LeftPanel />
-      <div className="flex-1 flex items-center justify-center p-8 bg-[#F8FAFC] overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-[#F8FAFC] overflow-y-auto">
         {renderForm()}
       </div>
     </div>

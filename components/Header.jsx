@@ -82,12 +82,12 @@ export default function Header({ pageTitle, userName, onLogout }) {
   const initials = userName ? userName.charAt(0).toUpperCase() : "A";
 
   return (
-    <div className="bg-white border-b border-slate-200/80 px-6 py-4 flex justify-between items-center shrink-0">
-      <div>
-        <h1 className="text-lg font-bold text-slate-900 tracking-tight">
+    <div className="bg-white border-b border-slate-200/80 px-3 sm:px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shrink-0 gap-2">
+      <div className="min-w-0">
+        <h1 className="text-base md:text-lg font-bold text-slate-900 tracking-tight truncate">
           {pageTitle}
         </h1>
-        <div className="text-[11px] text-slate-400 font-mono">
+        <div className="text-[10px] md:text-[11px] text-slate-400 font-mono hidden sm:block">
           {currentTime.toLocaleDateString("en-IN", {
             weekday: "long",
             year: "numeric",
@@ -98,18 +98,18 @@ export default function Header({ pageTitle, userName, onLogout }) {
         </div>
       </div>
 
-      <div className="flex gap-2.5 items-center">
-        {/* System Status */}
-        <div className="bg-emerald-50 border border-emerald-200/60 rounded-full px-3 py-1.5 flex items-center gap-1.5">
+      <div className="flex gap-1.5 sm:gap-2.5 items-center shrink-0">
+        {/* System Status - hidden on mobile */}
+        <div className="hidden lg:flex bg-emerald-50 border border-emerald-200/60 rounded-full px-3 py-1.5 items-center gap-1.5">
           <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse-dot" />
           <span className="text-[11px] text-emerald-600 font-semibold">
             System Operational
           </span>
         </div>
 
-        {/* Alerts Button */}
-        <button className="bg-red-50 border border-red-200/60 rounded-lg px-3 py-1.5 text-red-600 text-[11px] font-semibold cursor-pointer hover:bg-red-100/60 transition-colors">
-          23 Alerts
+        {/* Alerts Button - compact on mobile */}
+        <button className="bg-red-50 border border-red-200/60 rounded-lg px-2 sm:px-3 py-1.5 text-red-600 text-[11px] font-semibold cursor-pointer hover:bg-red-100/60 transition-colors">
+          <span className="hidden sm:inline">23 </span>Alerts
         </button>
 
         {/* Notification Bell + Dropdown */}
@@ -130,7 +130,7 @@ export default function Header({ pageTitle, userName, onLogout }) {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 overflow-hidden animate-fade-in z-50">
+            <div className="absolute -right-12 sm:right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-80 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 overflow-hidden animate-fade-in z-50">
               {/* Header */}
               <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-slate-800">Notifications</h3>

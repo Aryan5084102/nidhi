@@ -485,7 +485,7 @@ export default function ChitFundsView() {
     <div className="animate-fade-in">
       {/* Page Header */}
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
           <div>
             <h2 className="text-[16px] font-bold text-slate-900 mb-1">
               Chit Fund Schemes
@@ -496,7 +496,7 @@ export default function ChitFundsView() {
               pot. All schemes are governed by the Chit Funds Act, 1982.
             </p>
           </div>
-          <div className="flex items-center gap-3 text-[12px]">
+          <div className="hidden sm:flex items-center gap-3 text-[12px]">
             <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
               <div className="text-lg font-bold text-indigo-600 font-mono">
                 {chitSchemes.length}
@@ -514,7 +514,7 @@ export default function ChitFundsView() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-5">
+      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {["All", "Open", "Full"].map((f) => (
           <button
             key={f}

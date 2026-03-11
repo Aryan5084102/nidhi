@@ -10,10 +10,13 @@ import AgentsView from "@/components/views/AgentsView";
 import ChitFundsView from "@/components/views/ChitFundsView";
 import LoansView from "@/components/views/LoansView";
 import DepositsView from "@/components/views/DepositsView";
+import CollectionsView from "@/components/views/CollectionsView";
 import ComplianceView from "@/components/views/ComplianceView";
+import AIRiskControlView from "@/components/views/AIRiskControlView";
 import FraudIntelView from "@/components/views/FraudIntelView";
 import ReportsView from "@/components/views/ReportsView";
 import ConfigView from "@/components/views/ConfigView";
+import AIAssistantView from "@/components/views/AIAssistantView";
 import { navItems } from "@/data/mockData";
 
 const viewMap = {
@@ -23,10 +26,13 @@ const viewMap = {
   agents: <AgentsView />,
   loans: <LoansView />,
   deposits: <DepositsView />,
+  collections: <CollectionsView />,
   compliance: <ComplianceView />,
+  airisk: <AIRiskControlView />,
   fraud: <FraudIntelView />,
   reports: <ReportsView />,
   config: <ConfigView />,
+  aiassistant: <AIAssistantView />,
 };
 
 export default function Home() {

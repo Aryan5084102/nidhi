@@ -39,14 +39,25 @@ function ViewMemberModal({ member, onClose }) {
           </button>
         </div>
         <div className="px-6 py-5 space-y-4">
-          <div className="flex items-center gap-4 pb-4 border-b border-slate-100">
-            <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
-              {member.name.charAt(0)}
+          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-lg">
+                {member.name.charAt(0)}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">{member.name}</p>
+                <p className="text-xs text-slate-400 font-mono">{member.id}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-slate-800">{member.name}</p>
-              <p className="text-xs text-slate-400 font-mono">{member.id}</p>
-            </div>
+            <span
+              className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                member.status === "Active"
+                  ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                  : "bg-red-50 text-red-500 border border-red-200"
+              }`}
+            >
+              {member.status || "Active"}
+            </span>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -460,6 +471,7 @@ export default function MembersView() {
                   "STI Score",
                   "Risk",
                   "KYC Status",
+                  "Status",
                   "Actions",
                 ].map((h) => (
                   <th
@@ -510,6 +522,17 @@ export default function MembersView() {
                     </span>
                   </td>
                   <td className="px-4 py-3.5">
+                    <span
+                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                        m.status === "Active"
+                          ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                          : "bg-red-50 text-red-500 border border-red-200"
+                      }`}
+                    >
+                      {m.status || "Active"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
                     <div className="flex gap-1.5">
                       <button
                         onClick={() => setViewMember(m)}
@@ -529,7 +552,7 @@ export default function MembersView() {
               ))}
               {paginatedMembers.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-400">
+                  <td colSpan={9} className="px-4 py-8 text-center text-sm text-slate-400">
                     No members found
                   </td>
                 </tr>

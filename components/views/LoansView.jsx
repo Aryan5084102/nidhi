@@ -89,7 +89,7 @@ function RiskTag({ level }) {
     High: "bg-red-50 text-red-500 border-red-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[level] || styles.Medium}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[level] || styles.Medium}`}>
       {level}
     </span>
   );
@@ -111,7 +111,7 @@ function StatusBadge({ status }) {
     "Written Off": "bg-slate-100 text-slate-500 border-slate-200",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -244,19 +244,31 @@ function ApplicationsTab() {
   return (
     <div className="animate-fade-in">
       {/* Search & Filter */}
-      <div className="flex gap-3 mb-5 flex-wrap">
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name or ID..."
-          className="flex-1 min-w-[200px] bg-white border border-slate-200 rounded-xl py-2.5 px-4 text-slate-700 text-[13px] outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
-        />
-        <div className="flex gap-2 tab-scroll">
+      <div className="flex flex-col gap-3 mb-5">
+        <div className="relative">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or ID..."
+            className="w-full bg-white border border-slate-200 rounded-xl py-2.5 px-4 pr-10 text-slate-700 text-[13px] outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        <div className="flex gap-2 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
           {["All", "Pending", "Under Review", "Approved", "Rejected"].map((f) => (
             <button
               key={f}
               onClick={() => setFilterStatus(f)}
-              className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
+              className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap shrink-0 ${
                 filterStatus === f
                   ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
                   : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"

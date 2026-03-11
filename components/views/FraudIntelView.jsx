@@ -18,7 +18,7 @@ function SeverityBadge({ severity }) {
     Low: "bg-emerald-50 text-emerald-600 border-emerald-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[severity] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[severity] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {severity}
     </span>
   );
@@ -34,7 +34,7 @@ function CaseStatusBadge({ status }) {
     Resolved: "bg-emerald-50 text-emerald-600 border-emerald-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -88,27 +88,34 @@ function DashboardTab() {
       {/* Recent Critical Cases */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Critical Cases</h3>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {fraudCases.filter((c) => c.severity === "Critical").map((fc) => (
-            <div key={fc.id} className="flex items-start gap-3 bg-red-50/50 rounded-xl p-4 border border-red-100/60">
-              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="text-[13px] font-semibold text-slate-700">{fc.type}</div>
-                    <div className="text-[11px] text-slate-400 font-mono">{fc.id} &middot; {fc.time}</div>
-                  </div>
-                  <CaseStatusBadge status={fc.status} />
+            <div key={fc.id} className="bg-red-50/60 rounded-2xl p-4 border border-red-100 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 bg-red-100 border border-red-200/60 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                  </svg>
                 </div>
-                <div className="text-[12px] text-slate-500 mt-1">{fc.description}</div>
-                <div className="flex items-center gap-3 mt-2 text-[11px] text-slate-400">
-                  <span>Members: <strong className="text-slate-600">{fc.member}</strong></span>
-                  <span className="text-slate-300">|</span>
-                  <span>Potential Loss: <strong className="text-red-500">{fc.potentialLoss}</strong></span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+                    <div className="min-w-0">
+                      <div className="text-[13px] font-bold text-slate-800">{fc.type}</div>
+                      <div className="text-[11px] text-slate-400 font-mono mt-0.5">{fc.id} &middot; {fc.time}</div>
+                    </div>
+                    <CaseStatusBadge status={fc.status} />
+                  </div>
+                  <div className="text-[12px] text-slate-500 leading-relaxed mb-3">{fc.description}</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-white/70 rounded-xl p-2.5 border border-red-100">
+                      <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Member</div>
+                      <div className="text-[12px] font-semibold text-slate-700 font-mono">{fc.member}</div>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-2.5 border border-red-100">
+                      <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Potential Loss</div>
+                      <div className="text-[12px] font-bold text-red-500 font-mono">{fc.potentialLoss}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,10 +141,10 @@ function CasesTab() {
       <div className="flex gap-3 mb-5 flex-wrap">
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search cases..."
           className="flex-1 min-w-[200px] bg-white border border-slate-200 rounded-xl py-2.5 px-4 text-slate-700 text-[13px] outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300" />
-        <div className="flex gap-2 tab-scroll">
+        <div className="flex gap-2 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
           {["All", "Critical", "High", "Medium"].map((f) => (
             <button key={f} onClick={() => setFilterSeverity(f)}
-              className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterSeverity === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+              className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap shrink-0 ${filterSeverity === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
               {f}
             </button>
           ))}
@@ -147,13 +154,13 @@ function CasesTab() {
       <div className="flex flex-col gap-4">
         {filtered.map((fc) => (
           <div key={fc.id} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2 mb-0.5">
                   <span className="text-[15px] font-bold text-slate-900">{fc.type}</span>
                   <SeverityBadge severity={fc.severity} />
                 </div>
-                <div className="text-[11px] text-slate-400 font-mono mt-0.5">{fc.id} &middot; Detected: {fc.time} &middot; By: {fc.detectedBy}</div>
+                <div className="text-[11px] text-slate-400 font-mono">{fc.id} &middot; {fc.time} &middot; {fc.detectedBy}</div>
               </div>
               <CaseStatusBadge status={fc.status} />
             </div>

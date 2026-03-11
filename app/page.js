@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LoginPage from "@/components/LoginPage";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
@@ -44,6 +44,7 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState("executive");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const mainRef = useRef(null);
 
   // On mount, check localStorage for an existing logged-in session
   useEffect(() => {
@@ -57,6 +58,11 @@ export default function Home() {
     }
     setIsLoading(false);
   }, []);
+
+  // Scroll to top on nav change
+  useEffect(() => {
+    if (mainRef.current) mainRef.current.scrollTop = 0;
+  }, [activeNav]);
 
   // Auto-collapse sidebar on tablet
   useEffect(() => {
@@ -116,7 +122,7 @@ export default function Home() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
 
-        <main className="flex-1 overflow-auto p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
+        <main ref={mainRef} className="flex-1 overflow-auto p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
           {viewMap[activeNav]}
         </main>
       </div>

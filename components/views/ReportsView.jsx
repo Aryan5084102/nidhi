@@ -310,16 +310,16 @@ function DepositAnalyticsTab() {
           <div className="flex flex-col gap-3">
             {maturities.map((m) => (
               <div key={m.period} className="bg-slate-50 rounded-xl p-3.5">
-                <div className="flex justify-between items-center mb-1">
+                <div className="flex justify-between items-center mb-2">
                   <span className="text-[13px] font-semibold text-slate-700">{m.period}</span>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${m.urgency === "Immediate" ? "bg-red-50 border-red-200 text-red-600" : m.urgency === "Upcoming" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-slate-100 border-slate-200 text-slate-500"}`}>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${m.urgency === "Immediate" ? "bg-red-50 border-red-200 text-red-600" : m.urgency === "Upcoming" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-slate-100 border-slate-200 text-slate-500"}`}>
                     {m.urgency}
                   </span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-[12px] text-slate-500">{m.count} accounts</span>
-                  <span className="text-[14px] font-bold font-mono text-slate-800">{m.amount}</span>
-                  <span className="text-[11px] text-slate-400">{m.type}</span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <span className="text-[12px] text-slate-500 whitespace-nowrap">{m.count} accounts</span>
+                  <span className="text-[14px] font-bold font-mono text-slate-800 whitespace-nowrap">{m.amount}</span>
+                  <span className="text-[11px] text-slate-400 whitespace-nowrap">{m.type}</span>
                 </div>
               </div>
             ))}
@@ -654,11 +654,11 @@ function RiskAnalyticsTab() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Category</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Low %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Medium %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">High %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Critical %</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Low %</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Medium %</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">High %</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Critical %</th>
               </tr>
             </thead>
             <tbody>
@@ -818,7 +818,7 @@ function ComplianceReportsTab() {
                   <td className="text-[12px] font-mono text-slate-600 px-5 py-3">{g.current}</td>
                   <td className="text-[12px] text-slate-500 px-5 py-3">{g.gap}</td>
                   <td className="px-5 py-3 text-center">
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${g.status === "Compliant" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : g.status === "Warning" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-red-50 border-red-200 text-red-600"}`}>
+                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${g.status === "Compliant" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : g.status === "Warning" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-red-50 border-red-200 text-red-600"}`}>
                       {g.status}
                     </span>
                   </td>

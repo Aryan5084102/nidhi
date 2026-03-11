@@ -4,7 +4,7 @@ export default function STIBadge({ score }) {
 
   return (
     <span
-      className="rounded-lg px-2 py-0.5 text-[11px] font-mono font-bold"
+      className="rounded-lg px-2 py-0.5 text-[11px] font-mono font-bold whitespace-nowrap"
       style={{
         background: bg,
         color,

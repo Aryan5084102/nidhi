@@ -10,7 +10,7 @@ export default function RiskBadge({ risk }) {
 
   return (
     <span
-      className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+      className="rounded-full px-2.5 py-0.5 text-[11px] font-semibold whitespace-nowrap"
       style={{
         background: bg,
         color: fg,

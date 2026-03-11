@@ -154,7 +154,7 @@ function PaymentStatusBadge({ status }) {
     Partial: "bg-amber-50 text-amber-600 border-amber-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -168,7 +168,7 @@ function RecoveryStatusBadge({ status }) {
     "Written Off": "bg-slate-100 text-slate-500 border-slate-200",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -236,7 +236,7 @@ function DashboardTab() {
                     <div className="text-[13px] font-semibold text-slate-700">{d.name}</div>
                     <div className="text-[11px] text-slate-400 font-mono">{d.id} &middot; {d.scheme}</div>
                   </div>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${d.daysOverdue >= 90 ? "bg-red-50 text-red-500 border-red-200/60" : d.daysOverdue >= 60 ? "bg-orange-50 text-orange-600 border-orange-200/60" : "bg-amber-50 text-amber-600 border-amber-200/60"}`}>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${d.daysOverdue >= 90 ? "bg-red-50 text-red-500 border-red-200/60" : d.daysOverdue >= 60 ? "bg-orange-50 text-orange-600 border-orange-200/60" : "bg-amber-50 text-amber-600 border-amber-200/60"}`}>
                     {d.daysOverdue}d overdue
                   </span>
                 </div>
@@ -257,10 +257,10 @@ function ScheduleTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 tab-scroll">
+      <div className="flex gap-2 overflow-x-auto pb-0.5 mb-4" style={{ scrollbarWidth: "none" }}>
         {["All", "Paid", "Pending", "Overdue", "Partial"].map((f) => (
           <button key={f} onClick={() => setFilterStatus(f)}
-            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap shrink-0 ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
             {f}
           </button>
         ))}
@@ -341,22 +341,22 @@ function OverdueTab() {
           const severity = getSeverityColor(loan.daysOverdue);
           return (
             <div key={loan.id} className={`bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300`}>
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-3">
+              <div className="flex justify-between items-start gap-3 mb-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className={`w-10 h-10 rounded-full ${severity.bg} ${severity.border} border flex items-center justify-center ${severity.text} font-bold text-sm flex-shrink-0`}>
                     {loan.member.charAt(0)}
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[15px] font-bold text-slate-900">{loan.member}</span>
-                      <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${severity.bg} ${severity.text} ${severity.border}`}>
+                      <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${severity.bg} ${severity.text} ${severity.border}`}>
                         {severity.label} — {loan.daysOverdue}d overdue
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400 font-mono mt-0.5">{loan.memberId} &middot; {loan.id} &middot; {loan.loanType}</div>
+                    <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">{loan.memberId} &middot; {loan.id} &middot; {loan.loanType}</div>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Outstanding</div>
                   <div className="text-[18px] font-bold text-red-500 font-mono">{loan.outstanding}</div>
                 </div>
@@ -456,10 +456,10 @@ function RecoveryTab() {
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 tab-scroll">
+      <div className="flex gap-2 overflow-x-auto pb-0.5 mb-4" style={{ scrollbarWidth: "none" }}>
         {["All", "Active", "Settled", "Legal", "Written Off"].map((f) => (
           <button key={f} onClick={() => setFilterStatus(f)}
-            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap shrink-0 ${filterStatus === f ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
             {f}
           </button>
         ))}
@@ -490,7 +490,7 @@ function RecoveryTab() {
                 </td>
                 <td className="px-5 py-3 text-[13px] font-mono font-semibold text-red-500">{r.outstanding}</td>
                 <td className="px-5 py-3">
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                     r.stage === "Legal" ? "bg-red-50 text-red-500 border-red-200/60"
                     : r.stage === "Field Visit" ? "bg-orange-50 text-orange-600 border-orange-200/60"
                     : r.stage === "Follow-up" ? "bg-amber-50 text-amber-600 border-amber-200/60"

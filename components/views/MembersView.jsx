@@ -435,28 +435,30 @@ export default function MembersView() {
           />
         </div>
 
-        <div className="flex gap-1.5 sm:gap-2 flex-wrap">
-          {filterOptions.map((f) => (
-            <button
-              key={f}
-              onClick={() => handleFilter(f)}
-              className={`rounded-xl px-3 sm:px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
-                filter === f
-                  ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-                  : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+        <div className="flex items-center justify-between gap-2 w-full sm:w-auto sm:justify-start">
+          <div className="flex gap-1.5 sm:gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+            {filterOptions.map((f) => (
+              <button
+                key={f}
+                onClick={() => handleFilter(f)}
+                className={`rounded-xl px-3 sm:px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap shrink-0 ${
+                  filter === f
+                    ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
+                    : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
 
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-emerald-50 border border-emerald-300 rounded-xl px-3 sm:px-4 py-2 text-emerald-600 text-xs font-semibold cursor-pointer hover:bg-emerald-100 transition-colors"
-        >
-          + Add Member
-        </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="shrink-0 bg-emerald-50 border border-emerald-300 rounded-xl px-3 sm:px-4 py-2 text-emerald-600 text-xs font-semibold cursor-pointer hover:bg-emerald-100 transition-colors"
+          >
+            + Add Member
+          </button>
+        </div>
       </div>
 
       {/* Mobile Card View */}
@@ -473,7 +475,7 @@ export default function MembersView() {
                   <div className="text-[11px] text-slate-400 font-mono">{m.id}</div>
                 </div>
               </div>
-              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
                 m.status === "Active"
                   ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
                   : "bg-red-50 text-red-500 border border-red-200"
@@ -576,7 +578,7 @@ export default function MembersView() {
                   </td>
                   <td className="px-4 py-3.5">
                     <span
-                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
                         m.status === "Active"
                           ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
                           : "bg-red-50 text-red-500 border border-red-200"
@@ -660,7 +662,7 @@ export default function MembersView() {
       </div>
 
       {/* Mobile Pagination */}
-      <div className="md:hidden flex justify-between items-center mt-3 px-1">
+      <div className="md:hidden flex flex-col items-center gap-2 mt-3 px-1">
         <span className="text-xs text-slate-400">
           {filtered.length === 0 ? 0 : startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
         </span>

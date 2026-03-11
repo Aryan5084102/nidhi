@@ -83,18 +83,24 @@ export default function Header({ pageTitle, userName, onLogout }) {
 
   return (
     <div className="bg-white border-b border-slate-200/80 px-3 sm:px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shrink-0 gap-2">
-      <div className="min-w-0">
-        <h1 className="text-base md:text-lg font-bold text-slate-900 tracking-tight truncate">
-          {pageTitle}
-        </h1>
-        <div className="text-[10px] md:text-[11px] text-slate-400 font-mono hidden sm:block">
-          {currentTime.toLocaleDateString("en-IN", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}{" "}
-          &middot; {currentTime.toLocaleTimeString()}
+      <div className="flex items-center gap-2.5 min-w-0">
+        {/* Logo - visible only on mobile where sidebar is hidden */}
+        <div className="md:hidden w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-[13px] font-bold text-white shrink-0 shadow-md shadow-emerald-500/20">
+          G
+        </div>
+        <div className="min-w-0">
+          <h1 className="text-base md:text-lg font-bold text-slate-900 tracking-tight truncate">
+            {pageTitle}
+          </h1>
+          <div className="text-[10px] md:text-[11px] text-slate-400 font-mono hidden sm:block">
+            {currentTime.toLocaleDateString("en-IN", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
+            &middot; {currentTime.toLocaleTimeString()}
+          </div>
         </div>
       </div>
 
@@ -107,9 +113,9 @@ export default function Header({ pageTitle, userName, onLogout }) {
           </span>
         </div>
 
-        {/* Alerts Button - compact on mobile */}
-        <button className="bg-red-50 border border-red-200/60 rounded-lg px-2 sm:px-3 py-1.5 text-red-600 text-[11px] font-semibold cursor-pointer hover:bg-red-100/60 transition-colors">
-          <span className="hidden sm:inline">23 </span>Alerts
+        {/* Alerts Button - hidden on mobile */}
+        <button className="hidden sm:block bg-red-50 border border-red-200/60 rounded-lg px-3 py-1.5 text-red-600 text-[11px] font-semibold cursor-pointer hover:bg-red-100/60 transition-colors">
+          23 Alerts
         </button>
 
         {/* Notification Bell + Dropdown */}

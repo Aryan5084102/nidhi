@@ -24,7 +24,7 @@ function ComplianceStatusBadge({ status }) {
     "Non-Compliant": "bg-red-50 text-red-500 border-red-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -38,7 +38,7 @@ function FilingStatusBadge({ status }) {
     "Not Required": "bg-slate-100 text-slate-500 border-slate-200",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -52,7 +52,7 @@ function SeverityBadge({ severity }) {
     Low: "bg-blue-50 text-blue-600 border-blue-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[severity] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[severity] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {severity}
     </span>
   );
@@ -66,7 +66,7 @@ function RiskBadge({ level }) {
     Critical: "bg-red-50 text-red-600 border-red-200/60",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[level] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[level] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {level}
     </span>
   );
@@ -87,7 +87,7 @@ function StatusBadge({ status }) {
     Closed: "bg-slate-100 text-slate-500 border-slate-200",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[status] || "bg-slate-50 text-slate-500 border-slate-200"}`}>
       {status}
     </span>
   );
@@ -200,34 +200,36 @@ function ChecklistTab() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Compliance Rule</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Category</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Audit</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Category</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Last Audit</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((c) => (
               <tr key={c.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{c.id}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{c.id}</td>
                 <td className="px-5 py-3">
                   <div className="text-[13px] font-medium text-slate-700">{c.rule}</div>
                   <div className="text-[11px] text-slate-400 mt-0.5">{c.details}</div>
                 </td>
                 <td className="px-5 py-3">
-                  <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{c.category}</span>
+                  <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full whitespace-nowrap">{c.category}</span>
                 </td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{c.lastAudit}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{c.lastAudit}</td>
                 <td className="px-5 py-3"><ComplianceStatusBadge status={c.status} /></td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
@@ -281,37 +283,39 @@ function KycMonitoringTab() {
       </div>
 
       {/* Re-verification Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Members Due for KYC Re-verification</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Members requiring annual KYC update as per Nidhi (Amendment) Rules 2022</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member ID</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Member ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Name</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">KYC Status</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Verified</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Due Date</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Risk Level</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">KYC Status</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Last Verified</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Due Date</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Risk Level</th>
             </tr>
           </thead>
           <tbody>
             {kycMembers.map((m) => (
               <tr key={m.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{m.id}</td>
-                <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{m.name}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{m.id}</td>
+                <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{m.name}</td>
                 <td className="px-5 py-3">
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${kycStatusStyle[m.status] || ""}`}>{m.status}</span>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${kycStatusStyle[m.status] || ""}`}>{m.status}</span>
                 </td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{m.lastVerified}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{m.dueDate}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.lastVerified}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.dueDate}</td>
                 <td className="px-5 py-3"><RiskBadge level={m.risk} /></td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Document Verification Queue */}
@@ -420,6 +424,7 @@ function AmlMonitoringTab() {
           <h3 className="text-[15px] font-bold text-slate-900">Cash Transaction Reports (CTR)</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Transactions exceeding ₹10,00,000 reported to FIU-IND as per PMLA 2002</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
@@ -435,58 +440,61 @@ function AmlMonitoringTab() {
           <tbody>
             {ctrReports.map((c) => (
               <tr key={c.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{c.id}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{c.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700">{c.memberName}</div>
+                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{c.memberName}</div>
                   <div className="text-[11px] text-slate-400">{c.memberId}</div>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono">{c.amount}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-500">{c.type}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{c.date}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{c.branch}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{c.amount}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 whitespace-nowrap">{c.type}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{c.date}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{c.branch}</td>
                 <td className="px-5 py-3"><StatusBadge status={c.status} /></td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* STR Table */}
-      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
+      <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Suspicious Transaction Reports (STR)</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Filed with FIU-IND within 7 days of detection as per PMLA guidelines</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">STR ID</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Amount</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Date</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Date</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
             {strReports.map((s) => (
               <tr key={s.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{s.id}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{s.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700">{s.memberName}</div>
+                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{s.memberName}</div>
                   <div className="text-[11px] text-slate-400">{s.memberId}</div>
                 </td>
                 <td className="px-5 py-3">
-                  <div className="text-[12px] font-medium text-slate-600">{s.pattern}</div>
+                  <div className="text-[12px] font-medium text-slate-600 whitespace-nowrap">{s.pattern}</div>
                   <div className="text-[11px] text-slate-400 mt-0.5">{s.description}</div>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono">{s.amount}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{s.date}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.amount}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{s.date}</td>
                 <td className="px-5 py-3"><StatusBadge status={s.status} /></td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
@@ -893,21 +901,21 @@ function SuspiciousTransactionsTab() {
       {/* Pattern Summary */}
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 mb-6">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Transaction Pattern Summary</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {patternSummary.map((p) => (
-            <div key={p.pattern} className="bg-slate-50 rounded-xl p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div className="text-[13px] font-semibold text-slate-700">{p.pattern}</div>
+            <div key={p.pattern} className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <div className="flex items-start justify-between gap-2 mb-3">
+                <div className="text-[13px] font-semibold text-slate-700 leading-snug">{p.pattern}</div>
                 <SeverityBadge severity={p.severity} />
               </div>
-              <div className="flex items-center gap-4">
-                <div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white rounded-lg p-2.5 border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Flagged</div>
-                  <div className="text-[15px] font-bold font-mono text-slate-700">{p.count}</div>
+                  <div className="text-[16px] font-bold font-mono text-slate-700">{p.count}</div>
                 </div>
-                <div>
+                <div className="bg-white rounded-lg p-2.5 border border-slate-100">
                   <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Total Value</div>
-                  <div className="text-[13px] font-semibold font-mono text-slate-600">{p.totalValue}</div>
+                  <div className="text-[12px] font-semibold font-mono text-slate-600">{p.totalValue}</div>
                 </div>
               </div>
             </div>
@@ -921,35 +929,37 @@ function SuspiciousTransactionsTab() {
           <h3 className="text-[15px] font-bold text-slate-900">STR Case Listing</h3>
           <p className="text-[12px] text-slate-400 mt-0.5">Suspicious Transaction Reports filed or pending with FIU-IND</p>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">STR ID</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Amount</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Txns</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">FIU Ref</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">FIU Ref</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
             {strCases.map((s) => (
               <tr key={s.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{s.id}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{s.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700">{s.memberName}</div>
+                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{s.memberName}</div>
                   <div className="text-[11px] text-slate-400">{s.memberId}</div>
                 </td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{s.pattern}</td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono">{s.totalAmount}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.totalAmount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 text-center">{s.transactions}</td>
-                <td className="px-5 py-3 text-[11px] text-slate-400 font-mono">{s.fiuRef}</td>
+                <td className="px-5 py-3 text-[11px] text-slate-400 font-mono whitespace-nowrap">{s.fiuRef}</td>
                 <td className="px-5 py-3"><StatusBadge status={s.status} /></td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Flagged Transactions Table */}

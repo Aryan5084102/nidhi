@@ -201,23 +201,19 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
     mode: "onTouched",
   });
 
+  const VALID_EMAIL = "test5084@gmail.com";
+  const VALID_PASSWORD = "Test@5084";
+
   const onSubmit = (data) => {
     setServerError("");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      // Check if user exists in localStorage
-      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
-      const existingUser = users.find((u) => u.email === data.email);
-      if (existingUser) {
-        if (existingUser.password !== data.password) {
-          setServerError("Invalid email or password");
-          return;
-        }
+      if (data.email === VALID_EMAIL && data.password === VALID_PASSWORD) {
         toast.success("Sign in successful! Welcome back.");
-        onLogin({ email: existingUser.email, name: existingUser.name });
+        onLogin({ email: VALID_EMAIL, name: "Admin" });
       } else {
-        setServerError("No account found with this email. Please sign up first.");
+        setServerError("Invalid email or password.");
       }
     }, 1200);
   };

@@ -199,12 +199,12 @@ function ConfigSection({ title, description, configs }) {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="flex flex-col divide-y divide-slate-100">
           {configs.map((config) => (
-            <div key={config.key} className="flex items-center justify-between px-5 py-4 hover:bg-slate-50/50 transition-colors">
-              <div className="flex-1">
-                <div className="text-[13px] font-semibold text-slate-700">{config.label}</div>
+            <div key={config.key} className="flex items-center justify-between gap-5  px-5 py-4 hover:bg-slate-50/50 transition-colors">
+              <div className="flex-1 ">
+                <div className="text-[13px] font-semibold whitespace-nowrap text-slate-700">{config.label}</div>
                 <div className="text-[11px] text-slate-400 mt-0.5">{config.key}</div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center  gap-5">
                 {config.type === "toggle" ? (
                   <div className={`w-10 h-5 rounded-full flex items-center px-0.5 transition-colors cursor-pointer ${config.value === "Enabled" ? "bg-emerald-400" : "bg-slate-300"}`}>
                     <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${config.value === "Enabled" ? "translate-x-5" : "translate-x-0"}`} />
@@ -237,7 +237,7 @@ function AuditLogTab() {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Action</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">User</th>
@@ -247,7 +247,7 @@ function AuditLogTab() {
           </thead>
           <tbody>
             {auditLog.map((log) => (
-              <tr key={log.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={log.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{log.id}</td>
                 <td className="px-5 py-3">
                   <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
@@ -302,7 +302,7 @@ function UserManagementTab() {
         <p className="text-[13px] text-slate-400">Manage system users, assign roles, and control access across the Glimmora Nidhi platform.</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-5">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
         {[
           { label: "Total Users", value: totalUsers, color: "text-slate-700" },
           { label: "Active", value: activeUsers, color: "text-emerald-600" },
@@ -316,8 +316,8 @@ function UserManagementTab() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl p-4 mb-5 card-shadow border border-slate-100 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 flex-1">
+      <div className="bg-white rounded-2xl p-4 mb-5 card-shadow border border-slate-100 flex items-center flex-wrap justify-between gap-4">
+        <div className="flex items-center gap-3 flex-wrap">
           <input
             type="text"
             placeholder="Search by name or email..."
@@ -325,10 +325,10 @@ function UserManagementTab() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-[13px] text-slate-700 w-72 outline-none focus:border-indigo-300 transition-colors"
           />
-          <div className="flex gap-1.5">
+          <div className="flex gap-1.5 flex-wrap">
             {roles.map((r) => (
               <button key={r} onClick={() => setRoleFilter(r)}
-                className={`rounded-xl px-3 py-1.5 text-[11px] cursor-pointer transition-all border ${roleFilter === r ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+                className={`rounded-xl px-3 py-1.5 text-[11px] whitespace-nowrap cursor-pointer transition-all border ${roleFilter === r ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
                 {r}
               </button>
             ))}
@@ -342,19 +342,19 @@ function UserManagementTab() {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b whitespace-nowrap border-slate-100">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Name</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Email</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Role</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Department</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Login</th>
+              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 ">Last Login</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((u) => (
-              <tr key={u.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={u.id} className="border-b whitespace-nowrap border-slate-50 hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{u.id}</td>
                 <td className="px-5 py-3 text-[13px] font-semibold text-slate-700">{u.name}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{u.email}</td>
@@ -406,7 +406,7 @@ function RolesPermissionsTab() {
         <p className="text-[13px] text-slate-400">Define access levels and permission sets for each role in the organization.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
         {roleDefinitions.map((role) => (
           <div key={role.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="flex items-start justify-between mb-3">
@@ -414,7 +414,7 @@ function RolesPermissionsTab() {
                 <h4 className="text-[14px] font-bold text-slate-900">{role.name}</h4>
                 <p className="text-[11px] text-slate-400 mt-0.5 max-w-xs">{role.description}</p>
               </div>
-              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border bg-indigo-50 text-indigo-600 border-indigo-200/60">
+              <span className="text-[11px] whitespace-nowrap font-semibold px-2.5 py-0.5 rounded-full border bg-indigo-50 text-indigo-600 border-indigo-200/60">
                 {role.userCount} {role.userCount === 1 ? "user" : "users"}
               </span>
             </div>
@@ -423,7 +423,7 @@ function RolesPermissionsTab() {
                 const perms = role.permissions[mod] || [];
                 if (perms.length === 0) return null;
                 return (
-                  <div key={mod} className="flex items-center gap-1">
+                  <div key={mod} className="flex items-center gap-2">
                     <span className="text-[10px] text-slate-400 mr-0.5">{mod}:</span>
                     {perms.map((p) => (
                       <span key={`${mod}-${p}`} className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${permBadge(p)}`}>
@@ -449,7 +449,7 @@ function RolesPermissionsTab() {
             <tr className="border-b border-slate-100">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Module</th>
               {roleDefinitions.map((r) => (
-                <th key={r.name} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-3 py-3">{r.name}</th>
+                <th key={r.name} className="text-left whitespace-nowrap text-[11px] text-slate-400 uppercase tracking-wider font-medium px-3 py-3">{r.name}</th>
               ))}
             </tr>
           </thead>
@@ -461,7 +461,7 @@ function RolesPermissionsTab() {
                   const perms = role.permissions[mod] || [];
                   return (
                     <td key={`${role.name}-${mod}`} className="px-3 py-3">
-                      <div className="flex gap-1 flex-wrap">
+                      <div className="flex gap-1 ">
                         {perms.length === 0 ? (
                           <span className="text-[10px] text-slate-300">--</span>
                         ) : (
@@ -525,7 +525,7 @@ function AIAgentConfigTab() {
         <p className="text-[11px] text-slate-400">Individual AI agent status, model versions, and behaviour toggles.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
         {aiAgents.map((ag) => (
           <div key={ag.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="flex items-start justify-between mb-3">
@@ -580,7 +580,7 @@ function AIAgentConfigTab() {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Agent</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Metric</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Current Value</th>
@@ -590,7 +590,7 @@ function AIAgentConfigTab() {
           </thead>
           <tbody>
             {agentThresholds.map((t, i) => (
-              <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={i} className="border-b border-slate-50 whitespace-nowrap hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] font-semibold text-slate-700">{t.agent}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{t.metric}</td>
                 <td className="px-5 py-3 text-[12px] font-mono text-slate-700">{t.value}</td>
@@ -684,7 +684,7 @@ function SystemConfigTab() {
       </div>
 
       {/* System Health Metrics */}
-      <div className="grid grid-cols-4 gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
         {systemHealth.map((h) => (
           <div key={h.label} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="text-[20px] font-bold text-slate-700">{h.value}</div>
@@ -700,7 +700,7 @@ function SystemConfigTab() {
         <p className="text-[11px] text-slate-400">Third-party service connections and sync status.</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
         {integrations.map((int) => (
           <div key={int.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="flex items-start justify-between mb-2">
@@ -728,7 +728,7 @@ function SystemConfigTab() {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-5">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Data Type</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Retention Period</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Purge</th>
@@ -738,7 +738,7 @@ function SystemConfigTab() {
           </thead>
           <tbody>
             {retentionPolicies.map((p, i) => (
-              <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={i} className="border-b border-slate-50 whitespace-nowrap hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] font-semibold text-slate-700">{p.dataType}</td>
                 <td className="px-5 py-3 text-[12px] font-mono text-slate-600">{p.retention}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{p.lastPurge}</td>
@@ -763,7 +763,7 @@ function SystemConfigTab() {
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Backup Type</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Frequency</th>
               <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Run</th>
@@ -774,7 +774,7 @@ function SystemConfigTab() {
           </thead>
           <tbody>
             {backupSchedule.map((b, i) => (
-              <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
                 <td className="px-5 py-3 text-[12px] font-semibold text-slate-700">{b.type}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{b.frequency}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{b.lastRun}</td>
@@ -847,10 +847,10 @@ export default function ConfigView() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
+      <div className="flex gap-1.5 mb-4 md:mb-5 overflow-x-auto pb-1 tab-scroll whitespace-nowrap">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
-            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+            className={`rounded-xl px-3 py-1.5 text-xs md:px-4 md:py-2 cursor-pointer transition-all duration-150 border ${activeTab === t.id ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
             {t.label}
           </button>
         ))}

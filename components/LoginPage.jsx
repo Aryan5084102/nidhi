@@ -78,7 +78,7 @@ const resetPasswordSchema = yup.object().shape({
 function FormInput({ label, type = "text", placeholder, register, error, showToggle, showPassword, onToggle }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+      <label className="block text-xs font-semibold text-slate-300 lg:text-slate-600 mb-1.5">
         {label}
       </label>
       <div className="relative">
@@ -86,24 +86,24 @@ function FormInput({ label, type = "text", placeholder, register, error, showTog
           type={showToggle ? (showPassword ? "text" : "password") : type}
           placeholder={placeholder}
           {...register}
-          className={`w-full px-4 py-3 bg-white border rounded-xl text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 transition-all ${
+          className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all lg:bg-white lg:text-slate-900 lg:placeholder:text-slate-300 ${
             error
               ? "border-red-300 focus:border-red-400 focus:ring-red-500/10"
-              : "border-slate-200 focus:border-indigo-400 focus:ring-indigo-500/10"
+              : "border-white/20 focus:border-indigo-400 focus:ring-indigo-500/10 lg:border-slate-200"
           } ${showToggle ? "pr-11" : ""}`}
         />
         {showToggle && (
           <button
             type="button"
             onClick={onToggle}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm transition-colors cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 text-sm transition-colors cursor-pointer"
           >
             {showPassword ? "🙈" : "👁️"}
           </button>
         )}
       </div>
       {error && (
-        <p className="mt-1 text-xs text-red-500 animate-fade-in">{error.message}</p>
+        <p className="mt-1 text-xs text-red-400 lg:text-red-500 animate-fade-in">{error.message}</p>
       )}
     </div>
   );
@@ -219,15 +219,13 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
   };
 
   return (
-    <div className="w-full max-w-[400px]">
-      <MobileLogo />
-
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900 mb-1.5">Welcome back</h2>
+    <div className="w-full">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Welcome back</h2>
         <p className="text-slate-400 text-sm">Sign in to access your dashboard</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <FormInput
           label="Email Address"
           type="email"
@@ -251,21 +249,21 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-slate-300 accent-indigo-500 cursor-pointer"
+              className="w-4 h-4 rounded border-white/30 lg:border-slate-300 accent-emerald-500 cursor-pointer"
             />
-            <span className="text-xs text-slate-500">Remember me</span>
+            <span className="text-xs text-slate-300 lg:text-slate-500">Remember me</span>
           </label>
           <button
             type="button"
             onClick={onForgotPassword}
-            className="text-xs text-indigo-500 hover:text-indigo-700 font-medium cursor-pointer transition-colors"
+            className="text-xs text-emerald-400 hover:text-emerald-300 lg:text-indigo-500 lg:hover:text-indigo-700 font-medium cursor-pointer transition-colors"
           >
             Forgot password?
           </button>
         </div>
 
         {serverError && (
-          <div className="bg-red-50 border border-red-200/60 rounded-xl px-4 py-2.5 text-red-600 text-xs font-medium animate-fade-in">
+          <div className="bg-red-500/10 border border-red-400/30 lg:bg-red-50 lg:border-red-200/60 rounded-xl px-4 py-2.5 text-red-400 lg:text-red-600 text-xs font-medium animate-fade-in">
             {serverError}
           </div>
         )}
@@ -287,15 +285,15 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
       </form>
 
       <div className="flex items-center gap-3 my-6">
-        <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-[11px] text-slate-300">or continue with</span>
-        <div className="flex-1 h-px bg-slate-200" />
+        <div className="flex-1 h-px bg-white/20 lg:bg-slate-200" />
+        <span className="text-[11px] text-slate-400 lg:text-slate-300">or continue with</span>
+        <div className="flex-1 h-px bg-white/20 lg:bg-slate-200" />
       </div>
 
       <button
         type="button"
         onClick={onGoogleLogin}
-        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm transition-all cursor-pointer"
+        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white/10 border border-white/20 rounded-xl text-sm font-medium text-white hover:bg-white/15 transition-all cursor-pointer lg:bg-white lg:border-slate-200 lg:text-slate-700 lg:hover:bg-slate-50 lg:hover:border-slate-300 lg:hover:shadow-sm"
       >
         <GoogleIcon />
         Sign in with Google
@@ -306,13 +304,13 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
         <button
           type="button"
           onClick={() => onSwitch("signup")}
-          className="text-indigo-500 hover:text-indigo-700 font-semibold cursor-pointer transition-colors"
+          className="text-emerald-400 hover:text-emerald-300 lg:text-indigo-500 lg:hover:text-indigo-700 font-semibold cursor-pointer transition-colors"
         >
           Create Account
         </button>
       </p>
 
-      <p className="text-center text-[11px] text-slate-300 mt-4">
+      <p className="text-center text-[11px] text-slate-500 lg:text-slate-300 mt-4">
         Protected by enterprise-grade encryption
       </p>
     </div>
@@ -363,15 +361,13 @@ function SignupForm({ onSwitch, onGoogleLogin }) {
   };
 
   return (
-    <div className="w-full max-w-[420px]">
-      <MobileLogo />
-
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-slate-900 mb-1.5">Create your account</h2>
+    <div className="w-full">
+      <div className="mb-4">
+        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1">Create your account</h2>
         <p className="text-slate-400 text-sm">Get started with Glimmora Nidhi platform</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3" noValidate>
         <FormInput
           label="Full Name"
           placeholder="John Doe"
@@ -418,7 +414,7 @@ function SignupForm({ onSwitch, onGoogleLogin }) {
         />
 
         {serverError && (
-          <div className="bg-red-50 border border-red-200/60 rounded-xl px-4 py-2.5 text-red-600 text-xs font-medium animate-fade-in">
+          <div className="bg-red-500/10 border border-red-400/30 lg:bg-red-50 lg:border-red-200/60 rounded-xl px-4 py-2.5 text-red-400 lg:text-red-600 text-xs font-medium animate-fade-in">
             {serverError}
           </div>
         )}
@@ -439,27 +435,27 @@ function SignupForm({ onSwitch, onGoogleLogin }) {
         </button>
       </form>
 
-      <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-[11px] text-slate-300">or</span>
-        <div className="flex-1 h-px bg-slate-200" />
+      <div className="flex items-center gap-3 my-4">
+        <div className="flex-1 h-px bg-white/20 lg:bg-slate-200" />
+        <span className="text-[11px] text-slate-400 lg:text-slate-300">or</span>
+        <div className="flex-1 h-px bg-white/20 lg:bg-slate-200" />
       </div>
 
       <button
         type="button"
         onClick={onGoogleLogin}
-        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm transition-all cursor-pointer"
+        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white/10 border border-white/20 rounded-xl text-sm font-medium text-white hover:bg-white/15 transition-all cursor-pointer lg:bg-white lg:border-slate-200 lg:text-slate-700 lg:hover:bg-slate-50 lg:hover:border-slate-300 lg:hover:shadow-sm"
       >
         <GoogleIcon />
         Sign up with Google
       </button>
 
-      <p className="text-center text-sm text-slate-400 mt-6">
+      <p className="text-center text-sm text-slate-400 mt-4">
         Already have an account?{" "}
         <button
           type="button"
           onClick={() => onSwitch("login")}
-          className="text-indigo-500 hover:text-indigo-700 font-semibold cursor-pointer transition-colors"
+          className="text-emerald-400 hover:text-emerald-300 lg:text-indigo-500 lg:hover:text-indigo-700 font-semibold cursor-pointer transition-colors"
         >
           Sign In
         </button>
@@ -494,17 +490,16 @@ function ForgotPasswordForm({ onSwitch }) {
 
   if (sent) {
     return (
-      <div className="w-full max-w-[400px]">
-        <MobileLogo />
+      <div className="w-full">
         <div className="text-center animate-fade-in">
-          <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
+          <div className="w-16 h-16 bg-emerald-500/20 lg:bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
             ✉️
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Check your email</h2>
+          <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-2">Check your email</h2>
           <p className="text-slate-400 text-sm mb-2">
             We sent a 6-digit OTP to
           </p>
-          <p className="text-slate-700 text-sm font-semibold mb-6">
+          <p className="text-white lg:text-slate-700 text-sm font-semibold mb-6">
             {getValues("email")}
           </p>
           <button
@@ -517,7 +512,7 @@ function ForgotPasswordForm({ onSwitch }) {
           <button
             type="button"
             onClick={() => onSwitch("login")}
-            className="text-sm text-slate-400 hover:text-slate-600 cursor-pointer transition-colors"
+            className="text-sm text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors"
           >
             Back to Sign In
           </button>
@@ -527,18 +522,16 @@ function ForgotPasswordForm({ onSwitch }) {
   }
 
   return (
-    <div className="w-full max-w-[400px]">
-      <MobileLogo />
-
-      <div className="mb-8">
+    <div className="w-full">
+      <div className="mb-6">
         <button
           type="button"
           onClick={() => onSwitch("login")}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 cursor-pointer transition-colors mb-6"
+          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors mb-4"
         >
           <span>←</span> Back to Sign In
         </button>
-        <h2 className="text-2xl font-bold text-slate-900 mb-1.5">Forgot password?</h2>
+        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Forgot password?</h2>
         <p className="text-slate-400 text-sm">
           Enter your email and we&apos;ll send you a reset OTP
         </p>
@@ -556,7 +549,7 @@ function ForgotPasswordForm({ onSwitch }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 active:scale-[0.99]"
+          className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-600 hover:to-emerald-500 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/35 active:scale-[0.99]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -599,13 +592,12 @@ function ResetPasswordForm({ onSwitch }) {
 
   if (success) {
     return (
-      <div className="w-full max-w-[400px]">
-        <MobileLogo />
+      <div className="w-full">
         <div className="text-center animate-fade-in">
-          <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
+          <div className="w-16 h-16 bg-emerald-500/20 lg:bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
             ✅
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Password reset successful</h2>
+          <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-2">Password reset successful</h2>
           <p className="text-slate-400 text-sm mb-6">
             Your password has been updated. You can now sign in with your new password.
           </p>
@@ -622,24 +614,22 @@ function ResetPasswordForm({ onSwitch }) {
   }
 
   return (
-    <div className="w-full max-w-[400px]">
-      <MobileLogo />
-
-      <div className="mb-8">
+    <div className="w-full">
+      <div className="mb-6">
         <button
           type="button"
           onClick={() => onSwitch("forgot-password")}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 cursor-pointer transition-colors mb-6"
+          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors mb-4"
         >
           <span>←</span> Back
         </button>
-        <h2 className="text-2xl font-bold text-slate-900 mb-1.5">Reset your password</h2>
+        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Reset your password</h2>
         <p className="text-slate-400 text-sm">Enter the OTP sent to your email and set a new password</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 lg:text-slate-600 mb-1.5">
             OTP Code
           </label>
           <input
@@ -647,14 +637,14 @@ function ResetPasswordForm({ onSwitch }) {
             maxLength={6}
             placeholder="Enter 6-digit OTP"
             {...register("otp")}
-            className={`w-full px-4 py-3 bg-white border rounded-xl text-lg text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-2 transition-all tracking-[0.3em] text-center font-mono ${
+            className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all tracking-[0.3em] text-center font-mono lg:bg-white lg:text-slate-900 lg:placeholder:text-slate-300 ${
               errors.otp
                 ? "border-red-300 focus:border-red-400 focus:ring-red-500/10"
-                : "border-slate-200 focus:border-indigo-400 focus:ring-indigo-500/10"
+                : "border-white/20 focus:border-indigo-400 focus:ring-indigo-500/10 lg:border-slate-200"
             }`}
           />
           {errors.otp && (
-            <p className="mt-1 text-xs text-red-500 animate-fade-in">{errors.otp.message}</p>
+            <p className="mt-1 text-xs text-red-400 lg:text-red-500 animate-fade-in">{errors.otp.message}</p>
           )}
         </div>
 
@@ -695,22 +685,6 @@ function ResetPasswordForm({ onSwitch }) {
           )}
         </button>
       </form>
-    </div>
-  );
-}
-
-// ─── Mobile Logo ────────────────────────────────────────────────────────────────
-
-function MobileLogo() {
-  return (
-    <div className="lg:hidden flex items-center gap-3 mb-10">
-      <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-base font-bold text-white">
-        G
-      </div>
-      <div>
-        <div className="text-slate-900 text-base font-bold">Glimmora Nidhi</div>
-        <div className="text-slate-400 text-[11px]">Agentic AI Platform</div>
-      </div>
     </div>
   );
 }
@@ -819,10 +793,30 @@ export default function LoginPage({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="h-screen flex overflow-hidden">
       <LeftPanel />
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-[#F8FAFC] overflow-y-auto">
-        {renderForm()}
+      <div className="flex-1 flex flex-col overflow-hidden relative bg-gradient-to-br from-[#0F172A] via-[#1a2744] to-[#0F172A] lg:from-[#F8FAFC] lg:via-[#F8FAFC] lg:to-[#F8FAFC]">
+        {/* Mobile gradient decorative elements */}
+        <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[300px] h-[300px] rounded-full bg-emerald-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
+
+        {/* Persistent mobile header */}
+        <div className="lg:hidden relative z-10 shrink-0 flex items-center gap-3 px-6 pt-6 pb-2">
+          <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-base font-bold text-white shadow-lg shadow-emerald-500/25">
+            G
+          </div>
+          <div>
+            <div className="text-white text-base font-bold">Glimmora Nidhi</div>
+            <div className="text-slate-400 text-[11px]">Agentic AI Platform</div>
+          </div>
+        </div>
+
+        {/* Form content — top-aligned with scroll on mobile, centered on desktop */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 px-6 pt-6 pb-6 lg:flex lg:items-center lg:justify-center lg:p-8">
+          <div className="w-full max-w-[400px] lg:mx-auto">
+            {renderForm()}
+          </div>
+        </div>
       </div>
     </div>
   );

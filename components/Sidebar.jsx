@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { navItems } from "@/data/mockData";
 import Image from "next/image";
+import Tooltip from "./Tooltip";
 import logo from '../public/icon/logo.png'
 
 export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded, userName, onLogout }) {
@@ -77,12 +78,14 @@ export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-emerald-400 rounded-r-full"/>
               )}
-              <Image
-                src={item.icon}
-                alt="Error"
-                width={20}
-                height={20}
-              />
+              <Tooltip label={item.label} expanded={expanded}>
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={20}
+                  height={20}
+                />
+              </Tooltip>
               {expanded && (
                 <span className="text-[13px] font-medium whitespace-nowrap">
                   {item.label}

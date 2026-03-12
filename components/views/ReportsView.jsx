@@ -159,10 +159,10 @@ function LoanPerformanceTab() {
             <tbody>
               {loanCategories.map((l) => (
                 <tr key={l.category} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="px-5 py-3">
+                  <td className="px-5 py-3 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: l.color }} />
-                      <span className="text-[13px] font-semibold text-slate-700">{l.category}</span>
+                      <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: l.color }} />
+                      <span className="text-[13px] font-semibold text-slate-700 whitespace-nowrap">{l.category}</span>
                     </div>
                   </td>
                   <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{l.disbursed}</td>
@@ -954,11 +954,11 @@ function PDFReportsTab() {
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 mt-4">
         <h3 className="text-[15px] font-bold text-slate-900 mb-2">Batch Report Generation</h3>
         <p className="text-[12px] text-slate-400 mb-4">Generate all monthly reports in one batch. Includes Financial Summary, Member Growth, Loan Portfolio, Deposit Maturity, and Compliance reports.</p>
-        <div className="flex items-center gap-3">
-          <button className="py-2.5 px-6 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-indigo-100 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <button className="py-2.5 px-6 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-indigo-100 transition-colors shrink-0">
             Generate All Monthly Reports
           </button>
-          <span className="text-[11px] text-slate-400">Last batch: 01 Mar 2026 | 8 reports | 14.2 MB total</span>
+          <span className="text-[11px] text-slate-400">Last batch: 01 Mar 2026 &nbsp;|&nbsp; 8 reports &nbsp;|&nbsp; 14.2 MB total</span>
         </div>
       </div>
     </div>
@@ -1034,28 +1034,28 @@ function CSVExportsTab() {
       <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
         <h3 className="text-[15px] font-bold text-slate-900 mb-4">Export History</h3>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[560px]">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">File Name</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Category</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Rows</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Size</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Exported By</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Date</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">File Name</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Rows</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Size</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Exported By</th>
+                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Date</th>
               </tr>
             </thead>
             <tbody>
               {exportHistory.map((eh) => (
                 <tr key={eh.file} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="text-[12px] font-mono text-indigo-600 px-5 py-3">{eh.file}</td>
-                  <td className="px-5 py-3">
+                  <td className="text-[12px] font-mono text-indigo-600 px-5 py-3 whitespace-nowrap">{eh.file}</td>
+                  <td className="px-5 py-3 whitespace-nowrap">
                     <span className="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full border border-slate-200">{eh.category}</span>
                   </td>
-                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right">{eh.rows}</td>
-                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right">{eh.size}</td>
-                  <td className="text-[12px] text-slate-500 px-5 py-3">{eh.exportedBy}</td>
-                  <td className="text-[12px] text-slate-500 px-5 py-3">{eh.date}</td>
+                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right whitespace-nowrap">{eh.rows}</td>
+                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right whitespace-nowrap">{eh.size}</td>
+                  <td className="text-[12px] text-slate-500 px-5 py-3 whitespace-nowrap">{eh.exportedBy}</td>
+                  <td className="text-[12px] text-slate-500 px-5 py-3 whitespace-nowrap">{eh.date}</td>
                 </tr>
               ))}
             </tbody>

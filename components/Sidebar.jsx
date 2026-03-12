@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { navItems } from "@/data/mockData";
 import Image from "next/image";
+import logo from '../public/icon/logo.png'
 
 export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded, userName, onLogout }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -20,9 +21,15 @@ export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded
 
       {/* Logo + Collapse Toggle */}
       <div className="p-4 pb-3 border-b border-white/[0.08] flex items-center gap-3 overflow-hidden">
-        <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-[15px] font-bold text-white shrink-0 shadow-lg shadow-emerald-500/20">
+        {/* <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-[15px] font-bold text-white shrink-0 shadow-lg shadow-emerald-500/20">
           G
-        </div>
+        </div> */}
+          <Image 
+            src={logo}
+            alt="Error"
+            width={50}
+            height={50}
+          />
         {expanded && (
           <div className="overflow-hidden animate-fade-in flex-1 min-w-0">
             <div className="text-[14px] font-bold text-white whitespace-nowrap tracking-tight">

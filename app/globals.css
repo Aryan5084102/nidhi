@@ -165,3 +165,237 @@
 .tab-scroll::-webkit-scrollbar {
   display: none;
 }
+
+/* ===== Dark Mode ===== */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background: #0B1120;
+  color: #e2e8f0;
+}
+
+/* Cards & containers */
+html.dark .bg-white {
+  background-color: #1E293B !important;
+}
+
+html.dark .bg-slate-50 {
+  background-color: #0F172A !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: #1E293B !important;
+}
+
+/* Card shadows */
+html.dark .card-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .card-shadow-hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Text overrides */
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-400 {
+  color: #64748b !important;
+}
+
+html.dark .text-slate-300 {
+  color: #94a3b8 !important;
+}
+
+/* Borders */
+html.dark [class*="border-slate-100"] {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark [class*="border-slate-200"] {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark [class*="border-slate-50"] {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Inputs */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0F172A !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #475569 !important;
+}
+
+/* Hover states */
+html.dark .hover\:bg-slate-50\/50:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.dark .hover\:bg-slate-50:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .hover\:shadow-md:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Header */
+html.dark .bg-white.border-b {
+  background-color: #1E293B !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Status badges - keep colored backgrounds but adjust opacity */
+html.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+html.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-yellow-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+html.dark .bg-indigo-50 {
+  background-color: rgba(99, 102, 241, 0.1) !important;
+}
+
+html.dark .bg-purple-50 {
+  background-color: rgba(168, 85, 247, 0.1) !important;
+}
+
+html.dark .bg-teal-50 {
+  background-color: rgba(20, 184, 166, 0.1) !important;
+}
+
+html.dark .bg-blue-50 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Scrollbar */
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Dropdown/modal backgrounds */
+html.dark .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Chart.js canvas - invert for dark mode */
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-50\/80 {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+/* Table row hover accent border */
+.table-row-hover {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.table-row-hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.table-row-hover:hover::before {
+  opacity: 1;
+}
+
+/* Auto-apply table-row-hover to DataTable rows */
+.table-hover-rows tr {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.table-hover-rows tr::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #6366f1, #8b5cf6);
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.table-hover-rows tr:hover::before {
+  opacity: 1;
+}
+
+/* Scroll reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.1s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.2s; }
+.stagger-5 { transition-delay: 0.25s; }
+.stagger-6 { transition-delay: 0.3s; }
+
+/* Page transition */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-enter {
+  animation: page-enter 0.4s ease-out forwards;
+}

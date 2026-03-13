@@ -77,14 +77,16 @@ export default function HighRiskMembersTab() {
                     <span className={`text-[15px] font-bold font-mono ${m.riskScore >= 80 ? "text-red-500" : m.riskScore >= 60 ? "text-amber-600" : "text-emerald-600"}`}>{m.riskScore}</span>
                   </td>
                   <td className="px-5 py-3">
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1 line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.riskFactors.join(", ")}>
                       {m.riskFactors.map((f, i) => (
                         <span key={i} className="text-[10px] bg-red-50 text-red-500 px-2 py-0.5 rounded-full border border-red-200/60">{f}</span>
                       ))}
                     </div>
                   </td>
                   <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.lastReview}</td>
-                  <td className="px-5 py-3 text-[12px] text-slate-500">{m.actions}</td>
+                  <td className="px-5 py-3 text-[12px] text-slate-500">
+                    <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.actions}>{m.actions}</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -101,7 +103,7 @@ export default function HighRiskMembersTab() {
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{w.id}</td>
             <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{w.name}</td>
             <td className="px-5 py-3 text-[12px] text-slate-400">
-              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{w.reason}</span>
+              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={w.reason}>{w.reason}</span>
             </td>
             <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{w.addedOn}</td>
             <td className="px-5 py-3 text-[12px] text-slate-400">{w.reviewDate}</td>

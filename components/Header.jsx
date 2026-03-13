@@ -57,8 +57,25 @@ export default function Header({ pageTitle, userName, onLogout }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const profileRef = useRef(null);
   const notifRef = useRef(null);
+
+  // Initialize dark mode from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("glimmora_dark_mode");
+    if (saved === "true") {
+      setDarkMode(true);
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("glimmora_dark_mode", String(next));
+  };
 
   useEffect(() => {
     const t = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -89,6 +106,11 @@ export default function Header({ pageTitle, userName, onLogout }) {
           G
         </div>
         <div className="min-w-0">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[10px] text-slate-400 hidden sm:inline">Home</span>
+            <svg className="w-3 h-3 text-slate-300 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+            <span className="text-[10px] text-indigo-500 font-medium hidden sm:inline">{pageTitle}</span>
+          </div>
           <h1 className="text-base md:text-lg font-bold text-slate-900 tracking-tight truncate">
             {pageTitle}
           </h1>
@@ -105,6 +127,23 @@ export default function Header({ pageTitle, userName, onLogout }) {
       </div>
 
       <div className="flex gap-1.5 sm:gap-2.5 items-center shrink-0">
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleDarkMode}
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100 transition-colors cursor-pointer"
+          title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {darkMode ? (
+            <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+            </svg>
+          )}
+        </button>
+
         {/* System Status - hidden on mobile */}
         <div className="hidden lg:flex bg-emerald-50 border border-emerald-200/60 rounded-full px-3 py-1.5 items-center gap-1.5">
           <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block animate-pulse-dot" />

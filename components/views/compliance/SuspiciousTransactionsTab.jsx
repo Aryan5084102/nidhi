@@ -85,7 +85,7 @@ export default function SuspiciousTransactionsTab() {
                   <div className="text-[11px] text-slate-400">{s.memberId}</div>
                 </td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">
-                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{s.pattern}</span>
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={s.pattern}>{s.pattern}</span>
                 </td>
                 <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.totalAmount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 text-center">{s.transactions}</td>

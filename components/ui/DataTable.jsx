@@ -14,7 +14,7 @@ export default function DataTable({ columns, data, renderRow }) {
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="table-hover-rows">
           {data.map((item, i) => renderRow(item, i))}
         </tbody>
       </table>

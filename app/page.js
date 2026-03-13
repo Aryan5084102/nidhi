@@ -125,7 +125,9 @@ export default function Home() {
         <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
 
         <SmoothScroll ref={smoothRef} className="flex-1" contentClassName="p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
-          {viewMap[activeNav]}
+          <div key={activeNav} className="animate-page-enter">
+            {viewMap[activeNav]}
+          </div>
         </SmoothScroll>
       </div>
 

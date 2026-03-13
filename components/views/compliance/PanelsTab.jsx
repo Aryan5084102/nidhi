@@ -138,7 +138,7 @@ export default function PanelsTab() {
                 <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.date}</td>
                 <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{m.committee}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-400">
-                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{m.agenda}</span>
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.agenda}>{m.agenda}</span>
                 </td>
 
                 <td className="px-5 py-3"><StatusBadge status="Filed" /></td>

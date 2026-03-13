@@ -102,7 +102,7 @@ export default function FraudDetectionTab() {
                 <td className="px-5 py-3 font-mono text-xs text-slate-700 whitespace-nowrap">{txn.amount}</td>
                 <td className="px-5 py-3"><span className={`font-mono text-xs font-bold ${txn.risk >= 85 ? "text-red-500" : txn.risk >= 70 ? "text-amber-600" : "text-slate-500"}`}>{txn.risk}</span></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
-                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{txn.reason}</span>
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={txn.reason}>{txn.reason}</span>
                 </td>
                 <td className="px-5 py-3"><StatusBadge status={txn.status} /></td>
               </tr>

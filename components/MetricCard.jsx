@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AnimatedCounter from "./ui/AnimatedCounter";
 
 export default function MetricCard({ metric }) {
   const isPositive = metric.change.startsWith("+");
@@ -12,7 +13,7 @@ export default function MetricCard({ metric }) {
             {metric.label}
           </div>
           <div className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight">
-            {metric.value}
+            <AnimatedCounter value={metric.value} />
           </div>
         </div>
         <div

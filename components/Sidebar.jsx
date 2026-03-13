@@ -74,10 +74,8 @@ export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded
                     : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-200"
                 }`}
             >
-              {/* Active indicator bar */}
-              {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-emerald-400 rounded-r-full"/>
-              )}
+              {/* Active indicator bar - animated */}
+              <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-emerald-400 rounded-r-full transition-all duration-300 ${isActive ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}/>
               <Tooltip label={item.label} expanded={expanded}>
                 <Image
                   src={item.icon}

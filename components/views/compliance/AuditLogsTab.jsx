@@ -78,7 +78,7 @@ export default function AuditLogsTab() {
             <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{l.action}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{l.user}</td>
             <td className="px-5 py-3 text-[12px] text-slate-400">
-              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{l.detail}</span>
+              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={l.detail}>{l.detail}</span>
             </td>
             <td className="px-5 py-3">
               <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{l.category}</span>

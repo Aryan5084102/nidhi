@@ -113,7 +113,7 @@ export default function ComplianceRiskTab() {
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{rc.effective}</td>
                 <td className="px-5 py-3"><StatusBadge status={rc.impact} /></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
-                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{rc.areas}</span>
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={rc.areas}>{rc.areas}</span>
                 </td>
                 <td className="px-5 py-3 text-[12px] text-indigo-600 font-medium">{rc.status}</td>
               </tr>
@@ -142,7 +142,7 @@ export default function ComplianceRiskTab() {
                 <td className="px-5 py-3 font-mono text-xs text-slate-600 whitespace-nowrap">{fd.deadline}</td>
                 <td className="px-5 py-3"><StatusBadge status={fd.status === "In Progress" ? "Warning" : fd.status === "Not Required" ? "Resolved" : "Pending"} /></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[280px]">
-                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{fd.aiReminder}</span>
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={fd.aiReminder}>{fd.aiReminder}</span>
                 </td>
               </tr>
             ))}

@@ -22,7 +22,7 @@ export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, u
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Drawer */}
-      <div className="absolute left-0 top-0 bottom-0 w-[280px] bg-gradient-to-b from-[#0F172A] to-[#1a2744] animate-slide-in flex flex-col">
+      <div className="absolute left-0 top-0 bottom-0 w-[280px] bg-[#0F172A]/80 backdrop-blur-xl border-r border-white/[0.08] animate-slide-in flex flex-col">
         {/* Header */}
         <div className="p-4 pb-3 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center gap-3">

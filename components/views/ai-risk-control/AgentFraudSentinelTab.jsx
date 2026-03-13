@@ -87,7 +87,7 @@ export default function AgentFraudSentinelTab() {
         <div className="px-5 py-4 border-b border-slate-100">
           <h3 className="text-[15px] font-bold text-slate-900">Detection Log (Recent 10)</h3>
         </div>
-        <table className="w-full">
+        <table className="w-full whitespace-nowrap">
           <thead>
             <tr className="border-b border-slate-100">
               {["Time", "Event", "Member", "Action", "Confidence"].map((h) => (

@@ -3,7 +3,7 @@ export default function DataTable({ columns, data, renderRow }) {
     <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-100">
+          <tr className="border-b border-slate-100 whitespace-nowrap">
             {columns.map((col) => (
               <th
                 key={col.key}

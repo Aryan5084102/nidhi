@@ -94,7 +94,7 @@ export default function KycMonitoringTab() {
         columns={docQueueColumns}
         data={documentQueue}
         renderRow={(doc) => (
-          <tr key={doc.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+          <tr key={doc.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{doc.id}</td>
             <td className="px-5 py-3">
               <div className="text-[13px] font-medium text-slate-700">{doc.memberName}</div>

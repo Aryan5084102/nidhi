@@ -93,7 +93,7 @@ export default function AgentLiquidityGuardTab() {
                 <div className="text-[13px] font-medium text-slate-700">{cfg.param}</div>
                 <div className="text-[11px] text-slate-400">{cfg.description}</div>
               </div>
-              <span className="font-mono text-xs text-indigo-600 font-semibold bg-indigo-50 rounded-lg px-2.5 py-1 border border-indigo-200/60">{cfg.value}</span>
+              <span className=" whitespace-nowrap font-mono text-xs text-indigo-600 font-semibold bg-indigo-50 rounded-lg px-2.5 py-1 border border-indigo-200/60">{cfg.value}</span>
             </div>
           ))}
         </div>

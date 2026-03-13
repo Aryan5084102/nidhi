@@ -47,7 +47,7 @@ export default function ScheduleTab() {
         columns={columns}
         data={filtered}
         renderRow={(p) => (
-          <tr key={p.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+          <tr key={p.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{p.id}</td>
             <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{p.member}</td>
             <td className="px-5 py-3">

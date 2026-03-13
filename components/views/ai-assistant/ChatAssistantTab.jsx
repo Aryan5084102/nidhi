@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const initialMessages = [
   {
@@ -48,6 +48,11 @@ const suggestedResponses = {
 export default function ChatAssistantTab() {
   const [messages, setMessages] = useState(initialMessages);
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSend = (text) => {
     if (!text.trim()) return;
@@ -103,6 +108,7 @@ export default function ChatAssistantTab() {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Suggested queries */}

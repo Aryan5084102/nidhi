@@ -112,7 +112,7 @@ export default function LiquidityRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Scenario", "Withdrawal Rate", "Liquidity Ratio", "Survival Days", "Result"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -120,7 +120,7 @@ export default function LiquidityRiskTab() {
           </thead>
           <tbody>
             {stressTests.map((st) => (
-              <tr key={st.scenario} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
+              <tr key={st.scenario} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors whitespace-nowrap">
                 <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{st.scenario}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{st.withdrawalRate}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{st.liquidityRatio}</td>

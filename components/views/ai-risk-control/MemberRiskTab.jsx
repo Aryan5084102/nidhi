@@ -85,7 +85,7 @@ export default function MemberRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Score Range", "Members", "Avg Deposit", "Default Rate"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -93,7 +93,7 @@ export default function MemberRiskTab() {
           </thead>
           <tbody>
             {stiAnalytics.map((row) => (
-              <tr key={row.range} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
+              <tr key={row.range} className="border-b whitespace-nowrap border-slate-50 hover:bg-slate-50/60 transition-colors">
                 <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{row.range}</td>
                 <td className="px-5 py-3 font-mono text-xs text-indigo-600 font-semibold">{row.count}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{row.avgDeposit}</td>
@@ -136,7 +136,7 @@ export default function MemberRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["From \\ To", "Low", "Medium", "High", "Critical"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}

@@ -83,7 +83,7 @@ export default function ApplicationsTab() {
         columns={columns}
         data={filtered}
         renderRow={(app) => (
-          <tr key={app.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+          <tr key={app.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
             <td className="px-5 py-3">
               <span className="text-[12px] text-slate-500 font-mono">{app.id}</span>
             </td>

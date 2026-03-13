@@ -87,7 +87,7 @@ export default function FraudDetectionTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Txn ID", "Member", "Type", "Amount", "Risk", "Reason", "Status"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -96,12 +96,14 @@ export default function FraudDetectionTab() {
           <tbody>
             {flaggedTxns.map((txn) => (
               <tr key={txn.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 font-mono text-xs text-slate-400">{txn.id}</td>
+                <td className="px-5 py-3 font-mono text-xs text-slate-400 whitespace-nowrap">{txn.id}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{txn.member}</td>
-                <td className="px-5 py-3 text-[13px] text-slate-700">{txn.type}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-700">{txn.amount}</td>
+                <td className="px-5 py-3 text-[13px] whitespace-nowrap text-slate-700">{txn.type}</td>
+                <td className="px-5 py-3 font-mono text-xs text-slate-700 whitespace-nowrap">{txn.amount}</td>
                 <td className="px-5 py-3"><span className={`font-mono text-xs font-bold ${txn.risk >= 85 ? "text-red-500" : txn.risk >= 70 ? "text-amber-600" : "text-slate-500"}`}>{txn.risk}</span></td>
-                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">{txn.reason}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{txn.reason}</span>
+                </td>
                 <td className="px-5 py-3"><StatusBadge status={txn.status} /></td>
               </tr>
             ))}

@@ -75,9 +75,11 @@ export default function AuditLogsTab() {
         renderRow={(l) => (
           <tr key={l.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
             <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{l.timestamp}</td>
-            <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{l.action}</td>
+            <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{l.action}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{l.user}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{l.detail}</td>
+            <td className="px-5 py-3 text-[12px] text-slate-400">
+              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{l.detail}</span>
+            </td>
             <td className="px-5 py-3">
               <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{l.category}</span>
             </td>

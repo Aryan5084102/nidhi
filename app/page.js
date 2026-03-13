@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileDrawer from "@/components/MobileDrawer";
 import FloatingAIButton from "@/components/FloatingAIButton";
+import SmoothScroll from "@/components/SmoothScroll";
 import ExecutiveDashboard from "@/components/views/ExecutiveDashboard";
 import MembersView from "@/components/views/MembersView";
 import AgentsView from "@/components/views/AgentsView";
@@ -44,8 +45,6 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState("executive");
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const mainRef = useRef(null);
-
   // On mount, check localStorage for an existing logged-in session
   useEffect(() => {
     const storedUser = localStorage.getItem("glimmora_current_user");
@@ -59,9 +58,12 @@ export default function Home() {
     setIsLoading(false);
   }, []);
 
-  // Scroll to top on nav change
+  // Reset smooth scroll on nav change
+  const smoothRef = useRef(null);
   useEffect(() => {
-    if (mainRef.current) mainRef.current.scrollTop = 0;
+    if (smoothRef.current) {
+      smoothRef.current.resetScroll();
+    }
   }, [activeNav]);
 
   // Auto-collapse sidebar on tablet
@@ -122,9 +124,9 @@ export default function Home() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
 
-        <main ref={mainRef} className="flex-1 overflow-auto p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
+        <SmoothScroll ref={smoothRef} className="flex-1" contentClassName="p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
           {viewMap[activeNav]}
-        </main>
+        </SmoothScroll>
       </div>
 
       {/* Mobile Bottom Navigation */}

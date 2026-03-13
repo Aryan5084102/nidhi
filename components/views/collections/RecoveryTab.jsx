@@ -49,7 +49,7 @@ export default function RecoveryTab() {
         columns={columns}
         data={filtered}
         renderRow={(r) => (
-          <tr key={r.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+          <tr key={r.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{r.id}</td>
             <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{r.member}</td>
             <td className="px-5 py-3">

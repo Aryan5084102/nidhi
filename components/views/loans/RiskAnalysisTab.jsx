@@ -66,7 +66,7 @@ export default function RiskAnalysisTab() {
           columns={riskColumns}
           data={riskFactors}
           renderRow={(rf) => (
-            <tr key={rf.factor} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+            <tr key={rf.factor} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
               <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{rf.factor}</td>
               <td className="px-5 py-3"><RiskTag level={rf.impact} /></td>
               <td className="px-5 py-3 text-[13px] font-mono text-slate-600">{rf.affectedLoans}</td>

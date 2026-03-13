@@ -59,7 +59,7 @@ export default function HighRiskMembersTab() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-100">
+              <tr className="border-b border-slate-100 whitespace-nowrap">
                 <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
                 <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Name</th>
                 <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Risk Score</th>
@@ -70,7 +70,7 @@ export default function HighRiskMembersTab() {
             </thead>
             <tbody>
               {highRiskMembers.map((m) => (
-                <tr key={m.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                <tr key={m.id} className="border-b whitespace-nowrap border-slate-50 hover:bg-slate-50/50 transition-colors">
                   <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{m.id}</td>
                   <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{m.name}</td>
                   <td className="px-5 py-3">
@@ -99,9 +99,11 @@ export default function HighRiskMembersTab() {
         renderRow={(w) => (
           <tr key={w.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{w.id}</td>
-            <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{w.name}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{w.reason}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{w.addedOn}</td>
+            <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{w.name}</td>
+            <td className="px-5 py-3 text-[12px] text-slate-400">
+              <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{w.reason}</span>
+            </td>
+            <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{w.addedOn}</td>
             <td className="px-5 py-3 text-[12px] text-slate-400">{w.reviewDate}</td>
           </tr>
         )}

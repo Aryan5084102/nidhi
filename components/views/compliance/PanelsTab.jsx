@@ -126,7 +126,7 @@ export default function PanelsTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {minutesColumns.map((col) => (
                 <th key={col.key} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{col.label}</th>
               ))}
@@ -136,8 +136,11 @@ export default function PanelsTab() {
             {meetingMinutes.map((m, i) => (
               <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.date}</td>
-                <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{m.committee}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">{m.agenda}</td>
+                <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{m.committee}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-400">
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{m.agenda}</span>
+                </td>
+
                 <td className="px-5 py-3"><StatusBadge status="Filed" /></td>
               </tr>
             ))}

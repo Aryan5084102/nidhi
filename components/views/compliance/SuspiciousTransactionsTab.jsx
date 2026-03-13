@@ -84,7 +84,9 @@ export default function SuspiciousTransactionsTab() {
                   <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{s.memberName}</div>
                   <div className="text-[11px] text-slate-400">{s.memberId}</div>
                 </td>
-                <td className="px-5 py-3 text-[12px] text-slate-500">{s.pattern}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500">
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{s.pattern}</span>
+                </td>
                 <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.totalAmount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 text-center">{s.transactions}</td>
                 <td className="px-5 py-3 text-[11px] text-slate-400 font-mono whitespace-nowrap">{s.fiuRef}</td>
@@ -116,7 +118,7 @@ export default function SuspiciousTransactionsTab() {
           </thead>
           <tbody>
             {flaggedTransactions.map((t) => (
-              <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+              <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{t.id}</td>
                 <td className="px-5 py-3">
                   <div className="text-[13px] font-medium text-slate-700">{t.memberName}</div>

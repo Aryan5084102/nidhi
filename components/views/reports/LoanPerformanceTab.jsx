@@ -46,7 +46,7 @@ export default function LoanPerformanceTab() {
       <div className="mb-6">
         <SectionCard title="Loan Category Performance">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full whitespace-nowrap">
               <thead>
                 <tr className="border-b border-slate-100">
                   <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Category</th>

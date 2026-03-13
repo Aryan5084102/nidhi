@@ -12,7 +12,7 @@ export default function SchemesTab() {
                 <div className="text-[16px] font-bold text-slate-900">{s.name}</div>
                 <div className="text-[12px] text-slate-400 mt-1">{s.members.toLocaleString()} members enrolled &middot; Total Corpus: {s.totalCorpus}</div>
               </div>
-              <div className="bg-indigo-50 rounded-xl px-3 py-2 text-center border border-indigo-200/60">
+              <div className="bg-indigo-50 ml-2 rounded-xl px-3 py-2 text-center border border-indigo-200/60 whitespace-nowrap">
                 <div className="text-lg font-bold text-indigo-600 font-mono">{s.rate}</div>
                 <div className="text-slate-400 text-[10px]">Interest Rate</div>
               </div>

@@ -41,7 +41,7 @@ export default function ComplianceRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["ID", "Rule", "AI Score", "Status", "Last Check"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -49,7 +49,7 @@ export default function ComplianceRiskTab() {
           </thead>
           <tbody>
             {complianceRules.map((cr) => (
-              <tr key={cr.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
+              <tr key={cr.id} className="border-b border-slate-50 hover:bg-slate-50/60 whitespace-nowrap transition-colors">
                 <td className="px-5 py-3 font-mono text-xs text-slate-400">{cr.id}</td>
                 <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{cr.rule}</td>
                 <td className="px-5 py-3">
@@ -100,7 +100,7 @@ export default function ComplianceRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Regulation", "Effective Date", "Impact", "Key Areas", "Status"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -108,11 +108,13 @@ export default function ComplianceRiskTab() {
           </thead>
           <tbody>
             {regulatoryChanges.map((rc) => (
-              <tr key={rc.regulation} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{rc.regulation}</td>
+              <tr key={rc.regulation} className="border-b  border-slate-50 hover:bg-slate-50/60 transition-colors">
+                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium whitespace-nowrap">{rc.regulation}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-600">{rc.effective}</td>
                 <td className="px-5 py-3"><StatusBadge status={rc.impact} /></td>
-                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">{rc.areas}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{rc.areas}</span>
+                </td>
                 <td className="px-5 py-3 text-[12px] text-indigo-600 font-medium">{rc.status}</td>
               </tr>
             ))}
@@ -127,7 +129,7 @@ export default function ComplianceRiskTab() {
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-100">
+            <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Filing", "Deadline", "Status", "AI Reminder"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
@@ -136,10 +138,12 @@ export default function ComplianceRiskTab() {
           <tbody>
             {filingDeadlines.map((fd) => (
               <tr key={fd.filing} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{fd.filing}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{fd.deadline}</td>
+                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium whitespace-nowrap">{fd.filing}</td>
+                <td className="px-5 py-3 font-mono text-xs text-slate-600 whitespace-nowrap">{fd.deadline}</td>
                 <td className="px-5 py-3"><StatusBadge status={fd.status === "In Progress" ? "Warning" : fd.status === "Not Required" ? "Resolved" : "Pending"} /></td>
-                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[280px]">{fd.aiReminder}</td>
+                <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[280px]">
+                  <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none">{fd.aiReminder}</span>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -36,8 +36,8 @@ export default function FraudIntelView() {
         title="Fraud Intelligence Center"
         description="AI-powered fraud detection and prevention system designed for Nidhi companies. Monitors auction manipulation, identity fraud, deposit layering, and collusion patterns across all member activities."
       >
-        <HeaderStat value={<span className="text-red-500">{fraudMetrics.criticalAlerts}</span>} label="Critical" className="bg-red-50 border border-red-200/60" />
-        <HeaderStat value={<span className="text-emerald-600">{fraudMetrics.totalPreventedLoss}</span>} label="Loss Prevented" className="bg-emerald-50 border border-emerald-200/60" />
+        <HeaderStat value={<span className="text-danger-500">{fraudMetrics.criticalAlerts}</span>} label="Critical" className="bg-danger-50 border border-danger-200/60" />
+        <HeaderStat value={<span className="text-success">{fraudMetrics.totalPreventedLoss}</span>} label="Loss Prevented" className="bg-success-50 border border-success-200/60" />
       </PageHeader>
 
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />

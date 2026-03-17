@@ -55,12 +55,12 @@ export default function ReportsView() {
         description="Comprehensive reporting suite for Glimmora Nidhi operations. Generate financial statements, member reports, compliance summaries, and AI-powered business intelligence analytics."
       >
         <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
-          <div className="text-lg font-bold text-indigo-600 font-mono">{reportsList.length}</div>
-          <div className="text-slate-400 text-[10px]">Available Reports</div>
+          <div className="text-lg font-bold text-primary font-mono">{reportsList.length}</div>
+          <div className="text-heading text-[10px]">Available Reports</div>
         </div>
         <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
-          <div className="text-lg font-bold text-emerald-600 font-mono">10</div>
-          <div className="text-slate-400 text-[10px]">Analytics Modules</div>
+          <div className="text-lg font-bold text-success font-mono">10</div>
+          <div className="text-heading text-[10px]">Analytics Modules</div>
         </div>
       </PageHeader>
 

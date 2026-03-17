@@ -41,14 +41,14 @@ export default function BoardReportsTab() {
           <div key={bm.quarter} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="flex justify-between items-start mb-3">
               <div>
-                <div className="text-[15px] font-bold text-slate-900">{bm.quarter}</div>
-                <div className="text-[12px] text-slate-400 font-mono mt-0.5">{bm.date}</div>
+                <div className="text-[15px] font-bold text-heading">{bm.quarter}</div>
+                <div className="text-[12px] text-heading font-mono mt-0.5">{bm.date}</div>
               </div>
               <StatusBadge status={bm.status === "Completed" ? "Active" : "Upcoming"} />
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed mb-3">{bm.agenda}</p>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-slate-400">{bm.attendees} directors attended</span>
+              <span className="text-[11px] text-heading">{bm.attendees} directors attended</span>
               {bm.status === "Completed" && (
                 <button className="ml-auto py-1.5 px-4 bg-slate-50 border border-slate-200 text-slate-500 rounded-xl text-[11px] font-medium cursor-pointer hover:bg-slate-100 transition-colors">
                   View Minutes
@@ -75,15 +75,15 @@ export default function BoardReportsTab() {
             {decisions.map((d) => (
               <div key={d.id} className="bg-slate-50 rounded-xl p-3.5">
                 <div className="flex justify-between items-start mb-1">
-                  <span className="text-[11px] font-mono text-slate-400">{d.id}</span>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${d.status === "Implemented" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : d.status === "In Progress" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-indigo-50 border-indigo-200 text-indigo-600"}`}>
+                  <span className="text-[11px] font-mono text-heading">{d.id}</span>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${d.status === "Implemented" ? "bg-success-50 border-success-200 text-success" : d.status === "In Progress" ? "bg-warning-50 border-warning-200 text-warning" : "bg-primary-50 border-primary-200 text-primary"}`}>
                     {d.status}
                   </span>
                 </div>
-                <div className="text-[13px] text-slate-700 mb-1">{d.decision}</div>
+                <div className="text-[13px] text-body mb-1">{d.decision}</div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-slate-400">{d.date}</span>
-                  <span className="text-[11px] text-slate-400">{d.owner}</span>
+                  <span className="text-[11px] text-heading">{d.date}</span>
+                  <span className="text-[11px] text-heading">{d.owner}</span>
                 </div>
               </div>
             ))}
@@ -96,14 +96,14 @@ export default function BoardReportsTab() {
             {shareholderComms.map((sc) => (
               <div key={sc.type + sc.date} className="bg-slate-50 rounded-xl p-3.5">
                 <div className="flex justify-between items-start mb-1">
-                  <span className="text-[13px] font-semibold text-slate-700">{sc.type}</span>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${sc.status === "Sent" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : "bg-amber-50 border-amber-200 text-amber-600"}`}>
+                  <span className="text-[13px] font-semibold text-body">{sc.type}</span>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${sc.status === "Sent" ? "bg-success-50 border-success-200 text-success" : "bg-warning-50 border-warning-200 text-warning"}`}>
                     {sc.status}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-[11px] text-slate-400 font-mono">{sc.date}</span>
-                  <span className="text-[11px] text-slate-400">{sc.recipients}</span>
+                  <span className="text-[11px] text-heading font-mono">{sc.date}</span>
+                  <span className="text-[11px] text-heading">{sc.recipients}</span>
                 </div>
               </div>
             ))}

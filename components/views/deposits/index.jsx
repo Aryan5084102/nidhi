@@ -35,8 +35,8 @@ export default function DepositsView() {
         title="Deposits Management"
         description="Manage Fixed Deposits, Recurring Deposits, and Savings accounts. All deposit schemes comply with Nidhi Rules 2014 and interest rate ceilings prescribed by RBI."
       >
-        <HeaderStat value={<span className="text-purple-600">{"\u20B939.5Cr"}</span>} label="Total Deposits" />
-        <HeaderStat value={<span className="text-emerald-600">{"12,450"}</span>} label="Active Accounts" />
+        <HeaderStat value={<span className="text-secondary">{"\u20B939.5Cr"}</span>} label="Total Deposits" />
+        <HeaderStat value={<span className="text-success">{"12,450"}</span>} label="Active Accounts" />
       </PageHeader>
 
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />

@@ -47,15 +47,15 @@ export default function ReportGeneratorTab() {
               onClick={() => setSelectedTemplate(t.name)}
               className={`text-left bg-white rounded-2xl p-5 card-shadow border transition-all cursor-pointer ${
                 selectedTemplate === t.name
-                  ? "border-indigo-300 ring-2 ring-indigo-500/10"
+                  ? "border-primary-300 ring-2 ring-primary-500/10"
                   : "border-slate-100 hover:border-slate-200"
               }`}
             >
               <h4 className="text-[13px] font-semibold text-slate-800">{t.name}</h4>
-              <p className="text-[11px] text-slate-400 mt-1">{t.desc}</p>
+              <p className="text-[11px] text-heading mt-1">{t.desc}</p>
               <div className="flex items-center gap-3 mt-3">
-                <span className="text-[10px] text-slate-400">{t.pages} pages</span>
-                <span className="text-[10px] text-slate-400">Last: {t.lastGen}</span>
+                <span className="text-[10px] text-heading">{t.pages} pages</span>
+                <span className="text-[10px] text-heading">Last: {t.lastGen}</span>
               </div>
             </button>
           ))}
@@ -69,18 +69,18 @@ export default function ReportGeneratorTab() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Date range */}
             <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wide mb-2">Date Range</p>
+              <p className="text-[11px] text-heading uppercase tracking-wide mb-2">Date Range</p>
               <div className="space-y-2">
                 <input
                   type="text"
                   defaultValue="01 Mar 2026"
-                  className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all"
+                  className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all"
                   readOnly
                 />
                 <input
                   type="text"
                   defaultValue="31 Mar 2026"
-                  className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all"
+                  className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all"
                   readOnly
                 />
               </div>
@@ -88,7 +88,7 @@ export default function ReportGeneratorTab() {
 
             {/* Sections */}
             <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wide mb-2">Include Sections</p>
+              <p className="text-[11px] text-heading uppercase tracking-wide mb-2">Include Sections</p>
               <div className="space-y-2">
                 {Object.entries(sections).map(([key, val]) => (
                   <label key={key} className="flex items-center gap-2 cursor-pointer">
@@ -96,9 +96,9 @@ export default function ReportGeneratorTab() {
                       type="checkbox"
                       checked={val}
                       onChange={() => toggleSection(key)}
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                      className="rounded border-slate-300 text-primary focus:ring-primary-500"
                     />
-                    <span className="text-[13px] text-slate-700 capitalize">{key}</span>
+                    <span className="text-[13px] text-body capitalize">{key}</span>
                   </label>
                 ))}
               </div>
@@ -106,7 +106,7 @@ export default function ReportGeneratorTab() {
 
             {/* Format */}
             <div>
-              <p className="text-[11px] text-slate-400 uppercase tracking-wide mb-2">Output Format</p>
+              <p className="text-[11px] text-heading uppercase tracking-wide mb-2">Output Format</p>
               <div className="space-y-2">
                 {["PDF", "Excel", "CSV"].map((f) => (
                   <label key={f} className="flex items-center gap-2 cursor-pointer">
@@ -115,9 +115,9 @@ export default function ReportGeneratorTab() {
                       name="format"
                       checked={format === f}
                       onChange={() => setFormat(f)}
-                      className="border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                      className="border-slate-300 text-primary focus:ring-primary-500"
                     />
-                    <span className="text-[13px] text-slate-700">{f}</span>
+                    <span className="text-[13px] text-body">{f}</span>
                   </label>
                 ))}
               </div>
@@ -125,7 +125,7 @@ export default function ReportGeneratorTab() {
           </div>
 
           <div className="mt-5 flex justify-end">
-            <button className="bg-indigo-600 text-white rounded-xl px-5 py-2.5 text-xs font-semibold cursor-pointer hover:bg-indigo-700 transition-colors">
+            <button className="bg-primary text-white rounded-xl px-5 py-2.5 text-xs font-semibold cursor-pointer hover:bg-primary-700 transition-colors">
               Generate Report
             </button>
           </div>
@@ -142,14 +142,14 @@ export default function ReportGeneratorTab() {
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100 whitespace-nowrap">
                 {["Report Name", "Generated", "Format", "Size", "Status", "Action"].map((h) => (
-                  <th key={h} className="px-4 py-2.5 text-left text-[11px] text-slate-400 font-semibold uppercase tracking-wide">{h}</th>
+                  <th key={h} className="px-4 py-2.5 text-left text-[11px] text-heading font-semibold uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {generatedReports.map((r, i) => (
                 <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors whitespace-nowrap">
-                  <td className="px-4 py-3 text-[13px] text-slate-700 font-medium">{r.name}</td>
+                  <td className="px-4 py-3 text-[13px] text-body font-medium">{r.name}</td>
                   <td className="px-4 py-3 text-[13px] text-slate-500">{r.date}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={r.format} />
@@ -159,10 +159,10 @@ export default function ReportGeneratorTab() {
                     <span
                       className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                         r.status === "Ready"
-                          ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                          ? "bg-success-50 text-success border-success-200"
                           : r.status === "Generating"
-                          ? "bg-amber-50 text-amber-600 border-amber-200"
-                          : "bg-red-50 text-red-500 border-red-200"
+                          ? "bg-warning-50 text-warning border-warning-200"
+                          : "bg-danger-50 text-danger-500 border-danger-200"
                       }`}
                     >
                       {r.status}
@@ -172,8 +172,8 @@ export default function ReportGeneratorTab() {
                     <button
                       className={`text-[11px] font-semibold px-3 py-1 rounded-lg border cursor-pointer transition-all ${
                         r.status === "Ready"
-                          ? "bg-indigo-50 text-indigo-600 border-indigo-200 hover:bg-indigo-100"
-                          : "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed"
+                          ? "bg-primary-50 text-primary border-primary-200 hover:bg-primary-100"
+                          : "bg-slate-50 text-subtle border-slate-100 cursor-not-allowed"
                       }`}
                       disabled={r.status !== "Ready"}
                     >

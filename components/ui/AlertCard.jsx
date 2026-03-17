@@ -1,12 +1,12 @@
 import StatusBadge from "./StatusBadge";
 
 const SEVERITY_ICON_COLORS = {
-  Critical: { bg: "bg-red-100", text: "text-red-500" },
+  Critical: { bg: "bg-danger-100", text: "text-danger-500" },
   High: { bg: "bg-orange-100", text: "text-orange-500" },
-  Medium: { bg: "bg-amber-100", text: "text-amber-500" },
+  Medium: { bg: "bg-warning-100", text: "text-warning-500" },
   Low: { bg: "bg-blue-100", text: "text-blue-500" },
-  Warning: { bg: "bg-amber-50 border border-amber-200/60", text: "text-amber-500" },
-  "Action Required": { bg: "bg-red-50 border border-red-200/60", text: "text-red-500" },
+  Warning: { bg: "bg-warning-50 border border-warning-200/60", text: "text-warning-500" },
+  "Action Required": { bg: "bg-danger-50 border border-danger-200/60", text: "text-danger-500" },
 };
 
 function WarningIcon({ className }) {
@@ -28,13 +28,13 @@ export default function AlertCard({ severity, badge, title, subtitle, descriptio
       <div className="flex-1">
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-[13px] font-semibold text-slate-700">{title}</div>
-            {subtitle && <div className="text-[11px] text-slate-400 font-mono">{subtitle}</div>}
+            <div className="text-[13px] font-semibold text-body">{title}</div>
+            {subtitle && <div className="text-[11px] text-heading font-mono">{subtitle}</div>}
           </div>
           <StatusBadge status={badge || severity} />
         </div>
         {description && <div className="text-[12px] text-slate-500 mt-1">{description}</div>}
-        {footer && <div className="text-[11px] text-slate-300 mt-2">{footer}</div>}
+        {footer && <div className="text-[11px] text-subtle mt-2">{footer}</div>}
       </div>
     </div>
   );

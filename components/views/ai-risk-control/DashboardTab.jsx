@@ -40,11 +40,11 @@ export default function DashboardTab() {
           {riskCategories.map((cat) => (
             <div key={cat.name} className="bg-slate-50 rounded-xl p-3">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-[13px] font-semibold text-slate-700">{cat.name}</span>
+                <span className="text-[13px] font-semibold text-body">{cat.name}</span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-slate-400">Weight: {cat.weight}%</span>
-                  <span className={`text-[11px] font-semibold ${cat.trend.startsWith("+") ? "text-red-500" : "text-emerald-600"}`}>{cat.trend}</span>
-                  <span className={`text-[13px] font-bold font-mono ${cat.score >= 70 ? "text-red-500" : cat.score >= 50 ? "text-amber-600" : "text-emerald-600"}`}>{cat.score}</span>
+                  <span className="text-[11px] text-heading">Weight: {cat.weight}%</span>
+                  <span className={`text-[11px] font-semibold ${cat.trend.startsWith("+") ? "text-danger-500" : "text-success"}`}>{cat.trend}</span>
+                  <span className={`text-[13px] font-bold font-mono ${cat.score >= 70 ? "text-danger-500" : cat.score >= 50 ? "text-warning" : "text-success"}`}>{cat.score}</span>
                 </div>
               </div>
               <ProgressBar value={cat.score} max={100} color={cat.score >= 70 ? "#DC2626" : cat.score >= 50 ? "#D97706" : "#059669"} />

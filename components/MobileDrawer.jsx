@@ -3,8 +3,14 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { navItems } from "@/data/mockData";
+import { useAuth } from "@/context/AuthContext";
+import { ROLE_COLORS } from "@/lib/roles";
 
-export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, userName, onLogout }) {
+export default function MobileDrawer({ open, onClose, activeNav, setActiveNav }) {
+  const { user, canAccessNav, logout, roleLabel } = useAuth();
+  const userName = user?.name;
+  const roleColor = ROLE_COLORS[user?.role];
+  const filteredNavItems = navItems.filter((item) => canAccessNav(item.id));
   const initials = userName ? userName.charAt(0).toUpperCase() : "U";
 
   // Prevent body scroll when drawer is open
@@ -26,7 +32,7 @@ export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, u
         {/* Header */}
         <div className="p-4 pb-3 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-[15px] font-bold text-white shadow-lg shadow-emerald-500/20">
+            <div className="w-9 h-9 bg-gradient-to-br from-success-400 to-teal-500 rounded-xl flex items-center justify-center text-[15px] font-bold text-white shadow-lg shadow-success-500/20">
               G
             </div>
             <div>
@@ -43,7 +49,7 @@ export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, u
 
         {/* Nav items */}
         <nav className="flex-1 px-2.5 py-3 flex flex-col gap-0.5 overflow-y-auto">
-          {navItems.map((item) => {
+          {filteredNavItems.map((item) => {
             const isActive = activeNav === item.id;
             return (
               <button
@@ -51,12 +57,12 @@ export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, u
                 onClick={() => { setActiveNav(item.id); onClose(); }}
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 w-full relative
                   ${isActive
-                    ? "bg-gradient-to-r from-indigo-500/15 to-emerald-500/10 text-emerald-400"
+                    ? "bg-gradient-to-r from-primary-500/15 to-success-500/10 text-success-400"
                     : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-200"
                   }`}
               >
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-emerald-400 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-success-400 rounded-r-full" />
                 )}
                 <Image src={item.icon} alt="" width={20} height={20} />
                 <span className="text-[13px] font-medium whitespace-nowrap">{item.label}</span>
@@ -68,17 +74,17 @@ export default function MobileDrawer({ open, onClose, activeNav, setActiveNav, u
         {/* Profile */}
         <div className="p-3 border-t border-white/[0.08]">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-[13px] font-bold text-white shrink-0">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center text-[13px] font-bold text-white shrink-0">
               {initials}
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[13px] font-semibold text-white truncate">{userName || "User"}</div>
-              <div className="text-[10px] text-slate-400">Administrator</div>
+              <span className={`inline-block mt-0.5 px-2 py-0.5 rounded text-[10px] font-medium ${roleColor?.bg || ""} ${roleColor?.text || "text-slate-400"}`}>{roleLabel}</span>
             </div>
           </div>
           <button
-            onClick={() => { onClose(); onLogout?.(); }}
-            className="flex items-center gap-2.5 w-full px-3 py-2 mt-1 rounded-xl text-[13px] text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+            onClick={() => { onClose(); logout(); }}
+            className="flex items-center gap-2.5 w-full px-3 py-2 mt-1 rounded-xl text-[13px] text-danger-400 hover:bg-danger-500/10 transition-colors cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />

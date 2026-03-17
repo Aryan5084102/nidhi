@@ -59,10 +59,10 @@ export default function MemberGrowthTab() {
             {demographics.map((d) => (
               <div key={d.group} className="bg-slate-50 rounded-xl p-3">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-[13px] font-semibold text-slate-700">{d.group}</span>
+                  <span className="text-[13px] font-semibold text-body">{d.group}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[12px] font-mono text-slate-500">{d.count.toLocaleString()}</span>
-                    <span className="text-[11px] text-slate-400 font-mono">{d.pct}%</span>
+                    <span className="text-[11px] text-heading font-mono">{d.pct}%</span>
                   </div>
                 </div>
                 <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
@@ -79,10 +79,10 @@ export default function MemberGrowthTab() {
             {locations.map((l) => (
               <div key={l.city} className="bg-slate-50 rounded-xl p-3">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-[13px] font-semibold text-slate-700">{l.city}</span>
+                  <span className="text-[13px] font-semibold text-body">{l.city}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[12px] font-mono text-slate-500">{l.members.toLocaleString()}</span>
-                    <span className="text-[11px] text-slate-400 font-mono">{l.pct}%</span>
+                    <span className="text-[11px] text-heading font-mono">{l.pct}%</span>
                   </div>
                 </div>
                 <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
@@ -101,19 +101,19 @@ export default function MemberGrowthTab() {
             <table className="w-full whitespace-nowrap">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Month</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Churned</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Primary Reason</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Recovered</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Month</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Churned</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Primary Reason</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Recovered</th>
                 </tr>
               </thead>
               <tbody>
                 {churnData.map((c) => (
                   <tr key={c.month} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                    <td className="text-[13px] font-medium text-slate-700 px-5 py-3">{c.month}</td>
-                    <td className="text-[13px] font-mono text-red-500 px-5 py-3 text-right">{c.churned}</td>
+                    <td className="text-[13px] font-medium text-body px-5 py-3">{c.month}</td>
+                    <td className="text-[13px] font-mono text-danger-500 px-5 py-3 text-right">{c.churned}</td>
                     <td className="text-[12px] text-slate-500 px-5 py-3">{c.reason}</td>
-                    <td className="text-[13px] font-mono text-emerald-500 px-5 py-3 text-right">{c.recovered}</td>
+                    <td className="text-[13px] font-mono text-success-500 px-5 py-3 text-right">{c.recovered}</td>
                   </tr>
                 ))}
               </tbody>
@@ -127,12 +127,12 @@ export default function MemberGrowthTab() {
             {channels.map((ch) => (
               <div key={ch.channel} className="bg-slate-50 rounded-xl p-3">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-[13px] font-semibold text-slate-700">{ch.channel}</span>
-                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border bg-indigo-50 border-indigo-200 text-indigo-600">{ch.pct}%</span>
+                  <span className="text-[13px] font-semibold text-body">{ch.channel}</span>
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border bg-primary-50 border-primary-200 text-primary">{ch.pct}%</span>
                 </div>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-[11px] text-slate-400">{ch.acquired.toLocaleString()} members</span>
-                  <span className="text-[11px] text-slate-400">CAC: {ch.cost}</span>
+                  <span className="text-[11px] text-heading">{ch.acquired.toLocaleString()} members</span>
+                  <span className="text-[11px] text-heading">CAC: {ch.cost}</span>
                 </div>
                 <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden mt-2">
                   <div className="h-full rounded-full transition-all duration-700" style={{ width: `${ch.pct}%`, background: "linear-gradient(to right, #7C3AED, #A78BFA)" }} />

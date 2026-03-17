@@ -87,22 +87,22 @@ export default function ChatAssistantTab() {
             <div
               className={`max-w-[90%] sm:max-w-[75%] rounded-2xl px-4 py-3 ${
                 msg.role === "user"
-                  ? "bg-indigo-600 text-white rounded-br-md"
-                  : "bg-slate-50 border border-slate-100 text-slate-700 rounded-bl-md"
+                  ? "bg-primary text-white rounded-br-md"
+                  : "bg-slate-50 border border-slate-100 text-body rounded-bl-md"
               }`}
             >
               {msg.role === "ai" && (
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <span className="text-[10px] text-indigo-600 font-bold">AI</span>
+                  <div className="w-5 h-5 rounded-full bg-primary-100 flex items-center justify-center">
+                    <span className="text-[10px] text-primary font-bold">AI</span>
                   </div>
-                  <span className="text-[11px] font-semibold text-indigo-600">Glimmora AI</span>
+                  <span className="text-[11px] font-semibold text-primary">Glimmora AI</span>
                 </div>
               )}
-              <div className={`text-[13px] leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "text-white" : "text-slate-700"}`}>
+              <div className={`text-[13px] leading-relaxed whitespace-pre-wrap ${msg.role === "user" ? "text-white" : "text-body"}`}>
                 {msg.text}
               </div>
-              <div className={`text-[10px] mt-2 ${msg.role === "user" ? "text-indigo-200 text-right" : "text-slate-400"}`}>
+              <div className={`text-[10px] mt-2 ${msg.role === "user" ? "text-primary-200 text-right" : "text-heading"}`}>
                 {msg.time}
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function ChatAssistantTab() {
           <button
             key={q}
             onClick={() => handleChipClick(q)}
-            className="text-[11px] font-medium px-3 py-1.5 rounded-full border border-indigo-200 bg-indigo-50 text-indigo-600 cursor-pointer hover:bg-indigo-100 transition-colors"
+            className="text-[11px] font-medium px-3 py-1.5 rounded-full border border-primary-200 bg-primary-50 text-primary cursor-pointer hover:bg-primary-100 transition-colors"
           >
             {q}
           </button>
@@ -131,11 +131,11 @@ export default function ChatAssistantTab() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
           placeholder="Ask anything about your Nidhi company..."
-          className="flex-1 bg-white border border-slate-200 rounded-2xl py-3 px-4 text-[13px] text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+          className="flex-1 bg-white border border-slate-200 rounded-2xl py-3 px-4 text-[13px] text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
         />
         <button
           onClick={() => handleSend(input)}
-          className="bg-indigo-600 text-white rounded-2xl px-5 py-3 text-sm font-semibold cursor-pointer hover:bg-indigo-700 transition-colors flex items-center gap-1.5"
+          className="bg-primary text-white rounded-2xl px-5 py-3 text-sm font-semibold cursor-pointer hover:bg-primary-700 transition-colors flex items-center gap-1.5"
         >
           Send
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">

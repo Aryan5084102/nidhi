@@ -32,27 +32,27 @@ function ForgotPasswordForm({ onSwitch }) {
     return (
       <div className="w-full">
         <div className="text-center animate-fade-in">
-          <div className="w-16 h-16 bg-emerald-500/20 lg:bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
+          <div className="w-16 h-16 bg-success-500/20 lg:bg-success-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
             {"\u2709\uFE0F"}
           </div>
-          <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-2">Check your email</h2>
+          <h2 className="text-2xl font-bold text-white lg:text-heading mb-2">Check your email</h2>
           <p className="text-slate-400 text-sm mb-2">
             We sent a 6-digit OTP to
           </p>
-          <p className="text-white lg:text-slate-700 text-sm font-semibold mb-6">
+          <p className="text-white lg:text-body text-sm font-semibold mb-6">
             {getValues("email")}
           </p>
           <button
             type="button"
             onClick={() => onSwitch("reset-password")}
-            className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer shadow-lg shadow-indigo-500/25 mb-4"
+            className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-500 hover:from-primary-700 hover:to-primary text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer shadow-lg shadow-primary-500/25 mb-4"
           >
             Enter OTP & Reset Password
           </button>
           <button
             type="button"
             onClick={() => onSwitch("login")}
-            className="text-sm text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors"
+            className="text-sm text-heading hover:text-subtle lg:hover:text-body cursor-pointer transition-colors"
           >
             Back to Sign In
           </button>
@@ -67,11 +67,11 @@ function ForgotPasswordForm({ onSwitch }) {
         <button
           type="button"
           onClick={() => onSwitch("login")}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors mb-4"
+          className="flex items-center gap-1.5 text-xs text-heading hover:text-subtle lg:hover:text-body cursor-pointer transition-colors mb-4"
         >
           <span>{"\u2190"}</span> Back to Sign In
         </button>
-        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Forgot password?</h2>
+        <h2 className="text-2xl font-bold text-white lg:text-heading mb-1.5">Forgot password?</h2>
         <p className="text-slate-400 text-sm">
           Enter your email and we&apos;ll send you a reset OTP
         </p>
@@ -89,7 +89,7 @@ function ForgotPasswordForm({ onSwitch }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-600 hover:to-emerald-500 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/35 active:scale-[0.99]"
+          className="w-full py-3.5 bg-gradient-to-r from-success-500 to-success-400 hover:from-success hover:to-success-500 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-success-500/25 hover:shadow-success-500/35 active:scale-[0.99]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

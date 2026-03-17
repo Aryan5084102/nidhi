@@ -2,10 +2,10 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import DataTable from "@/components/ui/DataTable";
 
 const riskSummary = [
-  { label: "Critical Risk", value: "4", color: "text-red-500", desc: "Immediate action required" },
+  { label: "Critical Risk", value: "4", color: "text-danger-500", desc: "Immediate action required" },
   { label: "High Risk", value: "12", color: "text-orange-600", desc: "Enhanced monitoring" },
-  { label: "Medium Risk", value: "38", color: "text-amber-600", desc: "Periodic review" },
-  { label: "On Watch List", value: "8", color: "text-purple-600", desc: "Under observation" },
+  { label: "Medium Risk", value: "38", color: "text-warning", desc: "Periodic review" },
+  { label: "On Watch List", value: "8", color: "text-secondary", desc: "Under observation" },
 ];
 
 const highRiskMembers = [
@@ -43,9 +43,9 @@ export default function HighRiskMembersTab() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {riskSummary.map((r) => (
           <div key={r.label} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{r.label}</div>
+            <div className="text-[10px] text-heading uppercase tracking-wider mb-2">{r.label}</div>
             <div className={`text-[22px] font-bold font-mono ${r.color}`}>{r.value}</div>
-            <div className="text-[11px] text-slate-300 mt-1">{r.desc}</div>
+            <div className="text-[11px] text-subtle mt-1">{r.desc}</div>
           </div>
         ))}
       </div>
@@ -53,37 +53,37 @@ export default function HighRiskMembersTab() {
       {/* High Risk Members Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">High Risk Member Registry</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Members flagged for enhanced due diligence as per PMLA and internal risk policy</p>
+          <h3 className="text-[15px] font-bold text-heading">High Risk Member Registry</h3>
+          <p className="text-[12px] text-heading mt-0.5">Members flagged for enhanced due diligence as per PMLA and internal risk policy</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-100 whitespace-nowrap">
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Name</th>
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Risk Score</th>
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Risk Factors</th>
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Last Review</th>
-                <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Actions Required</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">ID</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Name</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Risk Score</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Risk Factors</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Last Review</th>
+                <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Actions Required</th>
               </tr>
             </thead>
             <tbody>
               {highRiskMembers.map((m) => (
                 <tr key={m.id} className="border-b whitespace-nowrap border-slate-50 hover:bg-slate-50/50 transition-colors">
                   <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{m.id}</td>
-                  <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{m.name}</td>
+                  <td className="px-5 py-3 text-[13px] font-medium text-body">{m.name}</td>
                   <td className="px-5 py-3">
-                    <span className={`text-[15px] font-bold font-mono ${m.riskScore >= 80 ? "text-red-500" : m.riskScore >= 60 ? "text-amber-600" : "text-emerald-600"}`}>{m.riskScore}</span>
+                    <span className={`text-[15px] font-bold font-mono ${m.riskScore >= 80 ? "text-danger-500" : m.riskScore >= 60 ? "text-warning" : "text-success"}`}>{m.riskScore}</span>
                   </td>
                   <td className="px-5 py-3">
                     <div className="flex flex-wrap gap-1 line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.riskFactors.join(", ")}>
                       {m.riskFactors.map((f, i) => (
-                        <span key={i} className="text-[10px] bg-red-50 text-red-500 px-2 py-0.5 rounded-full border border-red-200/60">{f}</span>
+                        <span key={i} className="text-[10px] bg-danger-50 text-danger-500 px-2 py-0.5 rounded-full border border-danger-200/60">{f}</span>
                       ))}
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.lastReview}</td>
+                  <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{m.lastReview}</td>
                   <td className="px-5 py-3 text-[12px] text-slate-500">
                     <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.actions}>{m.actions}</span>
                   </td>
@@ -101,12 +101,12 @@ export default function HighRiskMembersTab() {
         renderRow={(w) => (
           <tr key={w.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{w.id}</td>
-            <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{w.name}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">
+            <td className="px-5 py-3 text-[13px] font-medium text-body whitespace-nowrap">{w.name}</td>
+            <td className="px-5 py-3 text-[12px] text-heading">
               <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={w.reason}>{w.reason}</span>
             </td>
-            <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{w.addedOn}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{w.reviewDate}</td>
+            <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{w.addedOn}</td>
+            <td className="px-5 py-3 text-[12px] text-heading">{w.reviewDate}</td>
           </tr>
         )}
       />

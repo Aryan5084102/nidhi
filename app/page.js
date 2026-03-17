@@ -21,42 +21,35 @@ import FraudIntelView from "@/components/views/FraudIntelView";
 import ReportsView from "@/components/views/ReportsView";
 import ConfigView from "@/components/views/ConfigView";
 import AIAssistantView from "@/components/views/AIAssistantView";
+import ProfileView from "@/components/views/ProfileView";
+import CollateralView from "@/components/views/CollateralView";
+import GovernanceView from "@/components/views/GovernanceView";
+import MemberDashboard from "@/components/views/member-portal/MemberDashboard";
+import MyLoans from "@/components/views/member-portal/MyLoans";
+import MyDeposits from "@/components/views/member-portal/MyDeposits";
+import MyChitFunds from "@/components/views/member-portal/MyChitFunds";
+import MyPayments from "@/components/views/member-portal/MyPayments";
+import EnrollChitFundView from "@/components/views/member-portal/EnrollChitFundView";
+import ApplyLoanView from "@/components/views/member-portal/ApplyLoanView";
+import OpenDepositView from "@/components/views/member-portal/OpenDepositView";
+import { useAuth } from "@/context/AuthContext";
 import { navItems } from "@/data/mockData";
 
-const viewMap = {
-  executive: <ExecutiveDashboard />,
-  members: <MembersView />,
-  chitfunds: <ChitFundsView />,
-  agents: <AgentsView />,
-  loans: <LoansView />,
-  deposits: <DepositsView />,
-  collections: <CollectionsView />,
-  compliance: <ComplianceView />,
-  airisk: <AIRiskControlView />,
-  fraud: <FraudIntelView />,
-  reports: <ReportsView />,
-  config: <ConfigView />,
-  aiassistant: <AIAssistantView />,
-};
-
 export default function Home() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeNav, setActiveNav] = useState("executive");
+  const { user, isLoading, defaultNav } = useAuth();
+  const [activeNav, setActiveNav] = useState(null);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  // On mount, check localStorage for an existing logged-in session
+
+  // Set default nav based on role when user logs in
   useEffect(() => {
-    const storedUser = localStorage.getItem("glimmora_current_user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("glimmora_current_user");
-      }
+    if (user && !activeNav) {
+      setActiveNav(defaultNav);
     }
-    setIsLoading(false);
-  }, []);
+    if (!user) {
+      setActiveNav(null);
+    }
+  }, [user, defaultNav, activeNav]);
 
   // Reset smooth scroll on nav change
   const smoothRef = useRef(null);
@@ -77,27 +70,48 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("glimmora_current_user");
-  };
-
-  // Show nothing while checking localStorage to avoid login page flash
-  if (isLoading) {
-    return null;
-  }
+  if (isLoading) return null;
 
   if (!user) {
-    return <LoginPage onLogin={handleLogin} />;
+    return <LoginPage />;
   }
 
+  // Build view map with navigation callback for member dashboard
+  const handleNavigate = (navId) => setActiveNav(navId);
+
+  const viewMap = {
+    // Admin/Staff views
+    executive: <ExecutiveDashboard />,
+    members: <MembersView />,
+    chitfunds: <ChitFundsView />,
+    agents: <AgentsView />,
+    loans: <LoansView />,
+    deposits: <DepositsView />,
+    collections: <CollectionsView />,
+    compliance: <ComplianceView />,
+    airisk: <AIRiskControlView />,
+    fraud: <FraudIntelView />,
+    reports: <ReportsView />,
+    config: <ConfigView />,
+    collateral: <CollateralView />,
+    governance: <GovernanceView />,
+    aiassistant: <AIAssistantView />,
+    // Member portal views
+    member_dashboard: <MemberDashboard onNavigate={handleNavigate} />,
+    my_loans: <MyLoans onNavigate={handleNavigate} />,
+    my_deposits: <MyDeposits onNavigate={handleNavigate} />,
+    open_deposit: <OpenDepositView onNavigate={handleNavigate} />,
+    my_chitfunds: <MyChitFunds onNavigate={handleNavigate} />,
+    my_payments: <MyPayments />,
+    enroll_chitfund: <EnrollChitFundView onNavigate={handleNavigate} />,
+    apply_loan: <ApplyLoanView onNavigate={handleNavigate} />,
+    // Shared views
+    profile: <ProfileView />,
+  };
+
+  const pageTitleMap = { enroll_chitfund: "Enroll in Chit Fund", apply_loan: "Apply for Loan", open_deposit: "Open Deposit Account" };
   const pageTitle =
-    navItems.find((n) => n.id === activeNav)?.label || "Dashboard";
+    pageTitleMap[activeNav] || navItems.find((n) => n.id === activeNav)?.label || "Dashboard";
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -107,8 +121,6 @@ export default function Home() {
         setActiveNav={setActiveNav}
         expanded={sidebarExpanded}
         setExpanded={setSidebarExpanded}
-        userName={user.name}
-        onLogout={handleLogout}
       />
 
       {/* Mobile Drawer */}
@@ -117,16 +129,17 @@ export default function Home() {
         onClose={() => setDrawerOpen(false)}
         activeNav={activeNav}
         setActiveNav={setActiveNav}
-        userName={user.name}
-        onLogout={handleLogout}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header pageTitle={pageTitle} userName={user.name} onLogout={handleLogout} />
+        <Header
+          pageTitle={pageTitle}
+          onNavigateProfile={() => setActiveNav("profile")}
+        />
 
         <SmoothScroll ref={smoothRef} className="flex-1" contentClassName="p-3 sm:p-4 md:p-6 pb-20 md:pb-6">
           <div key={activeNav} className="animate-page-enter">
-            {viewMap[activeNav]}
+            {viewMap[activeNav] || <ExecutiveDashboard />}
           </div>
         </SmoothScroll>
       </div>
@@ -138,8 +151,8 @@ export default function Home() {
         onMorePress={() => setDrawerOpen(true)}
       />
 
-      {/* Floating AI Assistant Button - hidden when on AI Assistant view */}
-      {activeNav !== "aiassistant" && (
+      {/* Floating AI Assistant Button - hidden when on AI Assistant view or for members */}
+      {activeNav !== "aiassistant" && activeNav !== "profile" && !activeNav?.startsWith("my_") && activeNav !== "member_dashboard" && (
         <FloatingAIButton onClick={() => setActiveNav("aiassistant")} />
       )}
     </div>

@@ -43,7 +43,7 @@ export default function ExecutiveDashboard() {
             <h3 className="text-sm font-semibold text-slate-800">
               Agentic AI Control Center
             </h3>
-            <span className="text-[11px] text-emerald-600 bg-emerald-50 border border-emerald-200/60 px-2.5 py-0.5 rounded-full font-medium">
+            <span className="text-[11px] text-success bg-success-50 border border-success-200/60 px-2.5 py-0.5 rounded-full font-medium">
               5/6 Active
             </span>
           </div>

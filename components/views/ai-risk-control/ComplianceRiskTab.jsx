@@ -37,31 +37,31 @@ export default function ComplianceRiskTab() {
       {/* AI-Monitored Compliance Rules */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">AI-Monitored Compliance Rules</h3>
+          <h3 className="text-[15px] font-bold text-heading">AI-Monitored Compliance Rules</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {["ID", "Rule", "AI Score", "Status", "Last Check"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {complianceRules.map((cr) => (
               <tr key={cr.id} className="border-b border-slate-50 hover:bg-slate-50/60 whitespace-nowrap transition-colors">
-                <td className="px-5 py-3 font-mono text-xs text-slate-400">{cr.id}</td>
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{cr.rule}</td>
+                <td className="px-5 py-3 font-mono text-xs text-heading">{cr.id}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium">{cr.rule}</td>
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2">
                     <div className="bg-slate-200 rounded-full h-1.5 w-16 overflow-hidden">
                       <div className="h-full rounded-full transition-all duration-700" style={{ width: `${cr.score}%`, background: cr.score >= 90 ? "#059669" : cr.score >= 60 ? "#D97706" : "#DC2626" }} />
                     </div>
-                    <span className={`font-mono text-xs font-bold ${cr.score >= 90 ? "text-emerald-600" : cr.score >= 60 ? "text-amber-600" : "text-red-500"}`}>{cr.score}</span>
+                    <span className={`font-mono text-xs font-bold ${cr.score >= 90 ? "text-success" : cr.score >= 60 ? "text-warning" : "text-danger-500"}`}>{cr.score}</span>
                   </div>
                 </td>
                 <td className="px-5 py-3"><StatusBadge status={cr.status} /></td>
-                <td className="px-5 py-3 text-[11px] text-slate-400">{cr.lastCheck}</td>
+                <td className="px-5 py-3 text-[11px] text-heading">{cr.lastCheck}</td>
               </tr>
             ))}
           </tbody>
@@ -74,19 +74,19 @@ export default function ComplianceRiskTab() {
           {predictedViolations.map((pv) => (
             <div key={pv.rule} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
               <div className="flex justify-between items-start mb-2">
-                <div className="text-[13px] font-semibold text-slate-700">{pv.rule}</div>
+                <div className="text-[13px] font-semibold text-body">{pv.rule}</div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-slate-400">ETA: {pv.eta}</span>
+                  <span className="text-[11px] text-heading">ETA: {pv.eta}</span>
                   <StatusBadge status={pv.impact} />
                 </div>
               </div>
               <div className="text-[12px] text-slate-500">{pv.description}</div>
               <div className="mt-2 flex items-center gap-2">
-                <span className="text-[10px] text-slate-400 uppercase">Probability</span>
+                <span className="text-[10px] text-heading uppercase">Probability</span>
                 <div className="bg-slate-200 rounded-full h-1.5 w-24 overflow-hidden">
-                  <div className="h-full rounded-full bg-red-400" style={{ width: pv.probability }} />
+                  <div className="h-full rounded-full bg-danger-400" style={{ width: pv.probability }} />
                 </div>
-                <span className="font-mono text-xs text-red-500 font-semibold">{pv.probability}</span>
+                <span className="font-mono text-xs text-danger-500 font-semibold">{pv.probability}</span>
               </div>
             </div>
           ))}
@@ -96,26 +96,26 @@ export default function ComplianceRiskTab() {
       {/* Regulatory Change Impact */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Regulatory Change Impact Analysis</h3>
+          <h3 className="text-[15px] font-bold text-heading">Regulatory Change Impact Analysis</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Regulation", "Effective Date", "Impact", "Key Areas", "Status"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {regulatoryChanges.map((rc) => (
               <tr key={rc.regulation} className="border-b  border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium whitespace-nowrap">{rc.regulation}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{rc.effective}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium whitespace-nowrap">{rc.regulation}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{rc.effective}</td>
                 <td className="px-5 py-3"><StatusBadge status={rc.impact} /></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
                   <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={rc.areas}>{rc.areas}</span>
                 </td>
-                <td className="px-5 py-3 text-[12px] text-indigo-600 font-medium">{rc.status}</td>
+                <td className="px-5 py-3 text-[12px] text-primary font-medium">{rc.status}</td>
               </tr>
             ))}
           </tbody>
@@ -125,21 +125,21 @@ export default function ComplianceRiskTab() {
       {/* Filing Deadline Tracker */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Filing Deadline Tracker with AI Reminders</h3>
+          <h3 className="text-[15px] font-bold text-heading">Filing Deadline Tracker with AI Reminders</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Filing", "Deadline", "Status", "AI Reminder"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {filingDeadlines.map((fd) => (
               <tr key={fd.filing} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium whitespace-nowrap">{fd.filing}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600 whitespace-nowrap">{fd.deadline}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium whitespace-nowrap">{fd.filing}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body whitespace-nowrap">{fd.deadline}</td>
                 <td className="px-5 py-3"><StatusBadge status={fd.status === "In Progress" ? "Warning" : fd.status === "Not Required" ? "Resolved" : "Pending"} /></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[280px]">
                   <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={fd.aiReminder}>{fd.aiReminder}</span>

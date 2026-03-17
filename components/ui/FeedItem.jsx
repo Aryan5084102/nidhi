@@ -9,11 +9,11 @@ export default function FeedItem({ dotColor, title, subtitle, badge, time, descr
       <div className="flex-1">
         <div className="flex justify-between items-start">
           <div>
-            <span className="text-[13px] font-semibold text-slate-700">{title}</span>
-            {subtitle && <span className="text-[11px] text-slate-400 font-mono ml-2">{subtitle}</span>}
+            <span className="text-[13px] font-semibold text-body">{title}</span>
+            {subtitle && <span className="text-[11px] text-heading font-mono ml-2">{subtitle}</span>}
           </div>
           <div className="flex items-center gap-2">
-            {time && <span className="text-[10px] text-slate-400">{time}</span>}
+            {time && <span className="text-[10px] text-heading">{time}</span>}
             {badge && <StatusBadge status={badge} />}
           </div>
         </div>

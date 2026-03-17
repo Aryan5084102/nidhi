@@ -62,7 +62,7 @@ export default function AuditLogsTab() {
           placeholder="Search audit logs..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="rounded-xl px-4 py-2 text-xs border border-slate-200 bg-white text-slate-600 placeholder-slate-300 focus:outline-none focus:border-indigo-300 focus:ring-1 focus:ring-indigo-200 flex-1"
+          className="rounded-xl px-4 py-2 text-xs border border-slate-200 bg-white text-body placeholder-slate-300 focus:outline-none focus:border-primary-300 focus:ring-1 focus:ring-primary-200 flex-1"
         />
       </div>
 
@@ -74,10 +74,10 @@ export default function AuditLogsTab() {
         data={filtered}
         renderRow={(l) => (
           <tr key={l.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-            <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{l.timestamp}</td>
-            <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{l.action}</td>
+            <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{l.timestamp}</td>
+            <td className="px-5 py-3 text-[13px] font-medium text-body whitespace-nowrap">{l.action}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{l.user}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">
+            <td className="px-5 py-3 text-[12px] text-heading">
               <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={l.detail}>{l.detail}</span>
             </td>
             <td className="px-5 py-3">

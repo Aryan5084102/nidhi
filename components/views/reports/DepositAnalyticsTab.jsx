@@ -60,13 +60,13 @@ export default function DepositAnalyticsTab() {
             {maturities.map((m) => (
               <div key={m.period} className="bg-slate-50 rounded-xl p-3.5">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[13px] font-semibold text-slate-700">{m.period}</span>
+                  <span className="text-[13px] font-semibold text-body">{m.period}</span>
                   <StatusBadge status={m.urgency} />
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                   <span className="text-[12px] text-slate-500 whitespace-nowrap">{m.count} accounts</span>
                   <span className="text-[14px] font-bold font-mono text-slate-800 whitespace-nowrap">{m.amount}</span>
-                  <span className="text-[11px] text-slate-400 whitespace-nowrap">{m.type}</span>
+                  <span className="text-[11px] text-heading whitespace-nowrap">{m.type}</span>
                 </div>
               </div>
             ))}
@@ -79,10 +79,10 @@ export default function DepositAnalyticsTab() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {tierConcentration.map((t) => (
             <div key={t.tier} className="bg-slate-50 rounded-xl p-4">
-              <div className="text-[12px] font-semibold text-slate-700 mb-2">{t.tier}</div>
-              <div className="text-[20px] font-bold font-mono text-indigo-600">{t.deposits}</div>
+              <div className="text-[12px] font-semibold text-body mb-2">{t.tier}</div>
+              <div className="text-[20px] font-bold font-mono text-primary">{t.deposits}</div>
               <div className="flex justify-between items-center mt-2">
-                <span className="text-[11px] text-slate-400">{t.members.toLocaleString()} members</span>
+                <span className="text-[11px] text-heading">{t.members.toLocaleString()} members</span>
                 <span className="text-[11px] font-semibold text-slate-500">{t.pct}%</span>
               </div>
               <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden mt-2">

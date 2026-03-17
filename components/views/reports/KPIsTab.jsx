@@ -32,18 +32,18 @@ export default function KPIsTab() {
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-6 card-shadow border border-slate-100">
-        <h3 className="text-[15px] font-bold text-slate-900 mb-1">Key Performance Indicators</h3>
-        <p className="text-[13px] text-slate-400">Track organizational performance against strategic targets for FY 2025-26.</p>
+        <h3 className="text-[15px] font-bold text-heading mb-1">Key Performance Indicators</h3>
+        <p className="text-[13px] text-heading">Track organizational performance against strategic targets for FY 2025-26.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {kpis.map((kpi) => (
           <div key={kpi.title} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
-            <div className="text-[12px] text-slate-400 mb-3">{kpi.title}</div>
-            <div className="text-[26px] font-bold font-mono text-slate-900 mb-1">{kpi.value}</div>
+            <div className="text-[12px] text-heading mb-3">{kpi.title}</div>
+            <div className="text-[26px] font-bold font-mono text-heading mb-1">{kpi.value}</div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] text-slate-400">Target: {kpi.target}</span>
-              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${kpi.status === "Below Target" ? "bg-amber-50 text-amber-600" : "bg-emerald-50 text-emerald-600"}`}>
+              <span className="text-[11px] text-heading">Target: {kpi.target}</span>
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${kpi.status === "Below Target" ? "bg-warning-50 text-warning" : "bg-success-50 text-success"}`}>
                 {kpi.status}
               </span>
             </div>
@@ -60,14 +60,14 @@ export default function KPIsTab() {
           <div className="flex flex-col gap-4">
             {departmentKPIs.map((d) => (
               <div key={d.dept} className="bg-slate-50 rounded-xl p-4">
-                <div className="text-[13px] font-bold text-slate-700 mb-3">{d.dept}</div>
+                <div className="text-[13px] font-bold text-body mb-3">{d.dept}</div>
                 <div className="flex flex-col gap-2">
                   {d.kpis.map((k) => (
                     <div key={k.name} className="flex justify-between items-center">
                       <span className="text-[12px] text-slate-500">{k.name}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-[12px] font-mono font-semibold text-slate-700">{k.actual}</span>
-                        <span className="text-[10px] text-slate-400">/ {k.target}</span>
+                        <span className="text-[12px] font-mono font-semibold text-body">{k.actual}</span>
+                        <span className="text-[10px] text-heading">/ {k.target}</span>
                       </div>
                     </div>
                   ))}
@@ -83,19 +83,19 @@ export default function KPIsTab() {
             {strategicGoals.map((sg) => (
               <div key={sg.goal} className="bg-slate-50 rounded-xl p-3.5">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-[13px] font-semibold text-slate-700">{sg.goal}</span>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${sg.status === "On Track" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : sg.status === "In Progress" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-red-50 border-red-200 text-red-600"}`}>
+                  <span className="text-[13px] font-semibold text-body">{sg.goal}</span>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${sg.status === "On Track" ? "bg-success-50 border-success-200 text-success" : sg.status === "In Progress" ? "bg-warning-50 border-warning-200 text-warning" : "bg-danger-50 border-danger-200 text-danger"}`}>
                     {sg.status}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[11px] text-slate-400">Current: {sg.current}</span>
-                  <span className="text-[11px] text-slate-400">Target: {sg.target}</span>
+                  <span className="text-[11px] text-heading">Current: {sg.current}</span>
+                  <span className="text-[11px] text-heading">Target: {sg.target}</span>
                 </div>
                 <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-700" style={{ width: `${sg.progress}%`, background: sg.progress >= 80 ? "linear-gradient(to right, #059669, #34D399)" : sg.progress >= 50 ? "linear-gradient(to right, #D97706, #FBBF24)" : "linear-gradient(to right, #DC2626, #F87171)" }} />
                 </div>
-                <div className="text-[11px] font-mono text-slate-400 mt-1 text-right">{sg.progress}%</div>
+                <div className="text-[11px] font-mono text-heading mt-1 text-right">{sg.progress}%</div>
               </div>
             ))}
           </div>

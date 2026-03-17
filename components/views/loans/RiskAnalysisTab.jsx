@@ -6,9 +6,9 @@ import DataTable from "@/components/ui/DataTable";
 /* ─── Risk Badge ─── */
 function RiskTag({ level }) {
   const styles = {
-    Low: "bg-emerald-50 text-emerald-600 border-emerald-200/60",
-    Medium: "bg-amber-50 text-amber-600 border-amber-200/60",
-    High: "bg-red-50 text-red-500 border-red-200/60",
+    Low: "bg-success-50 text-success border-success-200/60",
+    Medium: "bg-warning-50 text-warning border-warning-200/60",
+    High: "bg-danger-50 text-danger-500 border-danger-200/60",
   };
   return (
     <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${styles[level] || styles.Medium}`}>
@@ -47,11 +47,11 @@ export default function RiskAnalysisTab() {
         {riskDistribution.map((r) => (
           <div key={r.level} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="flex justify-between items-start mb-3">
-              <div className="text-[13px] font-semibold text-slate-700">{r.level}</div>
+              <div className="text-[13px] font-semibold text-body">{r.level}</div>
               <div className="text-[20px] font-bold font-mono" style={{ color: r.color }}>{r.count.toLocaleString()}</div>
             </div>
             <ProgressBar value={r.pct} max={100} color={r.color} height="h-2" />
-            <div className="text-[11px] text-slate-400 text-right font-mono mt-2">{r.pct}%</div>
+            <div className="text-[11px] text-heading text-right font-mono mt-2">{r.pct}%</div>
           </div>
         ))}
       </div>
@@ -59,20 +59,20 @@ export default function RiskAnalysisTab() {
       {/* Risk Factors Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Risk Factors Analysis</h3>
-          <p className="text-[12px] text-slate-400 mt-1">AI-powered risk factor identification across the loan portfolio</p>
+          <h3 className="text-[15px] font-bold text-heading">Risk Factors Analysis</h3>
+          <p className="text-[12px] text-heading mt-1">AI-powered risk factor identification across the loan portfolio</p>
         </div>
         <DataTable
           columns={riskColumns}
           data={riskFactors}
           renderRow={(rf) => (
             <tr key={rf.factor} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
-              <td className="px-5 py-3 text-[13px] font-medium text-slate-700">{rf.factor}</td>
+              <td className="px-5 py-3 text-[13px] font-medium text-body">{rf.factor}</td>
               <td className="px-5 py-3"><RiskTag level={rf.impact} /></td>
-              <td className="px-5 py-3 text-[13px] font-mono text-slate-600">{rf.affectedLoans}</td>
+              <td className="px-5 py-3 text-[13px] font-mono text-body">{rf.affectedLoans}</td>
               <td className="px-5 py-3">
                 <span className={`text-[11px] font-medium ${
-                  rf.trend === "Decreasing" ? "text-emerald-500" : rf.trend === "Increasing" ? "text-red-500" : "text-slate-400"
+                  rf.trend === "Decreasing" ? "text-success-500" : rf.trend === "Increasing" ? "text-danger-500" : "text-heading"
                 }`}>
                   {rf.trend === "Decreasing" ? "\u2193" : rf.trend === "Increasing" ? "\u2191" : "\u2192"} {rf.trend}
                 </span>

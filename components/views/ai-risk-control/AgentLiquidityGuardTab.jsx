@@ -58,10 +58,10 @@ export default function AgentLiquidityGuardTab() {
           {currentAssessments.map((item) => (
             <div key={item.metric} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[13px] font-semibold text-slate-700">{item.metric}</span>
+                <span className="text-[13px] font-semibold text-body">{item.metric}</span>
                 <StatusBadge status={item.status} />
               </div>
-              <div className="text-[15px] font-bold text-slate-900 mb-1">{item.value}</div>
+              <div className="text-[15px] font-bold text-heading mb-1">{item.value}</div>
               <div className="text-[12px] text-slate-500">{item.detail}</div>
             </div>
           ))}
@@ -90,10 +90,10 @@ export default function AgentLiquidityGuardTab() {
           {configThresholds.map((cfg) => (
             <div key={cfg.param} className="bg-slate-50 rounded-xl p-3 border border-slate-100 flex justify-between items-center">
               <div>
-                <div className="text-[13px] font-medium text-slate-700">{cfg.param}</div>
-                <div className="text-[11px] text-slate-400">{cfg.description}</div>
+                <div className="text-[13px] font-medium text-body">{cfg.param}</div>
+                <div className="text-[11px] text-heading">{cfg.description}</div>
               </div>
-              <span className=" whitespace-nowrap font-mono text-xs text-indigo-600 font-semibold bg-indigo-50 rounded-lg px-2.5 py-1 border border-indigo-200/60">{cfg.value}</span>
+              <span className=" whitespace-nowrap font-mono text-xs text-primary font-semibold bg-primary-50 rounded-lg px-2.5 py-1 border border-primary-200/60">{cfg.value}</span>
             </div>
           ))}
         </div>

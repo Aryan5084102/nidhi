@@ -45,8 +45,8 @@ export default function LoansView() {
         title="Loans Management"
         description="Comprehensive loan management system with AI-powered risk analysis, automated approval workflows, and real-time portfolio monitoring. All loans comply with Nidhi Company (Amendment) Rules, 2022."
       >
-        <HeaderStat value="5,200" label="Active Loans" className="bg-slate-50 text-indigo-600" />
-        <HeaderStat value={"\u20B92.4Cr"} label="Portfolio Value" className="bg-slate-50 text-emerald-600" />
+        <HeaderStat value="5,200" label="Active Loans" className="bg-slate-50 text-primary" />
+        <HeaderStat value={"\u20B92.4Cr"} label="Portfolio Value" className="bg-slate-50 text-success" />
       </PageHeader>
 
       {/* Sub-tabs */}

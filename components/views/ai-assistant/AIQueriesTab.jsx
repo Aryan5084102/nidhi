@@ -88,17 +88,17 @@ export default function AIQueriesTab() {
               onClick={() => setActiveQuery(activeQuery === i ? null : i)}
               className={`text-left bg-white rounded-2xl p-4 card-shadow border transition-all cursor-pointer ${
                 activeQuery === i
-                  ? "border-indigo-300 ring-2 ring-indigo-500/10"
+                  ? "border-primary-300 ring-2 ring-primary-500/10"
                   : "border-slate-100 hover:border-slate-200"
               }`}
             >
-              <p className="text-[13px] text-slate-700 font-medium">{q.text}</p>
+              <p className="text-[13px] text-body font-medium">{q.text}</p>
               <div className="flex items-center gap-2 mt-2">
                 <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                   q.category === "Risk" ? "bg-rose-50 text-rose-600 border-rose-200" :
                   q.category === "Compliance" ? "bg-violet-50 text-violet-600 border-violet-200" :
-                  q.category === "Growth" ? "bg-emerald-50 text-emerald-600 border-emerald-200" :
-                  "bg-red-50 text-red-600 border-red-200"
+                  q.category === "Growth" ? "bg-success-50 text-success border-success-200" :
+                  "bg-danger-50 text-danger border-danger-200"
                 }`}>
                   {q.category}
                 </span>
@@ -123,21 +123,21 @@ export default function AIQueriesTab() {
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
                     {["ID", "Name", "STI/Alert", "Risk Score", "Branch"].map((h) => (
-                      <th key={h} className="px-4 py-2.5 text-left text-[11px] text-slate-400 font-semibold uppercase tracking-wide">{h}</th>
+                      <th key={h} className="px-4 py-2.5 text-left text-[11px] text-heading font-semibold uppercase tracking-wide">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {featuredQueries[activeQuery].data.map((row) => (
                     <tr key={row.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                      <td className="px-4 py-2.5 font-mono text-xs text-slate-400">{row.id}</td>
-                      <td className="px-4 py-2.5 text-[13px] text-slate-700 font-medium">{row.name}</td>
-                      <td className="px-4 py-2.5 font-mono text-xs text-amber-600">{row.sti || "—"}</td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-heading">{row.id}</td>
+                      <td className="px-4 py-2.5 text-[13px] text-body font-medium">{row.name}</td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-warning">{row.sti || "—"}</td>
                       <td className="px-4 py-2.5">
                         <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
-                          row.risk >= 80 ? "bg-red-50 text-red-600 border-red-200" :
-                          row.risk >= 60 ? "bg-amber-50 text-amber-600 border-amber-200" :
-                          "bg-emerald-50 text-emerald-600 border-emerald-200"
+                          row.risk >= 80 ? "bg-danger-50 text-danger border-danger-200" :
+                          row.risk >= 60 ? "bg-warning-50 text-warning border-warning-200" :
+                          "bg-success-50 text-success border-success-200"
                         }`}>
                           {row.risk}/100
                         </span>
@@ -150,7 +150,7 @@ export default function AIQueriesTab() {
             </div>
           ) : (
             <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-              <p className="text-[13px] text-slate-700 leading-relaxed whitespace-pre-wrap">
+              <p className="text-[13px] text-body leading-relaxed whitespace-pre-wrap">
                 {featuredQueries[activeQuery].content}
               </p>
             </div>
@@ -171,7 +171,7 @@ export default function AIQueriesTab() {
           ].map((action) => (
             <button
               key={action}
-              className="text-[11px] font-medium px-3 py-2 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-600 cursor-pointer hover:bg-indigo-100 transition-colors"
+              className="text-[11px] font-medium px-3 py-2 rounded-xl border border-primary-200 bg-primary-50 text-primary cursor-pointer hover:bg-primary-100 transition-colors"
             >
               {action}
             </button>
@@ -185,12 +185,12 @@ export default function AIQueriesTab() {
           {queryHistory.map((q, i) => (
             <div key={i} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                <p className="text-[13px] text-slate-700">{q.text}</p>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary-400" />
+                <p className="text-[13px] text-body">{q.text}</p>
               </div>
               <div className="flex items-center gap-2">
                 <StatusBadge status={q.type} />
-                <span className="text-[11px] text-slate-400 whitespace-nowrap">{q.time}</span>
+                <span className="text-[11px] text-heading whitespace-nowrap">{q.time}</span>
               </div>
             </div>
           ))}

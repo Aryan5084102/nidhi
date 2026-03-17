@@ -25,9 +25,9 @@ const depositMaturity = [
 ];
 
 const stressTests = [
-  { scenario: "Normal Operations", withdrawalRate: "5%", liquidityRatio: "1.82", survivalDays: "180+", result: "Pass", color: "text-emerald-600" },
-  { scenario: "Moderate Stress", withdrawalRate: "15%", liquidityRatio: "1.34", survivalDays: "92", result: "Pass", color: "text-amber-600" },
-  { scenario: "Severe Stress", withdrawalRate: "30%", liquidityRatio: "0.87", survivalDays: "41", result: "Fail", color: "text-red-500" },
+  { scenario: "Normal Operations", withdrawalRate: "5%", liquidityRatio: "1.82", survivalDays: "180+", result: "Pass", color: "text-success" },
+  { scenario: "Moderate Stress", withdrawalRate: "15%", liquidityRatio: "1.34", survivalDays: "92", result: "Pass", color: "text-warning" },
+  { scenario: "Severe Stress", withdrawalRate: "30%", liquidityRatio: "0.87", survivalDays: "41", result: "Fail", color: "text-danger-500" },
 ];
 
 const inflowOutflow = [
@@ -50,21 +50,21 @@ export default function LiquidityRiskTab() {
           {cashFlowProjections.map((cf) => (
             <div key={cf.period} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-[13px] font-semibold text-slate-700">{cf.period}</span>
+                <span className="text-[13px] font-semibold text-body">{cf.period}</span>
                 <StatusBadge status={cf.status === "Healthy" ? "Active" : cf.status === "Watch" ? "Warning" : "Active"} />
               </div>
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase">Inflow</div>
-                  <div className="text-[13px] font-mono font-semibold text-emerald-600">{cf.inflow}</div>
+                  <div className="text-[10px] text-heading uppercase">Inflow</div>
+                  <div className="text-[13px] font-mono font-semibold text-success">{cf.inflow}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase">Outflow</div>
-                  <div className="text-[13px] font-mono font-semibold text-red-500">{cf.outflow}</div>
+                  <div className="text-[10px] text-heading uppercase">Outflow</div>
+                  <div className="text-[13px] font-mono font-semibold text-danger-500">{cf.outflow}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-400 uppercase">Net</div>
-                  <div className="text-[13px] font-mono font-semibold text-indigo-600">{cf.net}</div>
+                  <div className="text-[10px] text-heading uppercase">Net</div>
+                  <div className="text-[13px] font-mono font-semibold text-primary">{cf.net}</div>
                 </div>
               </div>
             </div>
@@ -75,25 +75,25 @@ export default function LiquidityRiskTab() {
       {/* Deposit Maturity Analysis */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Deposit Maturity Analysis</h3>
+          <h3 className="text-[15px] font-bold text-heading">Deposit Maturity Analysis</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
               {["Maturity Bucket", "Amount", "Share", "Deposit Count"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {depositMaturity.map((row) => (
               <tr key={row.bucket} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{row.bucket}</td>
-                <td className="px-5 py-3 font-mono text-xs text-indigo-600">{row.amount}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium">{row.bucket}</td>
+                <td className="px-5 py-3 font-mono text-xs text-primary">{row.amount}</td>
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2">
                     <div className="bg-slate-200 rounded-full h-1.5 w-20 overflow-hidden">
-                      <div className="h-full rounded-full bg-indigo-500" style={{ width: row.percentage }} />
+                      <div className="h-full rounded-full bg-primary-500" style={{ width: row.percentage }} />
                     </div>
                     <span className="font-mono text-xs text-slate-500">{row.percentage}</span>
                   </div>
@@ -108,23 +108,23 @@ export default function LiquidityRiskTab() {
       {/* Stress Test Scenarios */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Stress Test Scenarios</h3>
+          <h3 className="text-[15px] font-bold text-heading">Stress Test Scenarios</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Scenario", "Withdrawal Rate", "Liquidity Ratio", "Survival Days", "Result"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {stressTests.map((st) => (
               <tr key={st.scenario} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors whitespace-nowrap">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{st.scenario}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{st.withdrawalRate}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{st.liquidityRatio}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{st.survivalDays}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium">{st.scenario}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{st.withdrawalRate}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{st.liquidityRatio}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{st.survivalDays}</td>
                 <td className="px-5 py-3"><span className={`text-xs font-bold ${st.color}`}>{st.result}</span></td>
               </tr>
             ))}

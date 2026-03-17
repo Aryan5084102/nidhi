@@ -51,7 +51,7 @@ export default function ComplianceReportsTab() {
                   <div className="w-full flex items-end justify-center" style={{ height: "100px" }}>
                     <div className="w-full max-w-[40px] rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${((d.score - minVal) / (maxVal - minVal)) * 100}%`, background: d.score >= 93 ? "linear-gradient(to top, #059669, #34D399)" : "linear-gradient(to top, #D97706, #FBBF24)" }} />
                   </div>
-                  <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">{d.month.split(" ")[0]}</span>
+                  <span className="text-[10px] text-heading group-hover:text-body transition-colors">{d.month.split(" ")[0]}</span>
                 </div>
               );
             })}
@@ -64,11 +64,11 @@ export default function ComplianceReportsTab() {
             {filingStatus.map((f) => (
               <div key={f.form} className="bg-slate-50 rounded-xl p-3 flex justify-between items-center">
                 <div>
-                  <div className="text-[13px] font-semibold text-slate-700">{f.form}</div>
-                  <div className="text-[11px] text-slate-400">{f.description}</div>
+                  <div className="text-[13px] font-semibold text-body">{f.form}</div>
+                  <div className="text-[11px] text-heading">{f.description}</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {f.dueDate !== "\u2014" && <span className="text-[11px] text-slate-400 font-mono">{f.dueDate}</span>}
+                  {f.dueDate !== "\u2014" && <span className="text-[11px] text-heading font-mono">{f.dueDate}</span>}
                   <StatusBadge status={f.status} />
                 </div>
               </div>
@@ -83,23 +83,23 @@ export default function ComplianceReportsTab() {
           <table className="w-full whitespace-nowrap">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">ID</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Finding</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Severity</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Status</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Owner</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">ID</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Finding</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center">Severity</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center">Status</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Owner</th>
               </tr>
             </thead>
             <tbody>
               {auditFindings.map((af) => (
                 <tr key={af.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="text-[12px] font-mono text-slate-400 px-5 py-3">{af.id}</td>
-                  <td className="text-[13px] text-slate-700 px-5 py-3 max-w-xs">{af.finding}</td>
+                  <td className="text-[12px] font-mono text-heading px-5 py-3">{af.id}</td>
+                  <td className="text-[13px] text-body px-5 py-3 max-w-xs">{af.finding}</td>
                   <td className="px-5 py-3 text-center">
                     <StatusBadge status={af.severity} />
                   </td>
                   <td className="px-5 py-3 text-center">
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${af.status === "Resolved" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : af.status === "Open" ? "bg-red-50 border-red-200 text-red-600" : "bg-amber-50 border-amber-200 text-amber-600"}`}>
+                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${af.status === "Resolved" ? "bg-success-50 border-success-200 text-success" : af.status === "Open" ? "bg-danger-50 border-danger-200 text-danger" : "bg-warning-50 border-warning-200 text-warning"}`}>
                       {af.status}
                     </span>
                   </td>
@@ -117,19 +117,19 @@ export default function ComplianceReportsTab() {
           <table className="w-full whitespace-nowrap">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Area</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Required</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Current</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Gap</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Status</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Area</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Required</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Current</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Gap</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center">Status</th>
               </tr>
             </thead>
             <tbody>
               {gapAnalysis.map((g) => (
                 <tr key={g.area} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="text-[13px] font-semibold text-slate-700 px-5 py-3">{g.area}</td>
+                  <td className="text-[13px] font-semibold text-body px-5 py-3">{g.area}</td>
                   <td className="text-[12px] font-mono text-slate-500 px-5 py-3">{g.required}</td>
-                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3">{g.current}</td>
+                  <td className="text-[12px] font-mono text-body px-5 py-3">{g.current}</td>
                   <td className="text-[12px] text-slate-500 px-5 py-3">{g.gap}</td>
                   <td className="px-5 py-3 text-center">
                     <StatusBadge status={g.status} />

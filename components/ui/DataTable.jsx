@@ -7,7 +7,7 @@ export default function DataTable({ columns, data, renderRow }) {
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 ${col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"}`}
+                className={`text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 ${col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"}`}
               >
                 {col.label}
               </th>

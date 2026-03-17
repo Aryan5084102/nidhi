@@ -16,8 +16,8 @@ export default function AuditLogTab() {
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">
-        <h3 className="text-[15px] font-bold text-slate-900 mb-1">System Audit Log</h3>
-        <p className="text-[13px] text-slate-400">Track all administrative actions, configuration changes, and system events.</p>
+        <h3 className="text-[15px] font-bold text-heading mb-1">System Audit Log</h3>
+        <p className="text-[13px] text-heading">Track all administrative actions, configuration changes, and system events.</p>
       </SectionCard>
 
       <DataTable
@@ -29,23 +29,23 @@ export default function AuditLogTab() {
             <td className="px-5 py-3">
               <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                 log.action.includes("Alert") || log.action.includes("Suspended")
-                  ? "bg-red-50 text-red-500 border-red-200/60"
+                  ? "bg-danger-50 text-danger-500 border-danger-200/60"
                   : log.action.includes("Updated") || log.action.includes("Changed")
                   ? "bg-blue-50 text-blue-600 border-blue-200/60"
                   : log.action.includes("Completed") || log.action.includes("Restarted")
-                  ? "bg-emerald-50 text-emerald-600 border-emerald-200/60"
+                  ? "bg-success-50 text-success border-success-200/60"
                   : "bg-slate-100 text-slate-500 border-slate-200"
               }`}>
                 {log.action}
               </span>
             </td>
             <td className="px-5 py-3">
-              <span className={`text-[12px] font-medium ${log.user === "System" ? "text-slate-400" : log.user === "AI Agent" ? "text-indigo-500" : "text-slate-700"}`}>
+              <span className={`text-[12px] font-medium ${log.user === "System" ? "text-heading" : log.user === "AI Agent" ? "text-primary-500" : "text-body"}`}>
                 {log.user}
               </span>
             </td>
             <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[300px]">{log.detail}</td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{log.timestamp}</td>
+            <td className="px-5 py-3 text-[12px] text-heading">{log.timestamp}</td>
           </tr>
         )}
       />

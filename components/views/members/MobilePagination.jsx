@@ -10,7 +10,7 @@ export default function MobilePagination({
 }) {
   return (
     <div className="md:hidden flex flex-col items-center gap-2 mt-3 px-1">
-      <span className="text-xs text-slate-400">
+      <span className="text-xs text-heading">
         {totalFiltered === 0 ? 0 : startIndex + 1}–{Math.min(startIndex + itemsPerPage, totalFiltered)} of {totalFiltered}
       </span>
       <div className="flex gap-2">
@@ -21,7 +21,7 @@ export default function MobilePagination({
         >
           Prev
         </button>
-        <span className="text-xs text-slate-400 flex items-center">{currentPage}/{totalPages}</span>
+        <span className="text-xs text-heading flex items-center">{currentPage}/{totalPages}</span>
         <button
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}

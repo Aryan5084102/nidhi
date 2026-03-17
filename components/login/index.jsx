@@ -7,17 +7,17 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { useAuth } from "@/context/AuthContext";
+import { ROLES } from "@/lib/roles";
 
-// ─── Google Client ID ────────────────────────────────────────────────────────
-// Replace this with your actual Google OAuth Client ID from Google Cloud Console
 const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
 
-export default function LoginPage({ onLogin }) {
-  const [view, setView] = useState("login"); // login | signup | forgot-password | reset-password
+export default function LoginPage() {
+  const [view, setView] = useState("login");
+  const { loginWithGoogle } = useAuth();
 
   const handleGoogleCredential = useCallback(
     (response) => {
-      // Decode JWT token from Google
       const base64Url = response.credential.split(".")[1];
       const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
       const payload = JSON.parse(atob(base64));
@@ -26,19 +26,19 @@ export default function LoginPage({ onLogin }) {
         email: payload.email,
         name: payload.name,
         picture: payload.picture,
+        role: ROLES.MEMBER,
       };
 
-      // Save google user if not already in localStorage
       const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
       if (!users.find((u) => u.email === googleUser.email)) {
-        users.push({ ...googleUser, password: null });
+        users.push({ ...googleUser, password: null, role: ROLES.MEMBER });
         localStorage.setItem("glimmora_users", JSON.stringify(users));
       }
 
       toast.success(`Welcome, ${googleUser.name}! Signed in with Google.`);
-      onLogin(googleUser);
+      loginWithGoogle(googleUser);
     },
-    [onLogin]
+    [loginWithGoogle]
   );
 
   // Load Google Identity Services script
@@ -100,7 +100,6 @@ export default function LoginPage({ onLogin }) {
       default:
         return (
           <LoginForm
-            onLogin={onLogin}
             onSwitch={setView}
             onForgotPassword={() => setView("forgot-password")}
             onGoogleLogin={handleGoogleLogin}
@@ -114,17 +113,17 @@ export default function LoginPage({ onLogin }) {
       <LeftPanel />
       <div className="flex-1 flex flex-col overflow-hidden relative bg-gradient-to-br from-[#0F172A] via-[#1a2744] to-[#0F172A] lg:from-[#F8FAFC] lg:via-[#F8FAFC] lg:to-[#F8FAFC]">
         {/* Mobile gradient decorative elements */}
-        <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[300px] h-[300px] rounded-full bg-emerald-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
+        <div className="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] rounded-full bg-primary-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[300px] h-[300px] rounded-full bg-success-500/[0.07] blur-3xl lg:hidden pointer-events-none" />
 
         {/* Persistent mobile header */}
         <div className="lg:hidden relative z-10 shrink-0 flex items-center gap-3 px-6 pt-6 pb-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-base font-bold text-white shadow-lg shadow-emerald-500/25">
+          <div className="w-10 h-10 bg-gradient-to-br from-success-400 to-teal-500 rounded-xl flex items-center justify-center text-base font-bold text-white shadow-lg shadow-success-500/25">
             G
           </div>
           <div>
             <div className="text-white text-base font-bold">Glimmora Nidhi</div>
-            <div className="text-slate-400 text-[11px]">Agentic AI Platform</div>
+            <div className="text-heading text-[11px]">Agentic AI Platform</div>
           </div>
         </div>
 

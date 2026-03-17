@@ -17,7 +17,7 @@ export default function BarChart({ data, bars, maxVal, labelKey = "month", heigh
                 />
               ))}
             </div>
-            <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">
+            <span className="text-[10px] text-heading group-hover:text-body transition-colors">
               {d[labelKey]}
             </span>
           </div>

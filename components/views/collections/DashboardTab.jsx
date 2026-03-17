@@ -28,7 +28,7 @@ export default function DashboardTab() {
                 <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.collected / maxVal) * 100}%`, background: "linear-gradient(to top, #059669, #10B981)" }} title={`Collected: ₹${(d.collected / 100000).toFixed(1)}L`} />
                 <div className="flex-1 rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.overdue / maxVal) * 100}%`, background: "linear-gradient(to top, #DC2626, #F87171)" }} title={`Overdue: ₹${(d.overdue / 100000).toFixed(1)}L`} />
               </div>
-              <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">{d.month}</span>
+              <span className="text-[10px] text-heading group-hover:text-body transition-colors">{d.month}</span>
             </div>
           ))}
         </div>
@@ -43,21 +43,21 @@ export default function DashboardTab() {
       <SectionCard title="Top Defaulters">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {collectionsDashboard.topDefaulters.map((d) => (
-            <div key={d.id} className="flex items-start gap-3 bg-red-50/50 rounded-xl p-4 border border-red-100/60">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 font-bold text-sm flex-shrink-0">
+            <div key={d.id} className="flex items-start gap-3 bg-danger-50/50 rounded-xl p-4 border border-danger-100/60">
+              <div className="w-10 h-10 rounded-full bg-danger-100 flex items-center justify-center text-danger-500 font-bold text-sm flex-shrink-0">
                 {d.name.charAt(0)}
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="text-[13px] font-semibold text-slate-700">{d.name}</div>
-                    <div className="text-[11px] text-slate-400 font-mono">{d.id} &middot; {d.scheme}</div>
+                    <div className="text-[13px] font-semibold text-body">{d.name}</div>
+                    <div className="text-[11px] text-heading font-mono">{d.id} &middot; {d.scheme}</div>
                   </div>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${d.daysOverdue >= 90 ? "bg-red-50 text-red-500 border-red-200/60" : d.daysOverdue >= 60 ? "bg-orange-50 text-orange-600 border-orange-200/60" : "bg-amber-50 text-amber-600 border-amber-200/60"}`}>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${d.daysOverdue >= 90 ? "bg-danger-50 text-danger-500 border-danger-200/60" : d.daysOverdue >= 60 ? "bg-orange-50 text-orange-600 border-orange-200/60" : "bg-warning-50 text-warning border-warning-200/60"}`}>
                     {d.daysOverdue}d overdue
                   </span>
                 </div>
-                <div className="text-[14px] font-bold text-red-500 font-mono mt-1">{d.outstanding}</div>
+                <div className="text-[14px] font-bold text-danger-500 font-mono mt-1">{d.outstanding}</div>
               </div>
             </div>
           ))}

@@ -1,5 +1,7 @@
 import "./globals.css";
 import ToastProvider from "@/components/ToastProvider";
+import { AuthProvider } from "@/context/AuthContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 export const metadata = {
   title: "Glimmora Nidhi - Agentic AI Dashboard",
@@ -16,7 +18,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="antialiased">
-        {children}
+        <AuthProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </AuthProvider>
         <ToastProvider />
       </body>
     </html>

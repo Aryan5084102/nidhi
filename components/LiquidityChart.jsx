@@ -173,17 +173,17 @@ export default function LiquidityChart() {
           </h3>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
+              <span className="w-2.5 h-2.5 rounded-sm bg-success-500" />
               <span className="text-[11px] text-slate-500">Inflow</span>
-              <span className="text-[11px] font-semibold text-emerald-600 ml-0.5">₹{totalInflow}L</span>
+              <span className="text-[11px] font-semibold text-success ml-0.5">₹{totalInflow}L</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-indigo-500" />
+              <span className="w-2.5 h-2.5 rounded-sm bg-primary-500" />
               <span className="text-[11px] text-slate-500">Payout</span>
-              <span className="text-[11px] font-semibold text-indigo-600 ml-0.5">₹{totalPayout}L</span>
+              <span className="text-[11px] font-semibold text-primary ml-0.5">₹{totalPayout}L</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className={`text-[11px] font-semibold ${netFlow >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+              <span className={`text-[11px] font-semibold ${netFlow >= 0 ? "text-success" : "text-danger-500"}`}>
                 Net: {netFlow >= 0 ? "+" : ""}₹{netFlow}L
               </span>
             </div>
@@ -199,7 +199,7 @@ export default function LiquidityChart() {
               className={`px-2.5 py-1 text-[10px] font-semibold rounded-md transition-all duration-200 cursor-pointer ${
                 activeTimeFrame === tf
                   ? "bg-white text-slate-800 shadow-sm"
-                  : "text-slate-400 hover:text-slate-600"
+                  : "text-heading hover:text-body"
               }`}
             >
               {tf}

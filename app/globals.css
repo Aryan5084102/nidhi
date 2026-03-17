@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Backgrounds ── */
   --color-bg-primary: #F1F5F9;
   --color-bg-secondary: #FFFFFF;
   --color-bg-card: #FFFFFF;
@@ -8,24 +9,75 @@
   --color-bg-deep: #E2E8F0;
   --color-border: #E2E8F0;
   --color-border-light: #CBD5E1;
+
+  /* ── Text (slate scale) ── */
   --color-text-primary: #0F172A;
   --color-text-secondary: #1E293B;
   --color-text-muted: #64748B;
   --color-text-dim: #94A3B8;
+  --color-muted: #94A3B8;
+  --color-muted-foreground: #64748B;
+  --color-heading: #0F172A;
+  --color-body: #334155;
+  --color-subtle: #CBD5E1;
+  --color-label: #94A3B8;
+
+  /* ── Primary (Indigo) — buttons, active tabs, links, focus rings ── */
+  --color-primary: #6366F1;
+  --color-primary-50: #EEF2FF;
+  --color-primary-100: #E0E7FF;
+  --color-primary-200: #C7D2FE;
+  --color-primary-300: #A5B4FC;
+  --color-primary-400: #818CF8;
+  --color-primary-500: #6366F1;
+  --color-primary-700: #4338CA;
+
+  /* ── Success (Emerald) — deposits, positive metrics, verified ── */
+  --color-success: #047857;
+  --color-success-50: #ECFDF5;
+  --color-success-100: #D1FAE5;
+  --color-success-200: #A7F3D0;
+  --color-success-300: #6EE7B7;
+  --color-success-400: #34D399;
+  --color-success-500: #10B981;
+  --color-success-700: #047857;
+
+  /* ── Warning (Amber) — pending, caution, review ── */
+  --color-warning: #D97706;
+  --color-warning-50: #FFFBEB;
+  --color-warning-100: #FEF3C7;
+  --color-warning-200: #FDE68A;
+  --color-warning-300: #FCD34D;
+  --color-warning-400: #FBBF24;
+  --color-warning-500: #F59E0B;
+
+  /* ── Danger (Red) — errors, rejected, high risk ── */
+  --color-danger: #DC2626;
+  --color-danger-50: #FEF2F2;
+  --color-danger-100: #FEE2E2;
+  --color-danger-200: #FECACA;
+  --color-danger-300: #FCA5A5;
+  --color-danger-400: #F87171;
+  --color-danger-500: #EF4444;
+
+  /* ── Secondary (Purple) — chit funds, secondary accent ── */
+  --color-secondary: #7C3AED;
+  --color-secondary-50: #FAF5FF;
+  --color-secondary-100: #F3E8FF;
+  --color-secondary-200: #E9D5FF;
+  --color-secondary-500: #8B5CF6;
+  --color-secondary-700: #6D28D9;
+
+  /* ── Misc Accents ── */
   --color-accent-teal: #0D9488;
-  --color-accent-blue: #4F46E5;
-  --color-accent-purple: #7C3AED;
-  --color-accent-amber: #D97706;
-  --color-accent-red: #DC2626;
-  --color-accent-green: #059669;
   --color-accent-gold: #C9982E;
+  --color-accent-gold-light: #E8C65A;
   --color-accent-navy: #0F172A;
   --color-accent-navy-light: #1E293B;
-  --color-accent-gold-light: #E8C65A;
-  --color-accent-emerald: #10B981;
-  --color-accent-indigo: #6366F1;
   --color-sidebar-from: #0F172A;
   --color-sidebar-to: #1E293B;
+
+  /* ── Typography ── */
   --font-sans: 'Inter', 'DM Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
@@ -275,23 +327,28 @@ html.dark .bg-white.border-b {
 }
 
 /* Status badges - keep colored backgrounds but adjust opacity */
+html.dark .bg-success-50,
 html.dark .bg-emerald-50 {
   background-color: rgba(16, 185, 129, 0.1) !important;
 }
 
+html.dark .bg-danger-50,
 html.dark .bg-red-50 {
   background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
+html.dark .bg-warning-50,
 html.dark .bg-amber-50,
 html.dark .bg-yellow-50 {
   background-color: rgba(245, 158, 11, 0.1) !important;
 }
 
+html.dark .bg-primary-50,
 html.dark .bg-indigo-50 {
   background-color: rgba(99, 102, 241, 0.1) !important;
 }
 
+html.dark .bg-secondary-50,
 html.dark .bg-purple-50 {
   background-color: rgba(168, 85, 247, 0.1) !important;
 }

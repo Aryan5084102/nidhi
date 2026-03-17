@@ -22,9 +22,9 @@ const adminUsers = [
 
 const roleBadge = (role) => {
   if (role === "Super Admin") return "bg-violet-50 text-violet-600 border-violet-200/60";
-  if (role === "Admin") return "bg-indigo-50 text-indigo-600 border-indigo-200/60";
+  if (role === "Admin") return "bg-primary-50 text-primary border-primary-200/60";
   if (role === "Manager") return "bg-blue-50 text-blue-600 border-blue-200/60";
-  if (role === "Operator") return "bg-emerald-50 text-emerald-600 border-emerald-200/60";
+  if (role === "Operator") return "bg-success-50 text-success border-success-200/60";
   return "bg-slate-100 text-slate-500 border-slate-200";
 };
 
@@ -56,24 +56,24 @@ export default function UserManagementTab() {
   });
 
   const metrics = [
-    { label: "Total Users", value: totalUsers, color: "text-slate-700" },
-    { label: "Active", value: activeUsers, color: "text-emerald-600" },
-    { label: "Inactive", value: inactiveUsers, color: "text-amber-600" },
-    { label: "Locked", value: lockedUsers, color: "text-red-500" },
+    { label: "Total Users", value: totalUsers, color: "text-body" },
+    { label: "Active", value: activeUsers, color: "text-success" },
+    { label: "Inactive", value: inactiveUsers, color: "text-warning" },
+    { label: "Locked", value: lockedUsers, color: "text-danger-500" },
   ];
 
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">
-        <h3 className="text-[15px] font-bold text-slate-900 mb-1">User Management</h3>
-        <p className="text-[13px] text-slate-400">Manage system users, assign roles, and control access across the Glimmora Nidhi platform.</p>
+        <h3 className="text-[15px] font-bold text-heading mb-1">User Management</h3>
+        <p className="text-[13px] text-heading">Manage system users, assign roles, and control access across the Glimmora Nidhi platform.</p>
       </SectionCard>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
         {metrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 text-center">
             <div className={`text-2xl font-bold ${m.color}`}>{m.value}</div>
-            <div className="text-[11px] text-slate-400 mt-1">{m.label}</div>
+            <div className="text-[11px] text-heading mt-1">{m.label}</div>
           </div>
         ))}
       </div>
@@ -85,18 +85,18 @@ export default function UserManagementTab() {
             placeholder="Search by name or email..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-[13px] text-slate-700 w-72 outline-none focus:border-indigo-300 transition-colors"
+            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-[13px] text-body w-72 outline-none focus:border-primary-300 transition-colors"
           />
           <div className="flex gap-1.5 flex-wrap">
             {roles.map((r) => (
               <button key={r} onClick={() => setRoleFilter(r)}
-                className={`rounded-xl px-3 py-1.5 text-[11px] whitespace-nowrap cursor-pointer transition-all border ${roleFilter === r ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+                className={`rounded-xl px-3 py-1.5 text-[11px] whitespace-nowrap cursor-pointer transition-all border ${roleFilter === r ? "bg-primary-50 border-primary-300 text-primary font-semibold" : "bg-white border-slate-200 text-heading hover:border-slate-300 hover:text-body"}`}>
                 {r}
               </button>
             ))}
           </div>
         </div>
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white text-[12px] font-semibold px-4 py-2 rounded-xl cursor-pointer transition-colors">
+        <button className="bg-primary-500 hover:bg-primary text-white text-[12px] font-semibold px-4 py-2 rounded-xl cursor-pointer transition-colors">
           + Add User
         </button>
       </div>
@@ -107,7 +107,7 @@ export default function UserManagementTab() {
         renderRow={(u) => (
           <tr key={u.id} className="border-b whitespace-nowrap border-slate-50 hover:bg-slate-50/50 transition-colors">
             <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{u.id}</td>
-            <td className="px-5 py-3 text-[13px] font-semibold text-slate-700">{u.name}</td>
+            <td className="px-5 py-3 text-[13px] font-semibold text-body">{u.name}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{u.email}</td>
             <td className="px-5 py-3">
               <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${roleBadge(u.role)}`}>
@@ -118,7 +118,7 @@ export default function UserManagementTab() {
             <td className="px-5 py-3">
               <StatusBadge status={u.status} />
             </td>
-            <td className="px-5 py-3 text-[12px] text-slate-400">{u.lastLogin}</td>
+            <td className="px-5 py-3 text-[12px] text-heading">{u.lastLogin}</td>
           </tr>
         )}
       />

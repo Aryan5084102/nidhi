@@ -66,11 +66,11 @@ const processSteps = [
 ];
 
 const colorMap = {
-  indigo: { bg: "bg-indigo-50", border: "border-indigo-200", text: "text-indigo-600", line: "bg-indigo-400" },
-  amber: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-600", line: "bg-amber-400" },
-  emerald: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-600", line: "bg-emerald-400" },
+  indigo: { bg: "bg-primary-50", border: "border-primary-200", text: "text-primary", line: "bg-primary-400" },
+  amber: { bg: "bg-warning-50", border: "border-warning-200", text: "text-warning", line: "bg-warning-400" },
+  emerald: { bg: "bg-success-50", border: "border-success-200", text: "text-success", line: "bg-success-400" },
   blue: { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-600", line: "bg-blue-400" },
-  purple: { bg: "bg-purple-50", border: "border-purple-200", text: "text-purple-600", line: "bg-purple-400" },
+  purple: { bg: "bg-secondary-50", border: "border-secondary-200", text: "text-secondary", line: "bg-purple-400" },
 };
 
 export default function DashboardTab() {
@@ -99,13 +99,13 @@ export default function DashboardTab() {
                   <div className={`w-11 h-11 rounded-2xl ${c.bg} border ${c.border} flex items-center justify-center ${c.text} mb-2`}>
                     {ps.icon}
                   </div>
-                  <div className="text-[12px] font-semibold text-slate-700 mb-1">{ps.title}</div>
-                  <div className="text-[10px] text-slate-400 leading-relaxed px-2 max-w-[140px]">{ps.description}</div>
+                  <div className="text-[12px] font-semibold text-body mb-1">{ps.title}</div>
+                  <div className="text-[10px] text-heading leading-relaxed px-2 max-w-[140px]">{ps.description}</div>
                 </div>
                 {idx < processSteps.length - 1 && (
                   <div className="flex items-center pt-5 -mx-1">
                     <div className={`w-8 h-0.5 ${colorMap[processSteps[idx + 1].color].line} opacity-40`} />
-                    <svg className="w-3 h-3 text-slate-300 -ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-3 h-3 text-subtle -ml-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -124,16 +124,16 @@ export default function DashboardTab() {
             {loanApplications.slice(0, 4).map((app) => (
               <div key={app.id} className="flex items-center justify-between bg-slate-50 rounded-xl p-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-indigo-50 border border-indigo-200/60 rounded-full flex items-center justify-center text-[11px] font-bold text-indigo-600">
+                  <div className="w-8 h-8 bg-primary-50 border border-primary-200/60 rounded-full flex items-center justify-center text-[11px] font-bold text-primary">
                     {app.memberName.charAt(0)}
                   </div>
                   <div>
-                    <div className="text-[13px] font-semibold text-slate-700">{app.memberName}</div>
-                    <div className="text-[11px] text-slate-400">{app.id} &middot; {app.purpose}</div>
+                    <div className="text-[13px] font-semibold text-body">{app.memberName}</div>
+                    <div className="text-[11px] text-heading">{app.id} &middot; {app.purpose}</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[13px] font-bold text-slate-700 font-mono">{app.amount}</div>
+                  <div className="text-[13px] font-bold text-body font-mono">{app.amount}</div>
                   <StatusBadge status={app.status} />
                 </div>
               </div>
@@ -149,12 +149,12 @@ export default function DashboardTab() {
               return (
                 <div key={item.category} className="bg-slate-50 rounded-xl p-3">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-[13px] font-semibold text-slate-700">{item.category}</span>
+                    <span className="text-[13px] font-semibold text-body">{item.category}</span>
                     <span className="text-[12px] font-mono text-slate-500">{item.count} loans</span>
                   </div>
-                  <div className="flex justify-between text-[11px] text-slate-400 mb-1.5">
-                    <span>Sanctioned: <strong className="text-slate-600">{"\u20B9"}{(item.sanctioned / 100000).toFixed(1)}L</strong></span>
-                    <span>Disbursed: <strong className="text-slate-600">{"\u20B9"}{(item.disbursed / 100000).toFixed(1)}L</strong></span>
+                  <div className="flex justify-between text-[11px] text-heading mb-1.5">
+                    <span>Sanctioned: <strong className="text-body">{"\u20B9"}{(item.sanctioned / 100000).toFixed(1)}L</strong></span>
+                    <span>Disbursed: <strong className="text-body">{"\u20B9"}{(item.disbursed / 100000).toFixed(1)}L</strong></span>
                   </div>
                   <ProgressBar value={pct} max={100} color={item.color} />
                 </div>

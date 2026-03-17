@@ -7,11 +7,14 @@ import { toast } from "react-toastify";
 import { loginSchema } from "./schemas";
 import FormInput from "./FormInput";
 import GoogleIcon from "./GoogleIcon";
+import { useAuth } from "@/context/AuthContext";
+import { ROLE_LABELS } from "@/lib/roles";
 
-function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
+function LoginForm({ onSwitch, onForgotPassword, onGoogleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState("");
+  const { login } = useAuth();
 
   const {
     register,
@@ -22,19 +25,16 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
     mode: "onTouched",
   });
 
-  const VALID_EMAIL = "test5084@gmail.com";
-  const VALID_PASSWORD = "Test@5084";
-
   const onSubmit = (data) => {
     setServerError("");
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      if (data.email === VALID_EMAIL && data.password === VALID_PASSWORD) {
-        toast.success("Sign in successful! Welcome back.");
-        onLogin({ email: VALID_EMAIL, name: "Admin" });
+      const result = login(data.email, data.password);
+      if (result.success) {
+        toast.success(`Welcome back, ${result.user.name}! (${ROLE_LABELS[result.user.role]})`);
       } else {
-        setServerError("Invalid email or password.");
+        setServerError(result.error);
       }
     }, 1200);
   };
@@ -42,7 +42,7 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
   return (
     <div className="w-full">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Welcome back</h2>
+        <h2 className="text-2xl font-bold text-white lg:text-heading mb-1.5">Welcome back</h2>
         <p className="text-slate-400 text-sm">Sign in to access your dashboard</p>
       </div>
 
@@ -70,21 +70,21 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-white/30 lg:border-slate-300 accent-emerald-500 cursor-pointer"
+              className="w-4 h-4 rounded border-white/30 lg:border-slate-300 accent-success-500 cursor-pointer"
             />
-            <span className="text-xs text-slate-300 lg:text-slate-500">Remember me</span>
+            <span className="text-xs text-subtle lg:text-slate-500">Remember me</span>
           </label>
           <button
             type="button"
             onClick={onForgotPassword}
-            className="text-xs text-emerald-400 hover:text-emerald-300 lg:text-indigo-500 lg:hover:text-indigo-700 font-medium cursor-pointer transition-colors"
+            className="text-xs text-success-400 hover:text-success-300 lg:text-primary-500 lg:hover:text-primary-700 font-medium cursor-pointer transition-colors"
           >
             Forgot password?
           </button>
         </div>
 
         {serverError && (
-          <div className="bg-red-500/10 border border-red-400/30 lg:bg-red-50 lg:border-red-200/60 rounded-xl px-4 py-2.5 text-red-400 lg:text-red-600 text-xs font-medium animate-fade-in">
+          <div className="bg-danger-500/10 border border-danger-400/30 lg:bg-danger-50 lg:border-danger-200/60 rounded-xl px-4 py-2.5 text-danger-400 lg:text-danger text-xs font-medium animate-fade-in">
             {serverError}
           </div>
         )}
@@ -92,7 +92,7 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
         <button
   type="submit"
   disabled={loading}
-  className="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-600 hover:to-emerald-500 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/35 active:scale-[0.99]"
+  className="w-full py-3.5 bg-gradient-to-r from-success-500 to-success-400 hover:from-success hover:to-success-500 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-success-500/25 hover:shadow-success-500/35 active:scale-[0.99]"
 >
   {loading ? (
     <span className="flex items-center justify-center gap-2">
@@ -114,26 +114,45 @@ function LoginForm({ onLogin, onSwitch, onForgotPassword, onGoogleLogin }) {
       <button
         type="button"
         onClick={onGoogleLogin}
-        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white/10 border border-white/20 rounded-xl text-sm font-medium text-white hover:bg-white/15 transition-all cursor-pointer lg:bg-white lg:border-slate-200 lg:text-slate-700 lg:hover:bg-slate-50 lg:hover:border-slate-300 lg:hover:shadow-sm"
+        className="w-full flex items-center justify-center gap-2.5 py-3 bg-white/10 border border-white/20 rounded-xl text-sm font-medium text-white hover:bg-white/15 transition-all cursor-pointer lg:bg-white lg:border-slate-200 lg:text-body lg:hover:bg-slate-50 lg:hover:border-slate-300 lg:hover:shadow-sm"
       >
         <GoogleIcon />
         Sign in with Google
       </button>
 
-      <p className="text-center text-sm text-slate-400 mt-8">
+      <p className="text-center text-sm text-heading mt-8">
         Don&apos;t have an account?{" "}
         <button
           type="button"
           onClick={() => onSwitch("signup")}
-          className="text-emerald-400 hover:text-emerald-300 lg:text-indigo-500 lg:hover:text-indigo-700 font-semibold cursor-pointer transition-colors"
+          className="text-success-400 hover:text-success-300 lg:text-primary-500 lg:hover:text-primary-700 font-semibold cursor-pointer transition-colors"
         >
           Create Account
         </button>
       </p>
 
-      <p className="text-center text-[11px] text-slate-500 lg:text-slate-300 mt-4">
+      <p className="text-center text-[11px] text-slate-500 lg:text-subtle mt-4">
         Protected by enterprise-grade encryption
       </p>
+
+      {/* Demo credentials */}
+      <details className="mt-4 group">
+        <summary className="text-[11px] text-heading cursor-pointer hover:text-subtle lg:hover:text-slate-500 transition-colors text-center list-none">
+          <span className="border-b border-dashed border-slate-500">Demo Credentials</span>
+        </summary>
+        <div className="mt-2 bg-white/5 lg:bg-slate-50 border border-white/10 lg:border-slate-200 rounded-xl p-3 space-y-1.5 text-[11px]">
+          {[
+            { role: "Admin", email: "admin@glimmora.com", pass: "Admin@123" },
+            { role: "Manager", email: "manager@glimmora.com", pass: "Manager@123" },
+            { role: "Member", email: "member@glimmora.com", pass: "Member@123" },
+          ].map((d) => (
+            <div key={d.role} className="flex items-center justify-between text-slate-400 lg:text-slate-500">
+              <span className="font-medium text-subtle lg:text-body w-24">{d.role}</span>
+              <span className="truncate flex-1 text-right">{d.email} / {d.pass}</span>
+            </div>
+          ))}
+        </div>
+      </details>
     </div>
   );
 }

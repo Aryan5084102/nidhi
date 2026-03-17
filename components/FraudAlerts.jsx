@@ -17,20 +17,20 @@ export default function FraudAlerts() {
             {/* Desktop: single row */}
             <div className="hidden sm:flex items-center justify-between">
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <span className="font-mono text-[11px] text-slate-400 shrink-0">
+                <span className="font-mono text-[11px] text-heading shrink-0">
                   {fa.id}
                 </span>
-                <span className="text-[13px] text-slate-700 font-medium truncate">
+                <span className="text-[13px] text-body font-medium truncate">
                   {fa.type}
                 </span>
-                <span className="text-[11px] text-slate-400 shrink-0">
+                <span className="text-[11px] text-heading shrink-0">
                   &middot; {fa.member}
                 </span>
               </div>
               <div className="flex items-center gap-2.5 shrink-0">
                 <RiskBadge risk={fa.severity} />
-                <span className="text-[11px] text-slate-400">{fa.time}</span>
-                <button className="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-500 cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all duration-150">
+                <span className="text-[11px] text-heading">{fa.time}</span>
+                <button className="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-500 cursor-pointer hover:bg-primary-50 hover:text-primary hover:border-primary-200 transition-all duration-150">
                   Review
                 </button>
               </div>
@@ -40,10 +40,10 @@ export default function FraudAlerts() {
             <div className="flex flex-col gap-2.5 sm:hidden">
               <div className="flex items-center justify-between">
                 <div className="flex items-start flex-col gap-2 min-w-0">
-                  <span className="font-mono text-[11px] text-slate-400 shrink-0">
+                  <span className="font-mono text-[11px] text-heading shrink-0">
                     {fa.id}
                   </span>
-                  <span className="text-[13px] text-slate-700 font-medium truncate">
+                  <span className="text-[13px] text-body font-medium truncate">
                     {fa.type}
                   </span>
                 </div>
@@ -54,8 +54,8 @@ export default function FraudAlerts() {
                   {fa.member}
                 </span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-slate-400">{fa.time}</span>
-                  <button className="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-500 cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all duration-150">
+                  <span className="text-[11px] text-heading">{fa.time}</span>
+                  <button className="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] text-slate-500 cursor-pointer hover:bg-primary-50 hover:text-primary hover:border-primary-200 transition-all duration-150">
                     Review
                   </button>
                 </div>

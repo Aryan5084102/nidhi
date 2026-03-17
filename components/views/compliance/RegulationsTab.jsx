@@ -30,7 +30,7 @@ const nidhiRules = [
 export default function RegulationsTab() {
   return (
     <div className="animate-fade-in">
-      <div className="bg-amber-50 border border-amber-200/60 rounded-2xl p-4 mb-6 text-[12px] text-amber-700">
+      <div className="bg-warning-50 border border-warning-200/60 rounded-2xl p-4 mb-6 text-[12px] text-amber-700">
         This section provides a reference summary of key Nidhi Company regulations. For complete rules, refer to the Companies Act 2013, Nidhi Rules 2014, and subsequent amendments.
       </div>
 
@@ -40,7 +40,7 @@ export default function RegulationsTab() {
             <div className="flex flex-col gap-2">
               {rule.sections.map((s, i) => (
                 <div key={i} className="flex items-start gap-2 text-[12px] text-slate-500">
-                  <div className="w-5 h-5 bg-indigo-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold text-indigo-500">
+                  <div className="w-5 h-5 bg-primary-50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold text-primary-500">
                     {i + 1}
                   </div>
                   {s}

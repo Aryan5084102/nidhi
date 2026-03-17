@@ -53,8 +53,8 @@ export default function AIRiskControlView() {
         title="AI Risk Control Center"
         description="Agentic AI-powered risk monitoring and control system for Nidhi company operations. Autonomous agents continuously monitor fraud, liquidity, compliance, and member risk across all operational dimensions."
       >
-        <HeaderStat value="4" label="Agents Online" className="bg-emerald-50 border border-emerald-200/60 text-emerald-600" />
-        <HeaderStat value="18" label="Active Alerts" className="bg-red-50 border border-red-200/60 text-red-500" />
+        <HeaderStat value="4" label="Agents Online" className="bg-success-50 border border-success-200/60 text-success" />
+        <HeaderStat value="18" label="Active Alerts" className="bg-danger-50 border border-danger-200/60 text-danger-500" />
       </PageHeader>
 
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />

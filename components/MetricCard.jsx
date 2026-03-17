@@ -9,10 +9,10 @@ export default function MetricCard({ metric }) {
 
       <div className="flex justify-between items-start">
         <div className="min-w-0">
-          <div className="text-[10px] sm:text-[11px] text-slate-400 uppercase tracking-widest mb-1 sm:mb-2 font-medium truncate">
+          <div className="text-[10px] sm:text-[11px] text-heading uppercase tracking-widest mb-1 sm:mb-2 font-medium truncate">
             {metric.label}
           </div>
-          <div className="text-xl sm:text-2xl md:text-[28px] font-bold text-slate-900 tracking-tight">
+          <div className="text-xl sm:text-2xl md:text-[28px] font-bold text-heading tracking-tight">
             <AnimatedCounter value={metric.value} />
           </div>
         </div>
@@ -35,12 +35,12 @@ export default function MetricCard({ metric }) {
       <div className="mt-1.5 sm:mt-2.5 flex items-center gap-1.5">
         <span
           className={`text-[10px] sm:text-xs font-mono font-semibold px-1.5 py-0.5 rounded ${
-            isPositive ? "text-emerald-600 bg-emerald-50" : "text-red-600 bg-red-50"
+            isPositive ? "text-success bg-success-50" : "text-danger bg-danger-50"
           }`}
         >
           {metric.change}
         </span>
-        <span className="text-[10px] sm:text-[11px] text-slate-400 hidden sm:inline">vs last month</span>
+        <span className="text-[10px] sm:text-[11px] text-heading hidden sm:inline">vs last month</span>
       </div>
 
       {/* Bottom accent line */}

@@ -24,19 +24,19 @@ export default function CSVExportsTab() {
         {exportCategories.map((ec) => (
           <div key={ec.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="flex items-start gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[14px] font-bold text-indigo-600">
+              <div className="w-10 h-10 rounded-xl bg-primary-50 border border-primary-200 flex items-center justify-center text-[14px] font-bold text-primary">
                 {ec.icon}
               </div>
               <div className="flex-1">
-                <div className="text-[15px] font-bold text-slate-900">{ec.name}</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">{ec.rows} rows</div>
+                <div className="text-[15px] font-bold text-heading">{ec.name}</div>
+                <div className="text-[11px] text-heading mt-0.5">{ec.rows} rows</div>
               </div>
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed mb-4">{ec.description}</p>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] text-slate-400">Last exported: {ec.lastExported}</span>
+              <span className="text-[11px] text-heading">Last exported: {ec.lastExported}</span>
             </div>
-            <button className="w-full py-2 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-indigo-100 transition-colors">
+            <button className="w-full py-2 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-primary-100 transition-colors">
               Export CSV
             </button>
           </div>
@@ -47,19 +47,19 @@ export default function CSVExportsTab() {
       <SectionCard title="Export Configuration" className="mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-slate-50 rounded-xl p-4">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Date Range</div>
-            <div className="text-[13px] font-semibold text-slate-700">01 Mar 2026 \u2014 11 Mar 2026</div>
-            <div className="text-[11px] text-slate-400 mt-1">Custom range supported</div>
+            <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Date Range</div>
+            <div className="text-[13px] font-semibold text-body">01 Mar 2026 \u2014 11 Mar 2026</div>
+            <div className="text-[11px] text-heading mt-1">Custom range supported</div>
           </div>
           <div className="bg-slate-50 rounded-xl p-4">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Filter Options</div>
-            <div className="text-[13px] font-semibold text-slate-700">Active Records Only</div>
-            <div className="text-[11px] text-slate-400 mt-1">Status, branch, category filters</div>
+            <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Filter Options</div>
+            <div className="text-[13px] font-semibold text-body">Active Records Only</div>
+            <div className="text-[11px] text-heading mt-1">Status, branch, category filters</div>
           </div>
           <div className="bg-slate-50 rounded-xl p-4">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Encoding</div>
-            <div className="text-[13px] font-semibold text-slate-700">UTF-8 with BOM</div>
-            <div className="text-[11px] text-slate-400 mt-1">Excel-compatible format</div>
+            <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Encoding</div>
+            <div className="text-[13px] font-semibold text-body">UTF-8 with BOM</div>
+            <div className="text-[11px] text-heading mt-1">Excel-compatible format</div>
           </div>
         </div>
       </SectionCard>
@@ -70,23 +70,23 @@ export default function CSVExportsTab() {
           <table className="w-full min-w-[560px]">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">File Name</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Rows</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Size</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Exported By</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Date</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">File Name</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Rows</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right whitespace-nowrap">Size</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Exported By</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Date</th>
               </tr>
             </thead>
             <tbody>
               {exportHistory.map((eh) => (
                 <tr key={eh.file} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="text-[12px] font-mono text-indigo-600 px-5 py-3 whitespace-nowrap">{eh.file}</td>
+                  <td className="text-[12px] font-mono text-primary px-5 py-3 whitespace-nowrap">{eh.file}</td>
                   <td className="px-5 py-3 whitespace-nowrap">
                     <span className="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full border border-slate-200">{eh.category}</span>
                   </td>
-                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right whitespace-nowrap">{eh.rows}</td>
-                  <td className="text-[12px] font-mono text-slate-600 px-5 py-3 text-right whitespace-nowrap">{eh.size}</td>
+                  <td className="text-[12px] font-mono text-body px-5 py-3 text-right whitespace-nowrap">{eh.rows}</td>
+                  <td className="text-[12px] font-mono text-body px-5 py-3 text-right whitespace-nowrap">{eh.size}</td>
                   <td className="text-[12px] text-slate-500 px-5 py-3 whitespace-nowrap">{eh.exportedBy}</td>
                   <td className="text-[12px] text-slate-500 px-5 py-3 whitespace-nowrap">{eh.date}</td>
                 </tr>

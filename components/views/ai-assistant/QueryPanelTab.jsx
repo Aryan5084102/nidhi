@@ -108,8 +108,8 @@ export default function QueryPanelTab() {
             onClick={() => { setSelectedCategory(cat.name); setSelectedQuery(null); }}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
               selectedCategory === cat.name
-                ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-                : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+                ? "bg-primary-50 border-primary-300 text-primary font-semibold"
+                : "bg-white border-slate-200 text-heading hover:border-slate-300 hover:text-body"
             }`}
           >
             {cat.name}
@@ -125,12 +125,12 @@ export default function QueryPanelTab() {
             onClick={() => handleQueryClick(q)}
             className={`text-left bg-white rounded-2xl p-4 card-shadow border transition-all cursor-pointer ${
               selectedQuery === q
-                ? "border-indigo-300 ring-2 ring-indigo-500/10"
+                ? "border-primary-300 ring-2 ring-primary-500/10"
                 : "border-slate-100 hover:border-slate-200"
             }`}
           >
-            <p className="text-[13px] text-slate-700 font-medium">{q}</p>
-            <p className="text-[11px] text-slate-400 mt-1">Click to execute query</p>
+            <p className="text-[13px] text-body font-medium">{q}</p>
+            <p className="text-[11px] text-heading mt-1">Click to execute query</p>
           </button>
         ))}
       </div>
@@ -148,16 +148,16 @@ export default function QueryPanelTab() {
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
                     {["ID", "Name", "Value", "Branch"].map((h) => (
-                      <th key={h} className="px-4 py-2.5 text-left text-[11px] text-slate-400 font-semibold uppercase tracking-wide">{h}</th>
+                      <th key={h} className="px-4 py-2.5 text-left text-[11px] text-heading font-semibold uppercase tracking-wide">{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {resultData.map((row) => (
                     <tr key={row.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                      <td className="px-4 py-2.5 font-mono text-xs text-slate-400">{row.id}</td>
-                      <td className="px-4 py-2.5 text-[13px] text-slate-700 font-medium">{row.name}</td>
-                      <td className="px-4 py-2.5 font-mono text-xs text-emerald-600">{row.deposits}</td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-heading">{row.id}</td>
+                      <td className="px-4 py-2.5 text-[13px] text-body font-medium">{row.name}</td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-success">{row.deposits}</td>
                       <td className="px-4 py-2.5 text-[13px] text-slate-500">{row.branch}</td>
                     </tr>
                   ))}
@@ -165,7 +165,7 @@ export default function QueryPanelTab() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-6 text-sm text-slate-400">
+            <div className="text-center py-6 text-sm text-heading">
               Processing query... Results will appear here.
             </div>
           )}
@@ -178,12 +178,12 @@ export default function QueryPanelTab() {
           {recentQueryHistory.map((q, i) => (
             <div key={i} className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
               <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-                <p className="text-[13px]  text-slate-700">{q.text}</p>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary-400" />
+                <p className="text-[13px]  text-body">{q.text}</p>
               </div>
               <div className="flex items-center gap-2">
                 <StatusBadge status={q.category} />
-                <span className="text-[11px] text-slate-400 whitespace-nowrap">{q.time}</span>
+                <span className="text-[11px] text-heading whitespace-nowrap">{q.time}</span>
               </div>
             </div>
           ))}

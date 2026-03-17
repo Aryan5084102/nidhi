@@ -9,8 +9,8 @@ export default function TabBar({ tabs, activeTab, onChange }) {
           onClick={() => onChange(tab.id)}
           className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border whitespace-nowrap ${
             activeTab === tab.id
-              ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-              : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+              ? "bg-primary-50 border-primary-300 text-primary font-semibold"
+              : "bg-white border-slate-200 text-heading hover:border-slate-300 hover:text-body"
           }`}
         >
           {tab.label}

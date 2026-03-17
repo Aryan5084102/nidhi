@@ -2,10 +2,10 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import SectionCard from "@/components/ui/SectionCard";
 
 const amlMetrics = [
-  { label: "STRs Filed (FY)", value: "14", color: "text-red-500", bg: "bg-red-50" },
-  { label: "CTRs Filed (FY)", value: "87", color: "text-amber-600", bg: "bg-amber-50" },
-  { label: "Suspicious Patterns", value: "23", color: "text-purple-600", bg: "bg-purple-50" },
-  { label: "Blocked Transactions", value: "6", color: "text-slate-700", bg: "bg-slate-50" },
+  { label: "STRs Filed (FY)", value: "14", color: "text-danger-500", bg: "bg-danger-50" },
+  { label: "CTRs Filed (FY)", value: "87", color: "text-warning", bg: "bg-warning-50" },
+  { label: "Suspicious Patterns", value: "23", color: "text-secondary", bg: "bg-secondary-50" },
+  { label: "Blocked Transactions", value: "6", color: "text-body", bg: "bg-slate-50" },
 ];
 
 const ctrReports = [
@@ -37,7 +37,7 @@ export default function AmlMonitoringTab() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {amlMetrics.map((m) => (
           <div key={m.label} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{m.label}</div>
+            <div className="text-[10px] text-heading uppercase tracking-wider mb-2">{m.label}</div>
             <div className={`text-[22px] font-bold font-mono ${m.color}`}>{m.value}</div>
           </div>
         ))}
@@ -49,14 +49,14 @@ export default function AmlMonitoringTab() {
           {riskScoring.map((r) => (
             <div key={r.category} className="bg-slate-50 rounded-xl p-3">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-[13px] font-semibold text-slate-700">{r.category}</span>
+                <span className="text-[13px] font-semibold text-body">{r.category}</span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[12px] text-slate-400">{r.count.toLocaleString()} members</span>
-                  <span className="text-[13px] font-bold font-mono text-slate-700">{r.pct}%</span>
+                  <span className="text-[12px] text-heading">{r.count.toLocaleString()} members</span>
+                  <span className="text-[13px] font-bold font-mono text-body">{r.pct}%</span>
                 </div>
               </div>
               <div className="bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-700 bg-indigo-500" style={{ width: `${r.pct}%` }} />
+                <div className="h-full rounded-full transition-all duration-700 bg-primary-500" style={{ width: `${r.pct}%` }} />
               </div>
             </div>
           ))}
@@ -66,20 +66,20 @@ export default function AmlMonitoringTab() {
       {/* CTR Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Cash Transaction Reports (CTR)</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Transactions exceeding \u20B910,00,000 reported to FIU-IND as per PMLA 2002</p>
+          <h3 className="text-[15px] font-bold text-heading">Cash Transaction Reports (CTR)</h3>
+          <p className="text-[12px] text-heading mt-0.5">Transactions exceeding \u20B910,00,000 reported to FIU-IND as per PMLA 2002</p>
         </div>
         <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">CTR ID</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Amount</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Type</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Date</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Branch</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">CTR ID</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Member</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Amount</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Type</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Date</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Branch</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -87,13 +87,13 @@ export default function AmlMonitoringTab() {
               <tr key={c.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{c.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{c.memberName}</div>
-                  <div className="text-[11px] text-slate-400">{c.memberId}</div>
+                  <div className="text-[13px] font-medium text-body whitespace-nowrap">{c.memberName}</div>
+                  <div className="text-[11px] text-heading">{c.memberId}</div>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{c.amount}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-body font-mono whitespace-nowrap">{c.amount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 whitespace-nowrap">{c.type}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{c.date}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{c.branch}</td>
+                <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{c.date}</td>
+                <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{c.branch}</td>
                 <td className="px-5 py-3"><StatusBadge status={c.status} /></td>
               </tr>
             ))}
@@ -105,19 +105,19 @@ export default function AmlMonitoringTab() {
       {/* STR Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Suspicious Transaction Reports (STR)</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Filed with FIU-IND within 7 days of detection as per PMLA guidelines</p>
+          <h3 className="text-[15px] font-bold text-heading">Suspicious Transaction Reports (STR)</h3>
+          <p className="text-[12px] text-heading mt-0.5">Filed with FIU-IND within 7 days of detection as per PMLA guidelines</p>
         </div>
         <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Date</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Member</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Date</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -125,15 +125,15 @@ export default function AmlMonitoringTab() {
               <tr key={s.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{s.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{s.memberName}</div>
-                  <div className="text-[11px] text-slate-400">{s.memberId}</div>
+                  <div className="text-[13px] font-medium text-body whitespace-nowrap">{s.memberName}</div>
+                  <div className="text-[11px] text-heading">{s.memberId}</div>
                 </td>
                 <td className="px-5 py-3">
-                  <div className="text-[12px] font-medium text-slate-600 whitespace-nowrap">{s.pattern}</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">{s.description}</div>
+                  <div className="text-[12px] font-medium text-body whitespace-nowrap">{s.pattern}</div>
+                  <div className="text-[11px] text-heading mt-0.5">{s.description}</div>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.amount}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{s.date}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-body font-mono whitespace-nowrap">{s.amount}</td>
+                <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{s.date}</td>
                 <td className="px-5 py-3"><StatusBadge status={s.status} /></td>
               </tr>
             ))}

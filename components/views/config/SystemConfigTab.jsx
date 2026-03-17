@@ -56,44 +56,44 @@ export default function SystemConfigTab() {
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">
-        <h3 className="text-[15px] font-bold text-slate-900 mb-1">System Configuration</h3>
-        <p className="text-[13px] text-slate-400">System health, third-party integrations, data retention policies, and backup schedules.</p>
+        <h3 className="text-[15px] font-bold text-heading mb-1">System Configuration</h3>
+        <p className="text-[13px] text-heading">System health, third-party integrations, data retention policies, and backup schedules.</p>
       </SectionCard>
 
       {/* System Health Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
         {systemHealth.map((h) => (
           <div key={h.label} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-            <div className="text-[20px] font-bold text-slate-700">{h.value}</div>
-            <div className="text-[12px] font-semibold text-slate-600 mt-1">{h.label}</div>
-            <div className="text-[10px] text-slate-400 mt-1">{h.detail}</div>
+            <div className="text-[20px] font-bold text-body">{h.value}</div>
+            <div className="text-[12px] font-semibold text-body mt-1">{h.label}</div>
+            <div className="text-[10px] text-heading mt-1">{h.detail}</div>
           </div>
         ))}
       </div>
 
       {/* Integration Status */}
       <SectionCard className="mb-4">
-        <h4 className="text-[14px] font-bold text-slate-900 mb-0.5">Integration Status</h4>
-        <p className="text-[11px] text-slate-400">Third-party service connections and sync status.</p>
+        <h4 className="text-[14px] font-bold text-heading mb-0.5">Integration Status</h4>
+        <p className="text-[11px] text-heading">Third-party service connections and sync status.</p>
       </SectionCard>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
         {integrations.map((int) => (
           <div key={int.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
             <div className="flex items-start justify-between mb-2">
-              <h4 className="text-[13px] font-bold text-slate-900">{int.name}</h4>
+              <h4 className="text-[13px] font-bold text-heading">{int.name}</h4>
               <StatusBadge status={int.status} />
             </div>
-            <div className="text-[11px] text-slate-400 mt-1">Provider: <span className="text-slate-600">{int.provider}</span></div>
-            <div className="text-[11px] text-slate-400 mt-0.5">Last Sync: <span className="text-slate-600">{int.lastSync}</span></div>
+            <div className="text-[11px] text-heading mt-1">Provider: <span className="text-body">{int.provider}</span></div>
+            <div className="text-[11px] text-heading mt-0.5">Last Sync: <span className="text-body">{int.lastSync}</span></div>
           </div>
         ))}
       </div>
 
       {/* Data Retention Policies */}
       <SectionCard className="mb-4">
-        <h4 className="text-[14px] font-bold text-slate-900 mb-0.5">Data Retention Policies</h4>
-        <p className="text-[11px] text-slate-400">Retention periods and purge schedules for different data categories.</p>
+        <h4 className="text-[14px] font-bold text-heading mb-0.5">Data Retention Policies</h4>
+        <p className="text-[11px] text-heading">Retention periods and purge schedules for different data categories.</p>
       </SectionCard>
 
       <div className="mb-5">
@@ -102,14 +102,14 @@ export default function SystemConfigTab() {
           data={retentionPolicies}
           renderRow={(p, i) => (
             <tr key={i} className="border-b border-slate-50 whitespace-nowrap hover:bg-slate-50/50 transition-colors">
-              <td className="px-5 py-3 text-[12px] font-semibold text-slate-700">{p.dataType}</td>
-              <td className="px-5 py-3 text-[12px] font-mono text-slate-600">{p.retention}</td>
+              <td className="px-5 py-3 text-[12px] font-semibold text-body">{p.dataType}</td>
+              <td className="px-5 py-3 text-[12px] font-mono text-body">{p.retention}</td>
               <td className="px-5 py-3 text-[12px] text-slate-500">{p.lastPurge}</td>
               <td className="px-5 py-3">
                 <StatusBadge status={p.status} />
               </td>
               <td className="px-5 py-3">
-                <button className="text-[11px] text-indigo-500 hover:text-indigo-700 font-medium cursor-pointer transition-colors">Edit</button>
+                <button className="text-[11px] text-primary-500 hover:text-primary-700 font-medium cursor-pointer transition-colors">Edit</button>
               </td>
             </tr>
           )}
@@ -118,8 +118,8 @@ export default function SystemConfigTab() {
 
       {/* Backup Schedule */}
       <SectionCard className="mb-4">
-        <h4 className="text-[14px] font-bold text-slate-900 mb-0.5">Backup Schedule</h4>
-        <p className="text-[11px] text-slate-400">Automated backup configuration and execution history.</p>
+        <h4 className="text-[14px] font-bold text-heading mb-0.5">Backup Schedule</h4>
+        <p className="text-[11px] text-heading">Automated backup configuration and execution history.</p>
       </SectionCard>
 
       <DataTable
@@ -127,15 +127,15 @@ export default function SystemConfigTab() {
         data={backupSchedule}
         renderRow={(b, i) => (
           <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
-            <td className="px-5 py-3 text-[12px] font-semibold text-slate-700">{b.type}</td>
+            <td className="px-5 py-3 text-[12px] font-semibold text-body">{b.type}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{b.frequency}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{b.lastRun}</td>
-            <td className="px-5 py-3 text-[12px] font-mono text-slate-600">{b.size}</td>
+            <td className="px-5 py-3 text-[12px] font-mono text-body">{b.size}</td>
             <td className="px-5 py-3">
               <StatusBadge status={b.status} />
             </td>
             <td className="px-5 py-3">
-              <button className="text-[11px] text-indigo-500 hover:text-indigo-700 font-medium cursor-pointer transition-colors">Edit</button>
+              <button className="text-[11px] text-primary-500 hover:text-primary-700 font-medium cursor-pointer transition-colors">Edit</button>
             </td>
           </tr>
         )}

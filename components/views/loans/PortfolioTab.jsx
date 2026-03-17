@@ -14,8 +14,8 @@ export default function PortfolioTab() {
             <div key={item.category} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <div className="text-[15px] font-bold text-slate-900">{item.category}</div>
-                  <span className="text-[11px] text-slate-400">{item.count} active loans</span>
+                  <div className="text-[15px] font-bold text-heading">{item.category}</div>
+                  <span className="text-[11px] text-heading">{item.count} active loans</span>
                 </div>
                 <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: `${item.color}15`, border: `1px solid ${item.color}30` }}>
                   <svg className="w-5 h-5" style={{ color: item.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -26,27 +26,27 @@ export default function PortfolioTab() {
 
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="bg-slate-50 rounded-xl p-3">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Sanctioned</div>
-                  <div className="text-[14px] font-bold text-indigo-600 font-mono">{"\u20B9"}{(item.sanctioned / 100000).toFixed(1)}L</div>
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Sanctioned</div>
+                  <div className="text-[14px] font-bold text-primary font-mono">{"\u20B9"}{(item.sanctioned / 100000).toFixed(1)}L</div>
                 </div>
                 <div className="bg-slate-50 rounded-xl p-3">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Disbursed</div>
-                  <div className="text-[14px] font-bold text-emerald-600 font-mono">{"\u20B9"}{(item.disbursed / 100000).toFixed(1)}L</div>
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Disbursed</div>
+                  <div className="text-[14px] font-bold text-success font-mono">{"\u20B9"}{(item.disbursed / 100000).toFixed(1)}L</div>
                 </div>
               </div>
 
               <div className="mb-3">
                 <div className="flex justify-between mb-1.5">
-                  <span className="text-[11px] text-slate-400">Utilization</span>
-                  <span className="text-[11px] text-slate-400 font-mono">{pct.toFixed(0)}%</span>
+                  <span className="text-[11px] text-heading">Utilization</span>
+                  <span className="text-[11px] text-heading font-mono">{pct.toFixed(0)}%</span>
                 </div>
                 <ProgressBar value={pct} max={100} color={item.color} />
               </div>
 
-              <div className="flex items-center gap-3 text-[11px] text-slate-400">
-                <span>Avg Rate: <strong className="text-slate-600">{item.avgRate}</strong></span>
-                <span className="text-slate-300">|</span>
-                <span>NPA: <strong className={parseFloat(npaRate) > 5 ? "text-red-500" : "text-slate-600"}>{npaRate}%</strong></span>
+              <div className="flex items-center gap-3 text-[11px] text-heading">
+                <span>Avg Rate: <strong className="text-body">{item.avgRate}</strong></span>
+                <span className="text-subtle">|</span>
+                <span>NPA: <strong className={parseFloat(npaRate) > 5 ? "text-danger-500" : "text-body"}>{npaRate}%</strong></span>
               </div>
             </div>
           );

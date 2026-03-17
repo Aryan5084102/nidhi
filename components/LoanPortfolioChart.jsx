@@ -70,11 +70,11 @@ export default function LoanPortfolioChart() {
                   className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: l.color }}
                 />
-                <span className="text-[11px] text-slate-600 truncate">
+                <span className="text-[11px] text-body truncate">
                   {l.category}
                 </span>
               </div>
-              <span className="text-[11px] font-semibold text-slate-700 shrink-0">
+              <span className="text-[11px] font-semibold text-body shrink-0">
                 {(l.disbursed / 100000).toFixed(1)}L
               </span>
             </div>

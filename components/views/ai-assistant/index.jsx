@@ -46,7 +46,7 @@ export default function AIAssistantView() {
       {/* Page header */}
       <div className="mb-6">
         <h1 className="text-lg font-bold text-slate-800">AI Assistant</h1>
-        <p className="text-[13px] text-slate-400 mt-1">
+        <p className="text-[13px] text-heading mt-1">
           Intelligent insights, natural language queries, and automated reports for your Nidhi company
         </p>
         <div className="hidden sm:flex gap-4 mt-3">
@@ -58,7 +58,7 @@ export default function AIAssistantView() {
           ].map((s) => (
             <div key={s.label} className="flex items-center gap-2">
               <span className="text-sm font-bold text-slate-800">{s.value}</span>
-              <span className="text-[11px] text-slate-400">{s.label}</span>
+              <span className="text-[11px] text-heading">{s.label}</span>
             </div>
           ))}
         </div>

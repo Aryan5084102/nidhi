@@ -129,12 +129,12 @@ function SimpleBarChart({ data }) {
     <div className="flex items-end gap-2 h-24 mt-2">
       {data.map((val, i) => (
         <div key={i} className="flex flex-col items-center flex-1 gap-1">
-          <span className="text-[10px] text-slate-400 font-mono">{val}</span>
+          <span className="text-[10px] text-heading font-mono">{val}</span>
           <div
-            className="w-full rounded-t-md bg-indigo-400 transition-all"
+            className="w-full rounded-t-md bg-primary-400 transition-all"
             style={{ height: `${(val / max) * 64}px` }}
           />
-          <span className="text-[10px] text-slate-400">{labels[i]}</span>
+          <span className="text-[10px] text-heading">{labels[i]}</span>
         </div>
       ))}
     </div>
@@ -147,9 +147,9 @@ export default function RiskExplanationTab() {
   const risk = riskCategories.find((r) => r.id === selectedRisk);
 
   const scoreColor = (score) => {
-    if (score >= 70) return "text-red-600";
-    if (score >= 40) return "text-amber-600";
-    return "text-emerald-600";
+    if (score >= 70) return "text-danger";
+    if (score >= 40) return "text-warning";
+    return "text-success";
   };
 
   const scoreBg = (score) => {
@@ -168,8 +168,8 @@ export default function RiskExplanationTab() {
             onClick={() => setSelectedRisk(r.id)}
             className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${
               selectedRisk === r.id
-                ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-                : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"
+                ? "bg-primary-50 border-primary-300 text-primary font-semibold"
+                : "bg-white border-slate-200 text-heading hover:border-slate-300 hover:text-body"
             }`}
           >
             {r.name}
@@ -185,16 +185,16 @@ export default function RiskExplanationTab() {
               <div>
                 <h3 className="text-base font-semibold text-slate-800">{risk.name}</h3>
                 <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border mt-1 inline-block ${
-                  risk.level === "High" ? "bg-red-50 text-red-600 border-red-200" :
-                  risk.level === "Medium" ? "bg-amber-50 text-amber-600 border-amber-200" :
-                  "bg-emerald-50 text-emerald-600 border-emerald-200"
+                  risk.level === "High" ? "bg-danger-50 text-danger border-danger-200" :
+                  risk.level === "Medium" ? "bg-warning-50 text-warning border-warning-200" :
+                  "bg-success-50 text-success border-success-200"
                 }`}>
                   {risk.level} Risk
                 </span>
               </div>
               <div className="text-right">
                 <p className={`text-3xl font-bold ${scoreColor(risk.score)}`}>{risk.score}</p>
-                <p className="text-[10px] text-slate-400">out of 100</p>
+                <p className="text-[10px] text-heading">out of 100</p>
               </div>
             </div>
 
@@ -203,7 +203,7 @@ export default function RiskExplanationTab() {
               <ProgressBar value={risk.score} max={100} color={scoreBg(risk.score)} height="h-2" />
             </div>
 
-            <p className="text-[13px] text-slate-600 leading-relaxed">{risk.explanation}</p>
+            <p className="text-[13px] text-body leading-relaxed">{risk.explanation}</p>
           </SectionCard>
 
           {/* Contributing factors */}
@@ -212,16 +212,16 @@ export default function RiskExplanationTab() {
               {risk.factors.map((f, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-10 text-right">
-                    <span className="text-[11px] font-mono font-semibold text-indigo-600">{f.weight}%</span>
+                    <span className="text-[11px] font-mono font-semibold text-primary">{f.weight}%</span>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-[13px] font-medium text-slate-700">{f.name}</p>
+                      <p className="text-[13px] font-medium text-body">{f.name}</p>
                     </div>
                     <div className="mb-1">
                       <ProgressBar value={f.weight * 3.3} max={100} color="#818CF8" />
                     </div>
-                    <p className="text-[11px] text-slate-400">{f.value}</p>
+                    <p className="text-[11px] text-heading">{f.value}</p>
                   </div>
                 </div>
               ))}
@@ -240,10 +240,10 @@ export default function RiskExplanationTab() {
               <div className="space-y-2.5">
                 {risk.actions.map((a, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="text-[10px] font-bold text-indigo-600">{i + 1}</span>
+                    <div className="w-5 h-5 rounded-full bg-primary-100 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-[10px] font-bold text-primary">{i + 1}</span>
                     </div>
-                    <p className="text-[12px] text-slate-600 leading-relaxed">{a}</p>
+                    <p className="text-[12px] text-body leading-relaxed">{a}</p>
                   </div>
                 ))}
               </div>

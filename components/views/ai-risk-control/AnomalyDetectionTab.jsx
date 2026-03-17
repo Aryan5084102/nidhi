@@ -28,11 +28,11 @@ const heatmapData = [
 
 const heatColor = (val) => {
   if (val === 0) return "bg-slate-100";
-  if (val <= 1) return "bg-amber-100";
-  if (val <= 2) return "bg-amber-200";
+  if (val <= 1) return "bg-warning-100";
+  if (val <= 2) return "bg-warning-200";
   if (val <= 3) return "bg-orange-300";
-  if (val <= 4) return "bg-red-300";
-  return "bg-red-500";
+  if (val <= 4) return "bg-danger-300";
+  return "bg-danger-500";
 };
 
 const anomalyClassification = [
@@ -61,7 +61,7 @@ export default function AnomalyDetectionTab() {
           {anomalyFeed.map((af) => (
             <FeedItem
               key={af.id}
-              dotColor={af.severity === "Critical" ? "bg-red-500" : af.severity === "High" ? "bg-orange-500" : af.severity === "Medium" ? "bg-amber-500" : "bg-slate-400"}
+              dotColor={af.severity === "Critical" ? "bg-danger-500" : af.severity === "High" ? "bg-orange-500" : af.severity === "Medium" ? "bg-warning-500" : "bg-slate-400"}
               title={af.type}
               subtitle={`${af.id} \u00b7 ${af.member}`}
               time={af.time}
@@ -78,28 +78,28 @@ export default function AnomalyDetectionTab() {
           <div className="inline-block">
             <div className="flex gap-1 mb-1 ml-12">
               {days.map((d) => (
-                <div key={d} className="w-10 text-center text-[10px] text-slate-400 font-medium">{d}</div>
+                <div key={d} className="w-10 text-center text-[10px] text-heading font-medium">{d}</div>
               ))}
             </div>
             {hours.map((h, hi) => (
               <div key={h} className="flex gap-1 items-center mb-1">
-                <div className="w-10 text-right text-[10px] text-slate-400 pr-2">{h}</div>
+                <div className="w-10 text-right text-[10px] text-heading pr-2">{h}</div>
                 {heatmapData[hi].map((val, di) => (
                   <div key={di} className={`w-10 h-8 rounded ${heatColor(val)} flex items-center justify-center`}>
-                    <span className="text-[10px] font-mono text-slate-600">{val}</span>
+                    <span className="text-[10px] font-mono text-body">{val}</span>
                   </div>
                 ))}
               </div>
             ))}
             <div className="flex items-center gap-2 mt-3 ml-12">
-              <span className="text-[10px] text-slate-400">Low</span>
+              <span className="text-[10px] text-heading">Low</span>
               <div className="w-6 h-3 rounded bg-slate-100" />
-              <div className="w-6 h-3 rounded bg-amber-100" />
-              <div className="w-6 h-3 rounded bg-amber-200" />
+              <div className="w-6 h-3 rounded bg-warning-100" />
+              <div className="w-6 h-3 rounded bg-warning-200" />
               <div className="w-6 h-3 rounded bg-orange-300" />
-              <div className="w-6 h-3 rounded bg-red-300" />
-              <div className="w-6 h-3 rounded bg-red-500" />
-              <span className="text-[10px] text-slate-400">High</span>
+              <div className="w-6 h-3 rounded bg-danger-300" />
+              <div className="w-6 h-3 rounded bg-danger-500" />
+              <span className="text-[10px] text-heading">High</span>
             </div>
           </div>
         </div>
@@ -108,24 +108,24 @@ export default function AnomalyDetectionTab() {
       {/* Anomaly Classification */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Anomaly Classification Breakdown</h3>
+          <h3 className="text-[15px] font-bold text-heading">Anomaly Classification Breakdown</h3>
         </div>
         <table className="w-full whitespace-nowrap">
           <thead>
             <tr className="border-b border-slate-100 ">
               {["Type", "Detected", "Confirmed", "False Positive", "Accuracy"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {anomalyClassification.map((row) => (
               <tr key={row.type} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{row.type}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{row.detected}</td>
-                <td className="px-5 py-3 font-mono text-xs text-emerald-600">{row.confirmed}</td>
-                <td className="px-5 py-3 font-mono text-xs text-red-500">{row.falsePositive}</td>
-                <td className="px-5 py-3 font-mono text-xs text-indigo-600 font-semibold">{row.accuracy}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium">{row.type}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{row.detected}</td>
+                <td className="px-5 py-3 font-mono text-xs text-success">{row.confirmed}</td>
+                <td className="px-5 py-3 font-mono text-xs text-danger-500">{row.falsePositive}</td>
+                <td className="px-5 py-3 font-mono text-xs text-primary font-semibold">{row.accuracy}</td>
               </tr>
             ))}
           </tbody>

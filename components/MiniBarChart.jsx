@@ -26,7 +26,7 @@ export default function MiniBarChart({ data }) {
               }}
             />
           </div>
-          <span className="text-[9px] text-slate-400 font-mono">
+          <span className="text-[9px] text-heading font-mono">
             {d.month}
           </span>
         </div>

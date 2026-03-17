@@ -56,23 +56,23 @@ export default function FraudDetectionTab() {
       {/* Detection Accuracy by Fraud Type */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Detection Accuracy by Fraud Type</h3>
+          <h3 className="text-[15px] font-bold text-heading">Detection Accuracy by Fraud Type</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
               {["Fraud Type", "Precision", "Recall", "F1 Score", "Cases"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {accuracyByType.map((row) => (
               <tr key={row.type} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 text-[13px] text-slate-700 font-medium">{row.type}</td>
-                <td className="px-5 py-3 font-mono text-xs text-emerald-600">{row.precision}</td>
-                <td className="px-5 py-3 font-mono text-xs text-indigo-600">{row.recall}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-700 font-semibold">{row.f1}</td>
+                <td className="px-5 py-3 text-[13px] text-body font-medium">{row.type}</td>
+                <td className="px-5 py-3 font-mono text-xs text-success">{row.precision}</td>
+                <td className="px-5 py-3 font-mono text-xs text-primary">{row.recall}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body font-semibold">{row.f1}</td>
                 <td className="px-5 py-3 font-mono text-xs text-slate-500">{row.cases}</td>
               </tr>
             ))}
@@ -83,24 +83,24 @@ export default function FraudDetectionTab() {
       {/* Recent AI-Flagged Transactions */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Recent AI-Flagged Transactions</h3>
+          <h3 className="text-[15px] font-bold text-heading">Recent AI-Flagged Transactions</h3>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {["Txn ID", "Member", "Type", "Amount", "Risk", "Reason", "Status"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {flaggedTxns.map((txn) => (
               <tr key={txn.id} className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors">
-                <td className="px-5 py-3 font-mono text-xs text-slate-400 whitespace-nowrap">{txn.id}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-600">{txn.member}</td>
-                <td className="px-5 py-3 text-[13px] whitespace-nowrap text-slate-700">{txn.type}</td>
-                <td className="px-5 py-3 font-mono text-xs text-slate-700 whitespace-nowrap">{txn.amount}</td>
-                <td className="px-5 py-3"><span className={`font-mono text-xs font-bold ${txn.risk >= 85 ? "text-red-500" : txn.risk >= 70 ? "text-amber-600" : "text-slate-500"}`}>{txn.risk}</span></td>
+                <td className="px-5 py-3 font-mono text-xs text-heading whitespace-nowrap">{txn.id}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body">{txn.member}</td>
+                <td className="px-5 py-3 text-[13px] whitespace-nowrap text-body">{txn.type}</td>
+                <td className="px-5 py-3 font-mono text-xs text-body whitespace-nowrap">{txn.amount}</td>
+                <td className="px-5 py-3"><span className={`font-mono text-xs font-bold ${txn.risk >= 85 ? "text-danger-500" : txn.risk >= 70 ? "text-warning" : "text-slate-500"}`}>{txn.risk}</span></td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 max-w-[240px]">
                   <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={txn.reason}>{txn.reason}</span>
                 </td>

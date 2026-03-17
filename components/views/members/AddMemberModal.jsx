@@ -24,57 +24,57 @@ export default function AddMemberModal({ onClose, onSave }) {
           <h2 className="text-base font-semibold text-slate-800">Add New Member</h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 text-lg cursor-pointer"
+            className="text-heading hover:text-body text-lg cursor-pointer"
           >
             ✕
           </button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div>
-            <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">Full Name *</label>
+            <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Full Name *</label>
             <input
               value={form.name}
               onChange={(e) => handleChange("name", e.target.value)}
               placeholder="Enter member name"
-              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">Phone *</label>
+              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Phone *</label>
               <input
                 value={form.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 placeholder="9876543210"
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
               />
             </div>
             <div>
-              <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">Email</label>
+              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Email</label>
               <input
                 value={form.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="email@example.com"
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
               />
             </div>
           </div>
           <div>
-            <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">Address</label>
+            <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Address</label>
             <input
               value={form.address}
               onChange={(e) => handleChange("address", e.target.value)}
               placeholder="Enter address"
-              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all placeholder:text-slate-300"
+              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">Risk Level</label>
+              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Risk Level</label>
               <select
                 value={form.risk}
                 onChange={(e) => handleChange("risk", e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
+                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all cursor-pointer"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -82,11 +82,11 @@ export default function AddMemberModal({ onClose, onSave }) {
               </select>
             </div>
             <div>
-              <label className="text-[11px] text-slate-400 uppercase tracking-wide mb-1 block">KYC Status</label>
+              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">KYC Status</label>
               <select
                 value={form.kyc}
                 onChange={(e) => handleChange("kyc", e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
+                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all cursor-pointer"
               >
                 <option value="Verified">Verified</option>
                 <option value="Pending">Pending</option>
@@ -98,7 +98,7 @@ export default function AddMemberModal({ onClose, onSave }) {
         <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="bg-slate-100 text-slate-600 rounded-xl px-5 py-2 text-xs font-semibold cursor-pointer hover:bg-slate-200 transition-colors"
+            className="bg-slate-100 text-body rounded-xl px-5 py-2 text-xs font-semibold cursor-pointer hover:bg-slate-200 transition-colors"
           >
             Cancel
           </button>
@@ -106,7 +106,7 @@ export default function AddMemberModal({ onClose, onSave }) {
             onClick={() => {
               if (form.name && form.phone) onSave(form);
             }}
-            className="bg-emerald-600 text-white rounded-xl px-5 py-2 text-xs font-semibold cursor-pointer hover:bg-emerald-700 transition-colors"
+            className="bg-success text-white rounded-xl px-5 py-2 text-xs font-semibold cursor-pointer hover:bg-success-700 transition-colors"
           >
             Add Member
           </button>

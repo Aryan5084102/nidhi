@@ -49,10 +49,10 @@ const riskCategories = [
 ];
 
 const colorMap = {
-  indigo: { bg: "bg-indigo-50", border: "border-indigo-200/60", text: "text-indigo-600" },
-  amber: { bg: "bg-amber-50", border: "border-amber-200/60", text: "text-amber-600" },
-  red: { bg: "bg-red-50", border: "border-red-200/60", text: "text-red-500" },
-  emerald: { bg: "bg-emerald-50", border: "border-emerald-200/60", text: "text-emerald-600" },
+  indigo: { bg: "bg-primary-50", border: "border-primary-200/60", text: "text-primary" },
+  amber: { bg: "bg-warning-50", border: "border-warning-200/60", text: "text-warning" },
+  red: { bg: "bg-danger-50", border: "border-danger-200/60", text: "text-danger-500" },
+  emerald: { bg: "bg-success-50", border: "border-success-200/60", text: "text-success" },
   violet: { bg: "bg-violet-50", border: "border-violet-200/60", text: "text-violet-600" },
 };
 
@@ -60,8 +60,8 @@ export default function RiskThresholdTab() {
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">
-        <h3 className="text-[15px] font-bold text-slate-900 mb-1">Risk Threshold Settings</h3>
-        <p className="text-[13px] text-slate-400">Configure risk parameters across Credit, Liquidity, Fraud, Compliance, and Member risk categories. Values near regulatory limits are flagged.</p>
+        <h3 className="text-[15px] font-bold text-heading mb-1">Risk Threshold Settings</h3>
+        <p className="text-[13px] text-heading">Configure risk parameters across Credit, Liquidity, Fraud, Compliance, and Member risk categories. Values near regulatory limits are flagged.</p>
       </SectionCard>
 
       <div className="flex flex-col gap-5">
@@ -83,26 +83,26 @@ export default function RiskThresholdTab() {
                     <div key={i} className="flex items-center justify-between px-5 py-4 hover:bg-slate-50/50 transition-colors">
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[13px] font-semibold text-slate-700">{s.label}</span>
+                          <span className="text-[13px] font-semibold text-body">{s.label}</span>
                           {s.nearLimit && (
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-amber-50 text-amber-600 border-amber-200/60">
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-warning-50 text-warning border-warning-200/60">
                               Near Limit
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">Last updated: {s.lastUpdated}</div>
+                        <div className="text-[11px] text-heading mt-0.5">Last updated: {s.lastUpdated}</div>
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-right">
-                          <div className="bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-[13px] text-slate-700 font-mono min-w-[120px] text-right">
+                          <div className="bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-[13px] text-body font-mono min-w-[120px] text-right">
                             {s.current}
                           </div>
                         </div>
                         <div className="text-right min-w-[100px]">
-                          <div className="text-[10px] text-slate-400">Recommended</div>
+                          <div className="text-[10px] text-heading">Recommended</div>
                           <div className="text-[12px] font-mono text-slate-500">{s.recommended}</div>
                         </div>
-                        <button className="text-[11px] text-indigo-500 hover:text-indigo-700 font-medium cursor-pointer transition-colors">Edit</button>
+                        <button className="text-[11px] text-primary-500 hover:text-primary-700 font-medium cursor-pointer transition-colors">Edit</button>
                       </div>
                     </div>
                   ))}

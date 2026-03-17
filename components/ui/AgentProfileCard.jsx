@@ -9,8 +9,8 @@ export default function AgentProfileCard({ icon, iconBg, iconColor, title, descr
           {icon}
         </div>
         <div>
-          <h3 className="text-[15px] font-bold text-slate-900">{title}</h3>
-          <p className="text-[12px] text-slate-400">{description}</p>
+          <h3 className="text-[15px] font-bold text-heading">{title}</h3>
+          <p className="text-[12px] text-heading">{description}</p>
         </div>
         <div className="ml-auto"><StatusBadge status={status} /></div>
       </div>
@@ -18,7 +18,7 @@ export default function AgentProfileCard({ icon, iconBg, iconColor, title, descr
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {metrics.map((m) => (
             <div key={m.label} className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">{m.label}</div>
+              <div className="text-[10px] text-heading uppercase tracking-wider mb-1">{m.label}</div>
               <div className="text-[16px] font-bold font-mono" style={{ color: m.color }}>{m.value}</div>
             </div>
           ))}

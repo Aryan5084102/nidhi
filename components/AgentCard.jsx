@@ -47,13 +47,13 @@ export default function AgentCard({ agent, detailed = false }) {
             >
               {agent.processed}
             </div>
-            <div className="text-[11px] text-slate-400">Processed today</div>
+            <div className="text-[11px] text-heading">Processed today</div>
           </div>
           <div className="bg-slate-50 rounded-xl p-3">
-            <div className="font-mono text-[22px] font-bold text-amber-600">
+            <div className="font-mono text-[22px] font-bold text-warning">
               {agent.pending}
             </div>
-            <div className="text-[11px] text-slate-400">
+            <div className="text-[11px] text-heading">
               Awaiting human review
             </div>
           </div>
@@ -79,7 +79,7 @@ export default function AgentCard({ agent, detailed = false }) {
 
       <div className="flex justify-between items-start mb-3">
         <div>
-          <div className="text-[13px] font-semibold text-slate-700 mb-0.5">
+          <div className="text-[13px] font-semibold text-body mb-0.5">
             {agent.name}
           </div>
           <span
@@ -96,7 +96,7 @@ export default function AgentCard({ agent, detailed = false }) {
           >
             {agent.processed}
           </div>
-          <div className="text-[10px] text-slate-400">processed</div>
+          <div className="text-[10px] text-heading">processed</div>
         </div>
       </div>
 
@@ -109,10 +109,10 @@ export default function AgentCard({ agent, detailed = false }) {
       </div>
 
       <div className="flex justify-between mt-1.5">
-        <span className="text-[10px] text-slate-400">
+        <span className="text-[10px] text-heading">
           {agent.pending} pending approval
         </span>
-        <span className="text-[10px] text-slate-400">{pct.toFixed(0)}%</span>
+        <span className="text-[10px] text-heading">{pct.toFixed(0)}%</span>
       </div>
     </div>
   );

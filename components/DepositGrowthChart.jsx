@@ -108,7 +108,7 @@ export default function DepositGrowthChart() {
         <h3 className="text-sm font-semibold text-slate-800">Deposit Growth</h3>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-indigo-500" />
+            <span className="w-2.5 h-2.5 rounded-sm bg-primary-500" />
             <span className="text-[11px] text-slate-500">FD</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -116,7 +116,7 @@ export default function DepositGrowthChart() {
             <span className="text-[11px] text-slate-500">RD</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-amber-500" />
+            <span className="w-2.5 h-2.5 rounded-sm bg-warning-500" />
             <span className="text-[11px] text-slate-500">Savings</span>
           </div>
         </div>

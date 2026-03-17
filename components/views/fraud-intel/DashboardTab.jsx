@@ -32,11 +32,11 @@ export default function DashboardTab() {
       <SectionCard title="Critical Cases">
         <div className="flex flex-col gap-4">
           {fraudCases.filter((c) => c.severity === "Critical").map((fc) => (
-            <div key={fc.id} className="bg-red-50/60 rounded-2xl p-4 border border-red-100 shadow-sm">
+            <div key={fc.id} className="bg-danger-50/60 rounded-2xl p-4 border border-danger-100 shadow-sm">
               {/* Header row: icon + type + badge */}
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-9 h-9 bg-red-100 border border-red-200/60 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div className="w-9 h-9 bg-danger-100 border border-danger-200/60 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-danger-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                   </svg>
                 </div>
@@ -44,7 +44,7 @@ export default function DashboardTab() {
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
                       <div className="text-[13px] font-bold text-slate-800 leading-tight">{fc.type}</div>
-                      <div className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">{fc.id} &middot; {fc.time}</div>
+                      <div className="text-[11px] text-heading font-mono mt-0.5 truncate">{fc.id} &middot; {fc.time}</div>
                     </div>
                     <div className="shrink-0"><StatusBadge status={fc.status} /></div>
                   </div>
@@ -52,13 +52,13 @@ export default function DashboardTab() {
               </div>
               <div className="text-[12px] text-slate-500 leading-relaxed mb-3">{fc.description}</div>
               <div className="grid grid-cols-2 gap-2">
-                <div className="bg-white/80 rounded-xl p-2.5 border border-red-100">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Member</div>
-                  <div className="text-[12px] font-semibold text-slate-700 font-mono truncate">{fc.member}</div>
+                <div className="bg-white/80 rounded-xl p-2.5 border border-danger-100">
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Member</div>
+                  <div className="text-[12px] font-semibold text-body font-mono truncate">{fc.member}</div>
                 </div>
-                <div className="bg-white/80 rounded-xl p-2.5 border border-red-100">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Potential Loss</div>
-                  <div className="text-[12px] font-bold text-red-500 font-mono">{fc.potentialLoss}</div>
+                <div className="bg-white/80 rounded-xl p-2.5 border border-danger-100">
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Potential Loss</div>
+                  <div className="text-[12px] font-bold text-danger-500 font-mono">{fc.potentialLoss}</div>
                 </div>
               </div>
             </div>

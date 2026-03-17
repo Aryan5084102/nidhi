@@ -49,12 +49,12 @@ export default function LoanPerformanceTab() {
             <table className="w-full whitespace-nowrap">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Category</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Disbursed</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Active</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">NPA</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Recovery</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Avg Ticket</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Category</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Disbursed</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Active</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">NPA</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Recovery</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Avg Ticket</th>
                 </tr>
               </thead>
               <tbody>
@@ -63,18 +63,18 @@ export default function LoanPerformanceTab() {
                     <td className="px-5 py-3 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: l.color }} />
-                        <span className="text-[13px] font-semibold text-slate-700 whitespace-nowrap">{l.category}</span>
+                        <span className="text-[13px] font-semibold text-body whitespace-nowrap">{l.category}</span>
                       </div>
                     </td>
-                    <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{l.disbursed}</td>
-                    <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{l.active.toLocaleString()}</td>
+                    <td className="text-[13px] font-mono text-body px-5 py-3 text-right">{l.disbursed}</td>
+                    <td className="text-[13px] font-mono text-body px-5 py-3 text-right">{l.active.toLocaleString()}</td>
                     <td className="px-5 py-3 text-right">
-                      <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${parseFloat(l.npa) > 3 ? "bg-red-50 border-red-200 text-red-600" : parseFloat(l.npa) > 2 ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-emerald-50 border-emerald-200 text-emerald-600"}`}>
+                      <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${parseFloat(l.npa) > 3 ? "bg-danger-50 border-danger-200 text-danger" : parseFloat(l.npa) > 2 ? "bg-warning-50 border-warning-200 text-warning" : "bg-success-50 border-success-200 text-success"}`}>
                         {l.npa}
                       </span>
                     </td>
-                    <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{l.recovery}</td>
-                    <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{l.avgTicket}</td>
+                    <td className="text-[13px] font-mono text-body px-5 py-3 text-right">{l.recovery}</td>
+                    <td className="text-[13px] font-mono text-body px-5 py-3 text-right">{l.avgTicket}</td>
                   </tr>
                 ))}
               </tbody>
@@ -95,7 +95,7 @@ export default function LoanPerformanceTab() {
                   <div className="w-full flex items-end justify-center" style={{ height: "100px" }}>
                     <div className="w-full max-w-[40px] rounded-t-lg transition-all duration-500 hover:opacity-90" style={{ height: `${(d.npa / maxVal) * 100}%`, background: d.npa > 2.5 ? "linear-gradient(to top, #DC2626, #F87171)" : "linear-gradient(to top, #059669, #34D399)" }} />
                   </div>
-                  <span className="text-[10px] text-slate-400 group-hover:text-slate-600 transition-colors">{d.month}</span>
+                  <span className="text-[10px] text-heading group-hover:text-body transition-colors">{d.month}</span>
                 </div>
               );
             })}

@@ -73,11 +73,11 @@ export default function PanelsTab() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {boardMembers.map((b) => (
             <div key={b.din} className="bg-slate-50 rounded-xl p-4">
-              <div className="text-[13px] font-semibold text-slate-700">{b.name}</div>
-              <div className="text-[12px] text-indigo-500 mt-0.5">{b.designation}</div>
+              <div className="text-[13px] font-semibold text-body">{b.name}</div>
+              <div className="text-[12px] text-primary-500 mt-0.5">{b.designation}</div>
               <div className="flex items-center gap-3 mt-2">
-                <span className="text-[11px] text-slate-400">Since: {b.since}</span>
-                <span className="text-[11px] text-slate-300">DIN: {b.din}</span>
+                <span className="text-[11px] text-heading">Since: {b.since}</span>
+                <span className="text-[11px] text-subtle">DIN: {b.din}</span>
               </div>
             </div>
           ))}
@@ -90,28 +90,28 @@ export default function PanelsTab() {
           <SectionCard key={c.name}>
             <div className="flex justify-between items-start mb-3">
               <div>
-                <h3 className="text-[15px] font-bold text-slate-900">{c.name}</h3>
-                <div className="text-[12px] text-indigo-500 mt-0.5">Chairperson: {c.chairperson}</div>
+                <h3 className="text-[15px] font-bold text-heading">{c.name}</h3>
+                <div className="text-[12px] text-primary-500 mt-0.5">Chairperson: {c.chairperson}</div>
               </div>
               <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{c.frequency}</span>
             </div>
-            <div className="text-[12px] text-slate-400 mb-3">{c.mandate}</div>
+            <div className="text-[12px] text-heading mb-3">{c.mandate}</div>
             <div className="flex flex-col gap-1 mb-3">
               {c.members.map((m, i) => (
                 <div key={i} className="flex items-center gap-2 text-[12px] text-slate-500">
-                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary-400 flex-shrink-0" />
                   {m}
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-50 rounded-xl p-3">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Last Meeting</div>
-                <div className="text-[13px] font-semibold text-slate-700">{c.lastMeeting}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Last Meeting</div>
+                <div className="text-[13px] font-semibold text-body">{c.lastMeeting}</div>
               </div>
               <div className="bg-slate-50 rounded-xl p-3">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Next Meeting</div>
-                <div className="text-[13px] font-semibold text-slate-700">{c.nextMeeting}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Next Meeting</div>
+                <div className="text-[13px] font-semibold text-body">{c.nextMeeting}</div>
               </div>
             </div>
           </SectionCard>
@@ -121,23 +121,23 @@ export default function PanelsTab() {
       {/* Meeting Minutes */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Meeting Minutes Tracker</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Minutes filed with ROC as per Section 118 of Companies Act 2013</p>
+          <h3 className="text-[15px] font-bold text-heading">Meeting Minutes Tracker</h3>
+          <p className="text-[12px] text-heading mt-0.5">Minutes filed with ROC as per Section 118 of Companies Act 2013</p>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100 whitespace-nowrap">
               {minutesColumns.map((col) => (
-                <th key={col.key} className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">{col.label}</th>
+                <th key={col.key} className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">{col.label}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {meetingMinutes.map((m, i) => (
               <tr key={i} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                <td className="px-5 py-3 text-[12px] text-slate-400 whitespace-nowrap">{m.date}</td>
-                <td className="px-5 py-3 text-[13px] font-medium text-slate-700 whitespace-nowrap">{m.committee}</td>
-                <td className="px-5 py-3 text-[12px] text-slate-400">
+                <td className="px-5 py-3 text-[12px] text-heading whitespace-nowrap">{m.date}</td>
+                <td className="px-5 py-3 text-[13px] font-medium text-body whitespace-nowrap">{m.committee}</td>
+                <td className="px-5 py-3 text-[12px] text-heading">
                   <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={m.agenda}>{m.agenda}</span>
                 </td>
 

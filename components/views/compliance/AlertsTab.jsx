@@ -42,19 +42,19 @@ export default function AlertsTab() {
       {/* Alert Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Critical</div>
-          <div className="text-[22px] font-bold font-mono text-red-500">{severityCounts.Critical}</div>
+          <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Critical</div>
+          <div className="text-[22px] font-bold font-mono text-danger-500">{severityCounts.Critical}</div>
         </div>
         <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">High</div>
+          <div className="text-[10px] text-heading uppercase tracking-wider mb-2">High</div>
           <div className="text-[22px] font-bold font-mono text-orange-600">{severityCounts.High}</div>
         </div>
         <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Medium</div>
-          <div className="text-[22px] font-bold font-mono text-amber-600">{severityCounts.Medium}</div>
+          <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Medium</div>
+          <div className="text-[22px] font-bold font-mono text-warning">{severityCounts.Medium}</div>
         </div>
         <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">Low</div>
+          <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Low</div>
           <div className="text-[22px] font-bold font-mono text-blue-600">{severityCounts.Low}</div>
         </div>
       </div>
@@ -73,11 +73,11 @@ export default function AlertsTab() {
               </div>
               <StatusBadge status={a.status} />
             </div>
-            <div className="text-[13px] font-medium text-slate-700 mt-2">{a.description}</div>
+            <div className="text-[13px] font-medium text-body mt-2">{a.description}</div>
             <div className="flex items-center gap-4 mt-3">
-              <span className="text-[11px] text-slate-300">ID: {a.id}</span>
-              <span className="text-[11px] text-slate-300">Rule: {a.affectedRule}</span>
-              <span className="text-[11px] text-slate-300">{a.date}</span>
+              <span className="text-[11px] text-subtle">ID: {a.id}</span>
+              <span className="text-[11px] text-subtle">Rule: {a.affectedRule}</span>
+              <span className="text-[11px] text-subtle">{a.date}</span>
             </div>
           </div>
         ))}

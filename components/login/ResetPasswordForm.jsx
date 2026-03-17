@@ -33,17 +33,17 @@ function ResetPasswordForm({ onSwitch }) {
     return (
       <div className="w-full">
         <div className="text-center animate-fade-in">
-          <div className="w-16 h-16 bg-emerald-500/20 lg:bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
+          <div className="w-16 h-16 bg-success-500/20 lg:bg-success-100 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">
             {"\u2705"}
           </div>
-          <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-2">Password reset successful</h2>
-          <p className="text-slate-400 text-sm mb-6">
+          <h2 className="text-2xl font-bold text-white lg:text-heading mb-2">Password reset successful</h2>
+          <p className="text-heading text-sm mb-6">
             Your password has been updated. You can now sign in with your new password.
           </p>
           <button
             type="button"
             onClick={() => onSwitch("login")}
-            className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer shadow-lg shadow-indigo-500/25"
+            className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-500 hover:from-primary-700 hover:to-primary text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer shadow-lg shadow-primary-500/25"
           >
             Back to Sign In
           </button>
@@ -58,17 +58,17 @@ function ResetPasswordForm({ onSwitch }) {
         <button
           type="button"
           onClick={() => onSwitch("forgot-password")}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-300 lg:hover:text-slate-600 cursor-pointer transition-colors mb-4"
+          className="flex items-center gap-1.5 text-xs text-heading hover:text-subtle lg:hover:text-body cursor-pointer transition-colors mb-4"
         >
           <span>{"\u2190"}</span> Back
         </button>
-        <h2 className="text-2xl font-bold text-white lg:text-slate-900 mb-1.5">Reset your password</h2>
-        <p className="text-slate-400 text-sm">Enter the OTP sent to your email and set a new password</p>
+        <h2 className="text-2xl font-bold text-white lg:text-heading mb-1.5">Reset your password</h2>
+        <p className="text-heading text-sm">Enter the OTP sent to your email and set a new password</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div>
-          <label className="block text-xs font-semibold text-slate-300 lg:text-slate-600 mb-1.5">
+          <label className="block text-xs font-semibold text-subtle lg:text-body mb-1.5">
             OTP Code
           </label>
           <input
@@ -76,14 +76,14 @@ function ResetPasswordForm({ onSwitch }) {
             maxLength={6}
             placeholder="Enter 6-digit OTP"
             {...register("otp")}
-            className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-lg text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all tracking-[0.3em] text-center font-mono lg:bg-white lg:text-slate-900 lg:placeholder:text-slate-300 ${
+            className={`w-full px-4 py-3 bg-white/10 border rounded-xl text-lg text-white placeholder:text-heading focus:outline-none focus:ring-2 transition-all tracking-[0.3em] text-center font-mono lg:bg-white lg:text-heading lg:placeholder:text-subtle ${
               errors.otp
-                ? "border-red-300 focus:border-red-400 focus:ring-red-500/10"
-                : "border-white/20 focus:border-indigo-400 focus:ring-indigo-500/10 lg:border-slate-200"
+                ? "border-danger-300 focus:border-danger-400 focus:ring-danger-500/10"
+                : "border-white/20 focus:border-primary-400 focus:ring-primary-500/10 lg:border-slate-200"
             }`}
           />
           {errors.otp && (
-            <p className="mt-1 text-xs text-red-400 lg:text-red-500 animate-fade-in">{errors.otp.message}</p>
+            <p className="mt-1 text-xs text-danger-400 lg:text-danger-500 animate-fade-in">{errors.otp.message}</p>
           )}
         </div>
 
@@ -112,7 +112,7 @@ function ResetPasswordForm({ onSwitch }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 active:scale-[0.99]"
+          className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-500 hover:from-primary-700 hover:to-primary text-white font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-primary-500/25 hover:shadow-primary-500/35 active:scale-[0.99]"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

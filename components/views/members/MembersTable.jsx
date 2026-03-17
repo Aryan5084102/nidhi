@@ -42,7 +42,7 @@ export default function MembersTable({
               ].map((h) => (
                 <th
                   key={h}
-                  className="px-4 py-3 text-left text-[11px] text-slate-400 font-semibold uppercase tracking-wide"
+                  className="px-4 py-3 text-left text-[11px] text-heading font-semibold uppercase tracking-wide"
                 >
                   {h}
                 </th>
@@ -55,16 +55,16 @@ export default function MembersTable({
                 key={m.id}
                 className="border-b border-slate-50 hover:bg-slate-50/60 transition-colors"
               >
-                <td className="px-4 py-3.5 font-mono text-xs text-slate-400">
+                <td className="px-4 py-3.5 font-mono text-xs text-heading">
                   {m.id}
                 </td>
-                <td className="px-4 py-3.5 text-[13px] text-slate-700 font-medium">
+                <td className="px-4 py-3.5 text-[13px] text-body font-medium">
                   {m.name}
                 </td>
-                <td className="px-4 py-3.5 font-mono text-xs text-emerald-600">
+                <td className="px-4 py-3.5 font-mono text-xs text-success">
                   {m.deposits}
                 </td>
-                <td className="px-4 py-3.5 font-mono text-xs text-indigo-600">
+                <td className="px-4 py-3.5 font-mono text-xs text-primary">
                   {m.loans}
                 </td>
                 <td className="px-4 py-3.5">
@@ -77,10 +77,10 @@ export default function MembersTable({
                   <span
                     className={`text-[11px] font-semibold ${
                       m.kyc === "Verified"
-                        ? "text-emerald-600"
+                        ? "text-success"
                         : m.kyc === "Pending"
-                        ? "text-amber-600"
-                        : "text-red-500"
+                        ? "text-warning"
+                        : "text-danger-500"
                     }`}
                   >
                     {m.kyc === "Verified" ? "✓ " : "⏳ "}
@@ -94,13 +94,13 @@ export default function MembersTable({
                   <div className="flex gap-1.5">
                     <button
                       onClick={() => onView(m)}
-                      className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] text-slate-500 cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all"
+                      className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] text-slate-500 cursor-pointer hover:bg-primary-50 hover:text-primary hover:border-primary-200 transition-all"
                     >
                       View
                     </button>
                     <button
                       onClick={() => onEdit(m)}
-                      className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] text-slate-500 cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all"
+                      className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[10px] text-slate-500 cursor-pointer hover:bg-primary-50 hover:text-primary hover:border-primary-200 transition-all"
                     >
                       Edit
                     </button>
@@ -110,7 +110,7 @@ export default function MembersTable({
             ))}
             {members.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-8 text-center text-sm text-slate-400">
+                <td colSpan={9} className="px-4 py-8 text-center text-sm text-heading">
                   No members found
                 </td>
               </tr>
@@ -121,7 +121,7 @@ export default function MembersTable({
 
       {/* Pagination */}
       <div className="px-4 py-3 border-t border-slate-100 flex justify-between items-center">
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-heading">
           Showing {totalFiltered === 0 ? 0 : startIndex + 1}–{Math.min(startIndex + itemsPerPage, totalFiltered)} of {totalFiltered} members
         </span>
         <div className="flex gap-1.5">
@@ -131,7 +131,7 @@ export default function MembersTable({
             className={`rounded-lg px-2 py-1 text-[11px] min-w-7 cursor-pointer transition-all border ${
               currentPage === 1
                 ? "bg-white border-slate-100 text-slate-200 cursor-not-allowed"
-                : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300"
+                : "bg-white border-slate-200 text-heading hover:text-body hover:border-slate-300"
             }`}
           >
             ←
@@ -142,8 +142,8 @@ export default function MembersTable({
               onClick={() => onPageChange(page)}
               className={`rounded-lg px-2 py-1 text-[11px] min-w-7 cursor-pointer transition-all border ${
                 page === currentPage
-                  ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold"
-                  : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300"
+                  ? "bg-primary-50 border-primary-300 text-primary font-semibold"
+                  : "bg-white border-slate-200 text-heading hover:text-body hover:border-slate-300"
               }`}
             >
               {page}
@@ -155,7 +155,7 @@ export default function MembersTable({
             className={`rounded-lg px-2 py-1 text-[11px] min-w-7 cursor-pointer transition-all border ${
               currentPage === totalPages
                 ? "bg-white border-slate-100 text-slate-200 cursor-not-allowed"
-                : "bg-white border-slate-200 text-slate-400 hover:text-slate-600 hover:border-slate-300"
+                : "bg-white border-slate-200 text-heading hover:text-body hover:border-slate-300"
             }`}
           >
             →

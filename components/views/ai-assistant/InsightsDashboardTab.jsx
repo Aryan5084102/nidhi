@@ -72,9 +72,9 @@ const insightsData = [
 
 function ImpactBadge({ level }) {
   const styles = {
-    High: "bg-red-50 text-red-600 border-red-200",
-    Medium: "bg-amber-50 text-amber-600 border-amber-200",
-    Low: "bg-emerald-50 text-emerald-600 border-emerald-200",
+    High: "bg-danger-50 text-danger border-danger-200",
+    Medium: "bg-warning-50 text-warning border-warning-200",
+    Low: "bg-success-50 text-success border-success-200",
   };
   return (
     <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[level]}`}>
@@ -86,12 +86,12 @@ function ImpactBadge({ level }) {
 function CategoryBadge({ category }) {
   const styles = {
     Risk: "bg-rose-50 text-rose-600 border-rose-200",
-    Growth: "bg-emerald-50 text-emerald-600 border-emerald-200",
+    Growth: "bg-success-50 text-success border-success-200",
     Compliance: "bg-violet-50 text-violet-600 border-violet-200",
     Operational: "bg-sky-50 text-sky-600 border-sky-200",
   };
   return (
-    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[category] || "bg-slate-50 text-slate-600 border-slate-200"}`}>
+    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${styles[category] || "bg-slate-50 text-body border-slate-200"}`}>
       {category}
     </span>
   );
@@ -109,9 +109,9 @@ export default function InsightsDashboardTab() {
           { label: "Actions Pending", value: "12", sub: "Across all insights" },
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-2xl p-4 card-shadow border border-slate-100">
-            <p className="text-[11px] text-slate-400 uppercase tracking-wide">{s.label}</p>
+            <p className="text-[11px] text-heading uppercase tracking-wide">{s.label}</p>
             <p className="text-xl font-bold text-slate-800 mt-1">{s.value}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">{s.sub}</p>
+            <p className="text-[11px] text-heading mt-0.5">{s.sub}</p>
           </div>
         ))}
       </div>
@@ -131,7 +131,7 @@ export default function InsightsDashboardTab() {
 
             {/* Confidence bar */}
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wide">Confidence</span>
+              <span className="text-[10px] text-heading uppercase tracking-wide">Confidence</span>
               <div className="flex-1">
                 <ProgressBar
                   value={insight.confidence}
@@ -143,9 +143,9 @@ export default function InsightsDashboardTab() {
             </div>
 
             {/* Recommended action */}
-            <div className="bg-indigo-50/50 rounded-xl p-3 border border-indigo-100">
-              <p className="text-[10px] text-indigo-500 uppercase tracking-wide font-semibold mb-1">Recommended Action</p>
-              <p className="text-[12px] text-indigo-700 leading-relaxed">{insight.action}</p>
+            <div className="bg-primary-50/50 rounded-xl p-3 border border-primary-100">
+              <p className="text-[10px] text-primary-500 uppercase tracking-wide font-semibold mb-1">Recommended Action</p>
+              <p className="text-[12px] text-primary-700 leading-relaxed">{insight.action}</p>
             </div>
           </SectionCard>
         ))}

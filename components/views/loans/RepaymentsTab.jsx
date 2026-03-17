@@ -50,12 +50,12 @@ export default function RepaymentsTab() {
           {loanApplications.filter((a) => a.status === "Approved" || a.status === "Disbursed").map((app) => (
             <div key={app.id} className="flex items-center justify-between bg-slate-50 rounded-xl p-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-emerald-50 border border-emerald-200/60 rounded-full flex items-center justify-center text-[11px] font-bold text-emerald-600">
+                <div className="w-8 h-8 bg-success-50 border border-success-200/60 rounded-full flex items-center justify-center text-[11px] font-bold text-success">
                   {app.memberName.charAt(0)}
                 </div>
                 <div>
-                  <div className="text-[13px] font-semibold text-slate-700">{app.memberName}</div>
-                  <div className="text-[11px] text-slate-400">{app.id} &middot; EMI: {app.emi}</div>
+                  <div className="text-[13px] font-semibold text-body">{app.memberName}</div>
+                  <div className="text-[11px] text-heading">{app.id} &middot; EMI: {app.emi}</div>
                 </div>
               </div>
               <div className="text-right">

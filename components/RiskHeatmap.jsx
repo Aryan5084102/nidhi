@@ -10,23 +10,23 @@ const riskData = [
 ];
 
 const levels = [
-  { key: "low", label: "Low", color: "bg-emerald-100 text-emerald-700" },
-  { key: "medium", label: "Med", color: "bg-amber-100 text-amber-700" },
+  { key: "low", label: "Low", color: "bg-success-100 text-success-700" },
+  { key: "medium", label: "Med", color: "bg-warning-100 text-amber-700" },
   { key: "high", label: "High", color: "bg-orange-100 text-orange-700" },
-  { key: "critical", label: "Crit", color: "bg-red-100 text-red-700" },
+  { key: "critical", label: "Crit", color: "bg-danger-100 text-red-700" },
 ];
 
 function getCellColor(level, value) {
   if (level === "low") {
-    return value > 70 ? "bg-emerald-400" : value > 50 ? "bg-emerald-300" : "bg-emerald-200";
+    return value > 70 ? "bg-success-400" : value > 50 ? "bg-success-300" : "bg-success-200";
   }
   if (level === "medium") {
-    return value > 20 ? "bg-amber-400" : value > 15 ? "bg-amber-300" : "bg-amber-200";
+    return value > 20 ? "bg-warning-400" : value > 15 ? "bg-warning-300" : "bg-warning-200";
   }
   if (level === "high") {
     return value > 10 ? "bg-orange-400" : value > 7 ? "bg-orange-300" : "bg-orange-200";
   }
-  return value > 5 ? "bg-red-500" : value > 3 ? "bg-red-400" : "bg-red-300";
+  return value > 5 ? "bg-danger-500" : value > 3 ? "bg-danger-400" : "bg-danger-300";
 }
 
 export default function RiskHeatmap() {
@@ -49,7 +49,7 @@ export default function RiskHeatmap() {
       <div className="space-y-1.5">
         {riskData.map((row, i) => (
           <div key={i} className="flex items-center gap-2">
-            <span className="text-[11px] text-slate-600 w-[110px] shrink-0 truncate">
+            <span className="text-[11px] text-body w-[110px] shrink-0 truncate">
               {row.category}
             </span>
             <div className="flex gap-1 flex-1">

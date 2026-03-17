@@ -17,10 +17,10 @@ export default function FinancialReportsTab() {
             {reportAnalytics.revenueBreakdown.map((r) => (
               <div key={r.source} className="bg-slate-50 rounded-xl p-3">
                 <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-[13px] font-semibold text-slate-700">{r.source}</span>
+                  <span className="text-[13px] font-semibold text-body">{r.source}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[12px] font-mono text-slate-500">{"\u20B9"}{(r.amount / 100000).toFixed(1)}L</span>
-                    <span className="text-[11px] text-slate-400 font-mono">{r.pct}%</span>
+                    <span className="text-[11px] text-heading font-mono">{r.pct}%</span>
                   </div>
                 </div>
                 <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
@@ -35,11 +35,11 @@ export default function FinancialReportsTab() {
         <SectionCard title="P&L Summary — March 2026">
           <div className="flex flex-col gap-3">
             {[
-              { label: "Total Income", value: "\u20B91.18 Cr", monthly: "\u20B998.3L avg/mo", color: "#059669", bg: "bg-emerald-50" },
+              { label: "Total Income", value: "\u20B91.18 Cr", monthly: "\u20B998.3L avg/mo", color: "#059669", bg: "bg-success-50" },
               { label: "Interest Income", value: "\u20B972.4L", monthly: "\u20B960.3L avg/mo", color: "#0D9488", bg: "bg-teal-50" },
-              { label: "Operating Expenses", value: "\u20B938.2L", monthly: "\u20B931.8L avg/mo", color: "#D97706", bg: "bg-amber-50" },
-              { label: "Provisions & Write-offs", value: "\u20B94.8L", monthly: "\u20B94.0L avg/mo", color: "#DC2626", bg: "bg-red-50" },
-              { label: "Net Profit", value: "\u20B938.4L", monthly: "\u20B932.0L avg/mo", color: "#4F46E5", bg: "bg-indigo-50" },
+              { label: "Operating Expenses", value: "\u20B938.2L", monthly: "\u20B931.8L avg/mo", color: "#D97706", bg: "bg-warning-50" },
+              { label: "Provisions & Write-offs", value: "\u20B94.8L", monthly: "\u20B94.0L avg/mo", color: "#DC2626", bg: "bg-danger-50" },
+              { label: "Net Profit", value: "\u20B938.4L", monthly: "\u20B932.0L avg/mo", color: "#4F46E5", bg: "bg-primary-50" },
             ].map((item) => (
               <div key={item.label} className={`${item.bg} rounded-xl p-3.5`}>
                 <div className="flex justify-between items-center">
@@ -47,7 +47,7 @@ export default function FinancialReportsTab() {
                     <div className="text-[12px] text-slate-500">{item.label}</div>
                     <div className="text-[18px] font-bold font-mono" style={{ color: item.color }}>{item.value}</div>
                   </div>
-                  <div className="text-[11px] text-slate-400 font-mono">{item.monthly}</div>
+                  <div className="text-[11px] text-heading font-mono">{item.monthly}</div>
                 </div>
               </div>
             ))}

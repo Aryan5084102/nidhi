@@ -17,13 +17,13 @@ export default function PreventionTab() {
         {preventionMeasures.map((pm) => (
           <div key={pm.title} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="flex justify-between items-start mb-3">
-              <div className="text-[15px] font-bold text-slate-900">{pm.title}</div>
+              <div className="text-[15px] font-bold text-heading">{pm.title}</div>
               <StatusBadge status={pm.status === "Beta" ? "Upcoming" : pm.status} />
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed mb-4">{pm.description}</p>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] text-slate-400">Detection Effectiveness</span>
-              <span className="text-[14px] font-bold text-emerald-600 font-mono">{pm.effectiveness}</span>
+              <span className="text-[11px] text-heading">Detection Effectiveness</span>
+              <span className="text-[14px] font-bold text-success font-mono">{pm.effectiveness}</span>
             </div>
             <div className="mt-2">
               <ProgressBar value={parseInt(pm.effectiveness)} max={100} color="#34D399" />

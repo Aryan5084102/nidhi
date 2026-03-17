@@ -43,9 +43,9 @@ export default function RiskAnalyticsTab() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {riskDistribution.map((r) => (
             <div key={r.score} className="bg-slate-50 rounded-xl p-4 text-center">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-2">{r.score}</div>
+              <div className="text-[10px] text-heading uppercase tracking-wider mb-2">{r.score}</div>
               <div className="text-[20px] font-bold font-mono" style={{ color: r.color }}>{r.count.toLocaleString()}</div>
-              <div className="text-[11px] text-slate-400 mt-1">{r.pct}% of members</div>
+              <div className="text-[11px] text-heading mt-1">{r.pct}% of members</div>
             </div>
           ))}
         </div>
@@ -83,7 +83,7 @@ export default function RiskAnalyticsTab() {
                     <div className="text-[12px] text-slate-500">{p.indicator}</div>
                     <div className="text-[18px] font-bold font-mono mt-0.5" style={{ color: p.color }}>{p.value}</div>
                   </div>
-                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${p.direction === "Improving" ? "bg-emerald-50 border-emerald-200 text-emerald-600" : p.direction === "Stable" ? "bg-amber-50 border-amber-200 text-amber-600" : "bg-red-50 border-red-200 text-red-600"}`}>
+                  <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${p.direction === "Improving" ? "bg-success-50 border-success-200 text-success" : p.direction === "Stable" ? "bg-warning-50 border-warning-200 text-warning" : "bg-danger-50 border-danger-200 text-danger"}`}>
                     {p.direction}
                   </span>
                 </div>
@@ -99,25 +99,25 @@ export default function RiskAnalyticsTab() {
           <table className="w-full whitespace-nowrap">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Risk Factor</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Affected</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Impact</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center">Trend</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Mitigation</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Risk Factor</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Affected</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center">Impact</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center">Trend</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Mitigation</th>
               </tr>
             </thead>
             <tbody>
               {riskFactors.map((rf) => (
                 <tr key={rf.factor} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                  <td className="text-[13px] font-medium text-slate-700 px-5 py-3">{rf.factor}</td>
-                  <td className="text-[13px] font-mono text-slate-600 px-5 py-3 text-right">{rf.affected}</td>
+                  <td className="text-[13px] font-medium text-body px-5 py-3">{rf.factor}</td>
+                  <td className="text-[13px] font-mono text-body px-5 py-3 text-right">{rf.affected}</td>
                   <td className="px-5 py-3 text-center">
-                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${rf.impact === "Critical" ? "bg-red-50 border-red-200 text-red-600" : rf.impact === "High" ? "bg-amber-50 border-amber-200 text-amber-600" : rf.impact === "Medium" ? "bg-yellow-50 border-yellow-200 text-yellow-600" : "bg-slate-100 border-slate-200 text-slate-500"}`}>
+                    <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${rf.impact === "Critical" ? "bg-danger-50 border-danger-200 text-danger" : rf.impact === "High" ? "bg-warning-50 border-warning-200 text-warning" : rf.impact === "Medium" ? "bg-yellow-50 border-yellow-200 text-yellow-600" : "bg-slate-100 border-slate-200 text-slate-500"}`}>
                       {rf.impact}
                     </span>
                   </td>
                   <td className="px-5 py-3 text-center">
-                    <span className={`text-[11px] font-semibold ${rf.trend === "Improving" || rf.trend === "Declining" ? "text-emerald-500" : rf.trend === "Stable" ? "text-slate-500" : "text-red-500"}`}>
+                    <span className={`text-[11px] font-semibold ${rf.trend === "Improving" || rf.trend === "Declining" ? "text-success-500" : rf.trend === "Stable" ? "text-slate-500" : "text-danger-500"}`}>
                       {rf.trend}
                     </span>
                   </td>
@@ -135,21 +135,21 @@ export default function RiskAnalyticsTab() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Low %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Medium %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">High %</th>
-                <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Critical %</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left whitespace-nowrap">Category</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Low %</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Medium %</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">High %</th>
+                <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-center whitespace-nowrap">Critical %</th>
               </tr>
             </thead>
             <tbody>
               {heatmap.map((h) => (
                 <tr key={h.category} className="border-b border-slate-50">
-                  <td className="text-[13px] font-semibold text-slate-700 px-5 py-3">{h.category}</td>
-                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-emerald-100 text-emerald-700">{h.low}</span></td>
-                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-amber-100 text-amber-700">{h.medium}</span></td>
+                  <td className="text-[13px] font-semibold text-body px-5 py-3">{h.category}</td>
+                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-success-100 text-success-700">{h.low}</span></td>
+                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-warning-100 text-amber-700">{h.medium}</span></td>
                   <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-orange-100 text-orange-700">{h.high}</span></td>
-                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-red-100 text-red-700">{h.critical}</span></td>
+                  <td className="px-5 py-3 text-center"><span className="inline-block w-12 py-1 rounded-lg text-[12px] font-mono font-semibold bg-danger-100 text-red-700">{h.critical}</span></td>
                 </tr>
               ))}
             </tbody>

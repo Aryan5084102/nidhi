@@ -31,22 +31,22 @@ export default function OverviewTab() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {depositSchemes.map((s) => (
           <div key={s.name} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
-            <div className="text-[15px] font-bold text-slate-900 mb-1">{s.name}</div>
-            <div className="text-[11px] text-slate-400 mb-4">{s.members.toLocaleString()} active members</div>
+            <div className="text-[15px] font-bold text-heading mb-1">{s.name}</div>
+            <div className="text-[11px] text-heading mb-4">{s.members.toLocaleString()} active members</div>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div className="bg-slate-50 rounded-xl p-3">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Rate</div>
-                <div className="text-[14px] font-bold text-indigo-600 font-mono">{s.rate}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Rate</div>
+                <div className="text-[14px] font-bold text-primary font-mono">{s.rate}</div>
               </div>
               <div className="bg-slate-50 rounded-xl p-3">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Corpus</div>
-                <div className="text-[14px] font-bold text-emerald-600 font-mono">{s.totalCorpus}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Corpus</div>
+                <div className="text-[14px] font-bold text-success font-mono">{s.totalCorpus}</div>
               </div>
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-slate-400">
-              <span>Min: <strong className="text-slate-600">{s.minAmount}</strong></span>
-              <span className="text-slate-300">|</span>
-              <span>Tenure: <strong className="text-slate-600">{s.tenures}</strong></span>
+            <div className="flex items-center gap-3 text-[11px] text-heading">
+              <span>Min: <strong className="text-body">{s.minAmount}</strong></span>
+              <span className="text-subtle">|</span>
+              <span>Tenure: <strong className="text-body">{s.tenures}</strong></span>
             </div>
           </div>
         ))}

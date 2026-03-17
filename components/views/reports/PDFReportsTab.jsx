@@ -24,7 +24,7 @@ export default function PDFReportsTab() {
       <div className="flex gap-2 mb-4 md:mb-5 tab-scroll">
         {categories.map((c) => (
           <button key={c} onClick={() => setFilterCategory(c)}
-            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterCategory === c ? "bg-indigo-50 border-indigo-300 text-indigo-600 font-semibold" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600"}`}>
+            className={`rounded-xl px-4 py-2 text-xs cursor-pointer transition-all duration-150 border ${filterCategory === c ? "bg-primary-50 border-primary-300 text-primary font-semibold" : "bg-white border-slate-200 text-heading hover:border-slate-300 hover:text-body"}`}>
             {c}
           </button>
         ))}
@@ -36,28 +36,28 @@ export default function PDFReportsTab() {
           <div key={r.id} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
             <div className="flex justify-between items-start mb-3">
               <div>
-                <div className="text-[15px] font-bold text-slate-900">{r.name}</div>
-                <div className="text-[11px] text-slate-400 font-mono mt-0.5">{r.id}</div>
+                <div className="text-[15px] font-bold text-heading">{r.name}</div>
+                <div className="text-[11px] text-heading font-mono mt-0.5">{r.id}</div>
               </div>
               <span className="text-[11px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full border border-slate-200">{r.category}</span>
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed mb-4">{r.description}</p>
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div className="bg-slate-50 rounded-xl p-2.5">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Frequency</div>
-                <div className="text-[12px] font-semibold text-slate-700">{r.frequency}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-0.5">Frequency</div>
+                <div className="text-[12px] font-semibold text-body">{r.frequency}</div>
               </div>
               <div className="bg-slate-50 rounded-xl p-2.5">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Format</div>
-                <div className="text-[12px] font-semibold text-slate-700">{r.format}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-0.5">Format</div>
+                <div className="text-[12px] font-semibold text-body">{r.format}</div>
               </div>
               <div className="bg-slate-50 rounded-xl p-2.5">
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Last Generated</div>
-                <div className="text-[12px] font-semibold text-slate-700">{r.lastGenerated}</div>
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-0.5">Last Generated</div>
+                <div className="text-[12px] font-semibold text-body">{r.lastGenerated}</div>
               </div>
             </div>
             <div className="flex gap-2">
-              <button className="flex-1 py-2 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-indigo-100 transition-colors">
+              <button className="flex-1 py-2 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-primary-100 transition-colors">
                 Generate
               </button>
               <button className="flex-1 py-2 bg-slate-50 border border-slate-200 text-slate-500 rounded-xl text-[12px] font-medium cursor-pointer hover:bg-slate-100 transition-colors">
@@ -81,11 +81,11 @@ export default function PDFReportsTab() {
             ].map((s) => (
               <div key={s.report} className="bg-slate-50 rounded-xl p-3">
                 <div className="flex justify-between items-start mb-1">
-                  <span className="text-[13px] font-semibold text-slate-700">{s.report}</span>
+                  <span className="text-[13px] font-semibold text-body">{s.report}</span>
                   <StatusBadge status={s.status} />
                 </div>
-                <div className="text-[11px] text-slate-400">{s.schedule}</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">Next: {s.nextRun}</div>
+                <div className="text-[11px] text-heading">{s.schedule}</div>
+                <div className="text-[11px] text-heading mt-0.5">Next: {s.nextRun}</div>
               </div>
             ))}
           </div>
@@ -97,18 +97,18 @@ export default function PDFReportsTab() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Report</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-left">Generated</th>
-                  <th className="text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 text-right">Size</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Report</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-left">Generated</th>
+                  <th className="text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 text-right">Size</th>
                 </tr>
               </thead>
               <tbody>
                 {recentReports.map((rr) => (
                   <tr key={rr.name + rr.generated} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-                    <td className="text-[13px] font-medium text-slate-700 px-5 py-3">{rr.name}</td>
+                    <td className="text-[13px] font-medium text-body px-5 py-3">{rr.name}</td>
                     <td className="px-5 py-3">
                       <div className="text-[12px] text-slate-500">{rr.generated}</div>
-                      <div className="text-[10px] text-slate-400">by {rr.by}</div>
+                      <div className="text-[10px] text-heading">by {rr.by}</div>
                     </td>
                     <td className="text-[12px] font-mono text-slate-500 px-5 py-3 text-right">{rr.size}</td>
                   </tr>
@@ -121,12 +121,12 @@ export default function PDFReportsTab() {
 
       {/* Batch Generation */}
       <SectionCard title="Batch Report Generation" className="mt-4">
-        <p className="text-[12px] text-slate-400 mb-4 -mt-2">Generate all monthly reports in one batch. Includes Financial Summary, Member Growth, Loan Portfolio, Deposit Maturity, and Compliance reports.</p>
+        <p className="text-[12px] text-heading mb-4 -mt-2">Generate all monthly reports in one batch. Includes Financial Summary, Member Growth, Loan Portfolio, Deposit Maturity, and Compliance reports.</p>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          <button className="py-2.5 px-6 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-indigo-100 transition-colors shrink-0">
+          <button className="py-2.5 px-6 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[12px] font-semibold cursor-pointer hover:bg-primary-100 transition-colors shrink-0">
             Generate All Monthly Reports
           </button>
-          <span className="text-[11px] text-slate-400">Last batch: 01 Mar 2026 &nbsp;|&nbsp; 8 reports &nbsp;|&nbsp; 14.2 MB total</span>
+          <span className="text-[11px] text-heading">Last batch: 01 Mar 2026 &nbsp;|&nbsp; 8 reports &nbsp;|&nbsp; 14.2 MB total</span>
         </div>
       </SectionCard>
     </div>

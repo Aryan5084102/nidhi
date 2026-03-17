@@ -39,17 +39,17 @@ export default function SuspiciousTransactionsTab() {
           {patternSummary.map((p) => (
             <div key={p.pattern} className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
               <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="text-[13px] font-semibold text-slate-700 leading-snug">{p.pattern}</div>
+                <div className="text-[13px] font-semibold text-body leading-snug">{p.pattern}</div>
                 <StatusBadge status={p.severity} />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white rounded-lg p-2.5 border border-slate-100">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Flagged</div>
-                  <div className="text-[16px] font-bold font-mono text-slate-700">{p.count}</div>
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Flagged</div>
+                  <div className="text-[16px] font-bold font-mono text-body">{p.count}</div>
                 </div>
                 <div className="bg-white rounded-lg p-2.5 border border-slate-100">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Total Value</div>
-                  <div className="text-[12px] font-semibold font-mono text-slate-600">{p.totalValue}</div>
+                  <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Total Value</div>
+                  <div className="text-[12px] font-semibold font-mono text-body">{p.totalValue}</div>
                 </div>
               </div>
             </div>
@@ -60,20 +60,20 @@ export default function SuspiciousTransactionsTab() {
       {/* STR Cases */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden mb-6">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">STR Case Listing</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Suspicious Transaction Reports filed or pending with FIU-IND</p>
+          <h3 className="text-[15px] font-bold text-heading">STR Case Listing</h3>
+          <p className="text-[12px] text-heading mt-0.5">Suspicious Transaction Reports filed or pending with FIU-IND</p>
         </div>
         <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Txns</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">FIU Ref</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">STR ID</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Member</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">Amount</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Txns</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3 whitespace-nowrap">FIU Ref</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -81,15 +81,15 @@ export default function SuspiciousTransactionsTab() {
               <tr key={s.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono whitespace-nowrap">{s.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700 whitespace-nowrap">{s.memberName}</div>
-                  <div className="text-[11px] text-slate-400">{s.memberId}</div>
+                  <div className="text-[13px] font-medium text-body whitespace-nowrap">{s.memberName}</div>
+                  <div className="text-[11px] text-heading">{s.memberId}</div>
                 </td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">
                   <span className="line-clamp-2 max-w-45 md:line-clamp-none md:max-w-none" title={s.pattern}>{s.pattern}</span>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono whitespace-nowrap">{s.totalAmount}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-body font-mono whitespace-nowrap">{s.totalAmount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500 text-center">{s.transactions}</td>
-                <td className="px-5 py-3 text-[11px] text-slate-400 font-mono whitespace-nowrap">{s.fiuRef}</td>
+                <td className="px-5 py-3 text-[11px] text-heading font-mono whitespace-nowrap">{s.fiuRef}</td>
                 <td className="px-5 py-3"><StatusBadge status={s.status} /></td>
               </tr>
             ))}
@@ -101,19 +101,19 @@ export default function SuspiciousTransactionsTab() {
       {/* Flagged Transactions Table */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden overflow-x-auto">
         <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-[15px] font-bold text-slate-900">Flagged Transactions</h3>
-          <p className="text-[12px] text-slate-400 mt-0.5">Individual transactions flagged by AI pattern detection engine</p>
+          <h3 className="text-[15px] font-bold text-heading">Flagged Transactions</h3>
+          <p className="text-[12px] text-heading mt-0.5">Individual transactions flagged by AI pattern detection engine</p>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">ID</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Member</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Amount</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Type</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Risk Score</th>
-              <th className="text-left text-[11px] text-slate-400 uppercase tracking-wider font-medium px-5 py-3">Status</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">ID</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Member</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Amount</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Type</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Pattern</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Risk Score</th>
+              <th className="text-left text-[11px] text-heading uppercase tracking-wider font-medium px-5 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -121,16 +121,16 @@ export default function SuspiciousTransactionsTab() {
               <tr key={t.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
                 <td className="px-5 py-3 text-[12px] text-slate-500 font-mono">{t.id}</td>
                 <td className="px-5 py-3">
-                  <div className="text-[13px] font-medium text-slate-700">{t.memberName}</div>
-                  <div className="text-[11px] text-slate-400">{t.memberId}</div>
+                  <div className="text-[13px] font-medium text-body">{t.memberName}</div>
+                  <div className="text-[11px] text-heading">{t.memberId}</div>
                 </td>
-                <td className="px-5 py-3 text-[13px] font-semibold text-slate-700 font-mono">{t.amount}</td>
+                <td className="px-5 py-3 text-[13px] font-semibold text-body font-mono">{t.amount}</td>
                 <td className="px-5 py-3 text-[12px] text-slate-500">{t.type}</td>
                 <td className="px-5 py-3">
                   <span className="text-[11px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">{t.pattern}</span>
                 </td>
                 <td className="px-5 py-3">
-                  <span className={`text-[13px] font-bold font-mono ${t.riskScore >= 80 ? "text-red-500" : t.riskScore >= 60 ? "text-amber-600" : "text-emerald-600"}`}>{t.riskScore}</span>
+                  <span className={`text-[13px] font-bold font-mono ${t.riskScore >= 80 ? "text-danger-500" : t.riskScore >= 60 ? "text-warning" : "text-success"}`}>{t.riskScore}</span>
                 </td>
                 <td className="px-5 py-3"><StatusBadge status={t.status} /></td>
               </tr>

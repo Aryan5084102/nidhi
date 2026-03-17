@@ -36,7 +36,11 @@ const SmoothScroll = forwardRef(function SmoothScroll({ children, className, con
       rafId.current = requestAnimationFrame(updateScroll);
     };
 
+    // Skip smooth scroll when a modal overlay is open
+    const isModalOpen = () => document.querySelector("[data-modal-overlay]") !== null;
+
     const onWheel = (e) => {
+      if (isModalOpen()) return;
       e.preventDefault();
       const maxScroll = content.scrollHeight - container.clientHeight;
       targetPos.current = Math.max(0, Math.min(targetPos.current + e.deltaY, maxScroll));
@@ -48,6 +52,7 @@ const SmoothScroll = forwardRef(function SmoothScroll({ children, className, con
       touchStart = e.touches[0].clientY;
     };
     const onTouchMove = (e) => {
+      if (isModalOpen()) return;
       e.preventDefault();
       const delta = touchStart - e.touches[0].clientY;
       touchStart = e.touches[0].clientY;

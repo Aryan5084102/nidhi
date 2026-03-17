@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   /* ── Backgrounds ── */
   --color-bg-primary: #F1F5F9;
@@ -33,7 +35,7 @@
   --color-primary-700: #4338CA;
 
   /* ── Success (Emerald) — deposits, positive metrics, verified ── */
-  --color-success: #047857;
+  --color-success: #065f46;
   --color-success-50: #ECFDF5;
   --color-success-100: #D1FAE5;
   --color-success-200: #A7F3D0;
@@ -43,7 +45,7 @@
   --color-success-700: #047857;
 
   /* ── Warning (Amber) — pending, caution, review ── */
-  --color-warning: #D97706;
+  --color-warning: #92400e;
   --color-warning-50: #FFFBEB;
   --color-warning-100: #FEF3C7;
   --color-warning-200: #FDE68A;
@@ -52,16 +54,16 @@
   --color-warning-500: #F59E0B;
 
   /* ── Danger (Red) — errors, rejected, high risk ── */
-  --color-danger: #DC2626;
+  --color-danger: #b91c1c;
   --color-danger-50: #FEF2F2;
   --color-danger-100: #FEE2E2;
   --color-danger-200: #FECACA;
   --color-danger-300: #FCA5A5;
   --color-danger-400: #F87171;
-  --color-danger-500: #EF4444;
+  --color-danger-500: #DC2626;
 
   /* ── Secondary (Purple) — chit funds, secondary accent ── */
-  --color-secondary: #7C3AED;
+  --color-secondary: #5b21b6;
   --color-secondary-50: #FAF5FF;
   --color-secondary-100: #F3E8FF;
   --color-secondary-200: #E9D5FF;
@@ -221,6 +223,29 @@
 /* ===== Dark Mode ===== */
 html.dark {
   color-scheme: dark;
+
+  /* Override theme CSS variables for dark mode */
+  --color-bg-primary: #0B1120;
+  --color-bg-secondary: #1E293B;
+  --color-bg-card: #1E293B;
+  --color-bg-card-hover: #253347;
+  --color-bg-deep: #0F172A;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-light: rgba(255, 255, 255, 0.08);
+
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-text-dim: #64748b;
+  --color-muted: #64748b;
+  --color-muted-foreground: #94a3b8;
+  --color-heading: #f1f5f9;
+  --color-body: #cbd5e1;
+  --color-subtle: #94a3b8;
+  --color-label: #64748b;
+
+  --color-accent-navy: #e2e8f0;
+  --color-accent-navy-light: #cbd5e1;
 }
 
 html.dark body {
@@ -241,6 +266,10 @@ html.dark .bg-slate-100 {
   background-color: #1E293B !important;
 }
 
+html.dark .bg-slate-200 {
+  background-color: #253347 !important;
+}
+
 /* Card shadows */
 html.dark .card-shadow {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
@@ -250,7 +279,44 @@ html.dark .card-shadow-hover {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
 }
 
-/* Text overrides */
+/* Text overrides — custom theme colors */
+html.dark .text-heading {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-body {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-subtle {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-label {
+  color: #64748b !important;
+}
+
+html.dark .text-text-primary {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-text-secondary {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-text-muted {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-accent-navy {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-accent-navy-light {
+  color: #cbd5e1 !important;
+}
+
+/* Text overrides — slate scale */
 html.dark .text-slate-900,
 html.dark .text-slate-800 {
   color: #f1f5f9 !important;
@@ -285,8 +351,21 @@ html.dark [class*="border-slate-200"] {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+html.dark [class*="border-slate-300"] {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 html.dark [class*="border-slate-50"] {
   border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+html.dark [class*="divide-slate"] > * + * {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .border-border,
+html.dark .border-border-light {
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Inputs */
@@ -361,6 +440,53 @@ html.dark .bg-blue-50 {
   background-color: rgba(59, 130, 246, 0.1) !important;
 }
 
+/* -100 shade badge backgrounds */
+html.dark .bg-success-100,
+html.dark .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+html.dark .bg-danger-100,
+html.dark .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+html.dark .bg-warning-100,
+html.dark .bg-amber-100,
+html.dark .bg-yellow-100 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+html.dark .bg-primary-100,
+html.dark .bg-indigo-100 {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+}
+
+html.dark .bg-secondary-100,
+html.dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+}
+
+html.dark .bg-teal-100 {
+  background-color: rgba(20, 184, 166, 0.15) !important;
+}
+
+html.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .bg-gray-200 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
 /* Scrollbar */
 html.dark ::-webkit-scrollbar-thumb {
   background: #334155;
@@ -379,6 +505,190 @@ html.dark .shadow-xl {
 html.dark .bg-slate-50\/50,
 html.dark .bg-slate-50\/80 {
   background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+/* Mobile card row border */
+@media (max-width: 767px) {
+  html.dark .mobile-card-row {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Semantic status text colors — base shades for dark mode */
+html.dark .text-success {
+  color: #34d399 !important;
+}
+
+html.dark .text-warning {
+  color: #fbbf24 !important;
+}
+
+html.dark .text-danger {
+  color: #f87171 !important;
+}
+
+html.dark .text-primary {
+  color: #818cf8 !important;
+}
+
+html.dark .text-secondary {
+  color: #a78bfa !important;
+}
+
+/* Status badge text colors — numbered shades for dark mode */
+html.dark .text-success-700,
+html.dark .text-emerald-700 {
+  color: #34d399 !important;
+}
+
+html.dark .text-danger-700,
+html.dark .text-red-700 {
+  color: #f87171 !important;
+}
+
+html.dark .text-warning-700,
+html.dark .text-amber-700,
+html.dark .text-yellow-700 {
+  color: #fbbf24 !important;
+}
+
+html.dark .text-primary-700,
+html.dark .text-indigo-700 {
+  color: #a5b4fc !important;
+}
+
+html.dark .text-secondary-700,
+html.dark .text-purple-700 {
+  color: #c4b5fd !important;
+}
+
+html.dark .text-teal-700 {
+  color: #5eead4 !important;
+}
+
+html.dark .text-blue-700 {
+  color: #93c5fd !important;
+}
+
+/* Dark text on light badge backgrounds — bump up for dark mode */
+html.dark .text-success-600,
+html.dark .text-emerald-600 {
+  color: #6ee7b7 !important;
+}
+
+html.dark .text-danger-600,
+html.dark .text-red-600 {
+  color: #fca5a5 !important;
+}
+
+html.dark .text-warning-600,
+html.dark .text-amber-600 {
+  color: #fcd34d !important;
+}
+
+html.dark .text-primary-600,
+html.dark .text-indigo-600 {
+  color: #818cf8 !important;
+}
+
+html.dark .text-secondary-600,
+html.dark .text-purple-600 {
+  color: #a78bfa !important;
+}
+
+html.dark .text-teal-600 {
+  color: #2dd4bf !important;
+}
+
+html.dark .text-blue-600 {
+  color: #60a5fa !important;
+}
+
+/* -500 shade text overrides */
+html.dark .text-danger-500,
+html.dark .text-red-500 {
+  color: #f87171 !important;
+}
+
+html.dark .text-success-500,
+html.dark .text-emerald-500 {
+  color: #34d399 !important;
+}
+
+html.dark .text-warning-500,
+html.dark .text-amber-500 {
+  color: #fbbf24 !important;
+}
+
+html.dark .text-orange-600,
+html.dark .text-orange-500 {
+  color: #fb923c !important;
+}
+
+/* -400 shade text — already lighter, still bump slightly */
+html.dark .text-success-400,
+html.dark .text-emerald-400 {
+  color: #6ee7b7 !important;
+}
+
+html.dark .text-danger-400,
+html.dark .text-red-400 {
+  color: #fca5a5 !important;
+}
+
+/* Shimmer animation for dark mode */
+html.dark .animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+}
+
+/* Table header backgrounds */
+html.dark .bg-slate-50\/80,
+html.dark .bg-slate-100\/80 {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Ring/focus colors */
+html.dark .ring-slate-200 {
+  --tw-ring-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark colored text (800/900 shades) — lighten for dark mode */
+html.dark .text-emerald-800,
+html.dark .text-emerald-900 {
+  color: #6ee7b7 !important;
+}
+
+html.dark .text-red-800,
+html.dark .text-red-900 {
+  color: #fca5a5 !important;
+}
+
+html.dark .text-amber-800,
+html.dark .text-amber-900 {
+  color: #fcd34d !important;
+}
+
+html.dark .text-indigo-800,
+html.dark .text-indigo-900 {
+  color: #a5b4fc !important;
+}
+
+html.dark .text-purple-800,
+html.dark .text-purple-900,
+html.dark .text-violet-800,
+html.dark .text-violet-900 {
+  color: #c4b5fd !important;
+}
+
+html.dark .text-teal-800,
+html.dark .text-teal-900 {
+  color: #5eead4 !important;
+}
+
+html.dark .text-blue-800,
+html.dark .text-blue-900 {
+  color: #93c5fd !important;
 }
 
 /* Table row hover accent border */

@@ -140,18 +140,21 @@ export default function Header({ pageTitle, onNavigateProfile }) {
           </button>
 
           {showNotifications && (
-            <div className="absolute -right-12 sm:right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-black/30 overflow-hidden animate-fade-in z-50">
+            <div
+              className="absolute -right-12 sm:right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-80 border rounded-2xl shadow-xl overflow-hidden animate-fade-in z-50"
+              style={{ backgroundColor: darkMode ? "#1e293b" : "#ffffff", borderColor: darkMode ? "rgba(255,255,255,0.1)" : "#e2e8f0", boxShadow: darkMode ? "0 20px 25px -5px rgba(0,0,0,0.4)" : "0 20px 25px -5px rgba(148,163,184,0.2)" }}
+            >
               {/* Header */}
-              <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Notifications</h3>
+              <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: `1px solid ${darkMode ? "rgba(255,255,255,0.08)" : "#f1f5f9"}` }}>
+                <h3 className="text-sm font-semibold" style={{ color: darkMode ? "#e2e8f0" : "#1e293b" }}>Notifications</h3>
                 <div className="flex items-center gap-2">
                   {activeUnread > 0 && (
-                    <span className="text-[10px] font-semibold text-primary-500 bg-primary-50 dark:bg-indigo-900/30 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-semibold text-primary-500 px-2 py-0.5 rounded-full" style={{ backgroundColor: darkMode ? "rgba(99,102,241,0.15)" : "#eef2ff" }}>
                       {activeUnread} new
                     </span>
                   )}
                   {activeUnread > 0 && (
-                    <button onClick={markAllRead} className="text-[10px] font-medium text-heading hover:text-body dark:hover:text-subtle cursor-pointer">
+                    <button onClick={markAllRead} className="text-[10px] font-medium cursor-pointer hover:opacity-80" style={{ color: darkMode ? "#94a3b8" : "#64748b" }}>
                       Mark all read
                     </button>
                   )}
@@ -161,28 +164,34 @@ export default function Header({ pageTitle, onNavigateProfile }) {
               {/* Notification List */}
               <div className="max-h-80 overflow-y-auto">
                 {activeNotifs.map((notif) => {
-                  const iconData = ICON_MAP[notif.icon] || { emoji: "📌", bg: "bg-slate-50 dark:bg-slate-700" };
+                  const iconData = ICON_MAP[notif.icon] || { emoji: "📌", bg: "bg-slate-100 dark:bg-slate-700" };
                   return (
                     <div
                       key={notif.id}
                       onClick={() => markAsRead(notif.id)}
-                      className={`px-4 py-3 border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors cursor-pointer flex gap-3 ${
-                        !notif.read ? "bg-primary-50/30 dark:bg-indigo-900/10" : ""
-                      }`}
+                      className="px-4 py-3 transition-colors cursor-pointer flex gap-3"
+                      style={{
+                        backgroundColor: !notif.read
+                          ? (darkMode ? "rgba(99,102,241,0.06)" : "#eef2ff")
+                          : (darkMode ? "#1e293b" : "#ffffff"),
+                        borderBottom: `1px solid ${darkMode ? "rgba(255,255,255,0.05)" : "#f1f5f9"}`,
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = darkMode ? "rgba(255,255,255,0.05)" : "#f8fafc"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = !notif.read ? (darkMode ? "rgba(99,102,241,0.06)" : "#eef2ff") : (darkMode ? "#1e293b" : "#ffffff"); }}
                     >
                       <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0 ${iconData.bg}`}>
                         {iconData.emoji}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <p className={`text-[13px] leading-snug ${!notif.read ? "text-slate-800 dark:text-slate-200 font-medium" : "text-body dark:text-heading"}`}>
+                          <p className="text-[13px] leading-snug" style={{ color: !notif.read ? (darkMode ? "#e2e8f0" : "#1e293b") : (darkMode ? "#cbd5e1" : "#475569"), fontWeight: !notif.read ? 500 : 400 }}>
                             {notif.message}
                           </p>
                           {!notif.read && (
                             <span className="w-2 h-2 bg-primary-500 rounded-full shrink-0 mt-1.5" />
                           )}
                         </div>
-                        <span className="text-[10px] text-heading mt-0.5 block">{notif.time}</span>
+                        <span className="text-[10px] mt-0.5 block" style={{ color: darkMode ? "#64748b" : "#94a3b8" }}>{notif.time}</span>
                       </div>
                     </div>
                   );
@@ -190,7 +199,7 @@ export default function Header({ pageTitle, onNavigateProfile }) {
               </div>
 
               {/* Footer */}
-              <div className="px-4 py-2.5 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+              <div className="px-4 py-2.5" style={{ borderTop: `1px solid ${darkMode ? "rgba(255,255,255,0.08)" : "#f1f5f9"}`, backgroundColor: darkMode ? "rgba(15,23,42,0.5)" : "#f8fafc" }}>
                 <button className="w-full text-center text-[12px] font-semibold text-primary-500 hover:text-primary-700 transition-colors cursor-pointer">
                   View all notifications
                 </button>
@@ -230,52 +239,56 @@ export default function Header({ pageTitle, onNavigateProfile }) {
 
           {/* Dropdown Menu */}
           {showProfileMenu && (
-            <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 overflow-hidden animate-fade-in z-50">
+            <div
+              className="absolute right-0 top-full mt-2 w-60 border rounded-2xl shadow-xl overflow-hidden animate-fade-in z-50"
+              style={{ backgroundColor: darkMode ? "#1e293b" : "#ffffff", borderColor: darkMode ? "rgba(255,255,255,0.1)" : "#e2e8f0", boxShadow: darkMode ? "0 20px 25px -5px rgba(0,0,0,0.4)" : "0 20px 25px -5px rgba(148,163,184,0.2)" }}
+            >
               {/* User info */}
-              <div className="px-4 py-3.5 bg-slate-50/80 border-b border-slate-100">
+              <div className="px-4 py-3.5" style={{ backgroundColor: darkMode ? "rgba(255,255,255,0.04)" : "#f8fafc", borderBottom: `1px solid ${darkMode ? "rgba(255,255,255,0.08)" : "#f1f5f9"}` }}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center text-sm font-bold text-white shadow-md shadow-primary-500/20">
                     {initials}
                   </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-slate-800 truncate">{userName || "User"}</div>
-                    <div className="text-[11px] text-heading truncate">{user?.email}</div>
-                    <span className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-medium ${roleColor?.bg || ""} ${roleColor?.text || "text-heading"}`}>{roleLabel}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold truncate" style={{ color: darkMode ? "#e2e8f0" : "#1e293b" }}>{userName || "User"}</div>
+                    <div className="text-[11px] truncate" style={{ color: darkMode ? "#94a3b8" : "#64748b" }}>{user?.email}</div>
+                    <span className={`inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${roleColor?.bg || ""} ${roleColor?.text || ""}`}>{roleLabel}</span>
                   </div>
                 </div>
               </div>
 
               {/* Menu items */}
               <div className="py-1.5">
-                <button onClick={() => { setShowProfileMenu(false); onNavigateProfile?.(); }} className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] text-body hover:bg-slate-50 hover:text-heading transition-colors cursor-pointer">
-                  <svg className="w-4 h-4 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                  </svg>
-                  My Profile
-                </button>
-                <button className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] text-body hover:bg-slate-50 hover:text-heading transition-colors cursor-pointer">
-                  <svg className="w-4 h-4 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  </svg>
-                  Settings
-                </button>
-                <button className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] text-body hover:bg-slate-50 hover:text-heading transition-colors cursor-pointer">
-                  <svg className="w-4 h-4 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
-                  </svg>
-                  Help & Support
-                </button>
+                {[
+                  { label: "My Profile", onClick: () => { setShowProfileMenu(false); onNavigateProfile?.(); }, icon: "M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" },
+                  { label: "Settings", icon: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z", icon2: "M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" },
+                  { label: "Help & Support", icon: "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" },
+                ].map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={item.onClick}
+                    className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] transition-colors cursor-pointer"
+                    style={{ color: darkMode ? "#cbd5e1" : "#475569" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = darkMode ? "rgba(255,255,255,0.05)" : "#f8fafc"; e.currentTarget.style.color = darkMode ? "#f1f5f9" : "#1e293b"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = darkMode ? "#cbd5e1" : "#475569"; }}
+                  >
+                    <svg className="w-4 h-4" style={{ color: darkMode ? "#64748b" : "#94a3b8" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                      {item.icon2 && <path strokeLinecap="round" strokeLinejoin="round" d={item.icon2} />}
+                    </svg>
+                    {item.label}
+                  </button>
+                ))}
               </div>
 
               {/* Logout */}
-              <div className="border-t border-slate-100 py-1.5">
+              <div className="py-1.5" style={{ borderTop: `1px solid ${darkMode ? "rgba(255,255,255,0.08)" : "#f1f5f9"}` }}>
                 <button
-                  onClick={() => {
-                    setShowProfileMenu(false);
-                    logout();
-                  }}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] text-danger-500 hover:bg-danger-50 hover:text-danger transition-colors cursor-pointer"
+                  onClick={() => { setShowProfileMenu(false); logout(); }}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-[13px] transition-colors cursor-pointer"
+                  style={{ color: darkMode ? "#f87171" : "#ef4444" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = darkMode ? "rgba(239,68,68,0.1)" : "#fef2f2"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />

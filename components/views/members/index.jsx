@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { members } from "@/data/mockData";
 import MembersToolbar from "./MembersToolbar";
 import MemberCardList from "./MemberCardList";
@@ -12,6 +12,34 @@ import EditMemberModal from "./EditMemberModal";
 
 const ITEMS_PER_PAGE = 6;
 
+/* ─── Load registered users from localStorage and merge with mock data ─── */
+function getRegisteredMembers() {
+  if (typeof window === "undefined") return [];
+  try {
+    const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+    // Only include users with role "member" (not admins/managers)
+    return users
+      .filter((u) => u.role === "member")
+      .filter((u) => !members.some((m) => m.email === u.email)) // avoid duplicates with mock data
+      .map((u, idx) => ({
+        id: u.memberId || `M-${9000 + idx}`,
+        name: u.name || u.fullName || "Unknown",
+        phone: u.phone || "—",
+        email: u.email || "—",
+        address: u.address || "—",
+        deposits: "₹0",
+        loans: "₹0",
+        risk: "Low",
+        sti: 50,
+        kyc: "Pending",
+        joinDate: u.joinDate || new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+        status: "Active",
+      }));
+  } catch {
+    return [];
+  }
+}
+
 export default function MembersView() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
@@ -22,8 +50,21 @@ export default function MembersView() {
   const [viewMember, setViewMember] = useState(null);
   const [editMember, setEditMember] = useState(null);
 
-  // Local members state for add/edit
+  // Local members state — merges mock data + registered users from localStorage
   const [localMembers, setLocalMembers] = useState(members);
+
+  // On mount, load registered users from localStorage and prepend them
+  useEffect(() => {
+    const registered = getRegisteredMembers();
+    if (registered.length > 0) {
+      setLocalMembers((prev) => {
+        // Avoid adding duplicates if already present
+        const existingIds = new Set(prev.map((m) => m.email));
+        const newMembers = registered.filter((r) => !existingIds.has(r.email));
+        return [...newMembers, ...prev];
+      });
+    }
+  }, []);
 
   const filtered = localMembers.filter(
     (m) =>
@@ -49,6 +90,7 @@ export default function MembersView() {
 
   const handleAddMember = (form) => {
     const newId = `M-${1000 + localMembers.length + 1}`;
+    const joinDate = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
     const newMember = {
       id: newId,
       name: form.name,
@@ -60,9 +102,32 @@ export default function MembersView() {
       risk: form.risk,
       sti: 50,
       kyc: form.kyc,
-      joinDate: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      joinDate,
+      status: "Active",
     };
     setLocalMembers((prev) => [newMember, ...prev]);
+
+    // Also persist to localStorage so this member can be seen across sessions
+    // and appears when the member registers/logs in
+    if (form.email) {
+      try {
+        const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
+        if (!users.find((u) => u.email === form.email)) {
+          users.push({
+            email: form.email,
+            name: form.name,
+            phone: form.phone,
+            password: "Member@123", // default password for admin-added members
+            role: "member",
+            memberId: newId,
+            address: form.address,
+            joinDate,
+          });
+          localStorage.setItem("glimmora_users", JSON.stringify(users));
+        }
+      } catch {}
+    }
+
     setShowAddModal(false);
     setCurrentPage(1);
   };

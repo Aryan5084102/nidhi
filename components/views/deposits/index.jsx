@@ -1,16 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { depositApplications } from "@/data/mockData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
 import OverviewTab from "./OverviewTab";
+import ApplicationsTab from "./ApplicationsTab";
 import AccountsTab from "./AccountsTab";
 import SchemesTab from "./SchemesTab";
 import MaturityTab from "./MaturityTab";
 
 const tabs = [
   { id: "overview", label: "Overview" },
+  { id: "applications", label: "Applications" },
   { id: "accounts", label: "Accounts" },
   { id: "schemes", label: "Schemes" },
   { id: "maturity", label: "Maturity Tracker" },
@@ -19,9 +22,14 @@ const tabs = [
 export default function DepositsView() {
   const [activeTab, setActiveTab] = useState("overview");
 
+  const pendingApps = depositApplications.filter(
+    (a) => a.status === "Pending" || a.status === "Under Review"
+  ).length;
+
   const renderTab = () => {
     switch (activeTab) {
       case "overview": return <OverviewTab />;
+      case "applications": return <ApplicationsTab />;
       case "accounts": return <AccountsTab />;
       case "schemes": return <SchemesTab />;
       case "maturity": return <MaturityTab />;
@@ -33,9 +41,10 @@ export default function DepositsView() {
     <div className="animate-fade-in">
       <PageHeader
         title="Deposits Management"
-        description="Manage Fixed Deposits, Recurring Deposits, and Savings accounts. All deposit schemes comply with Nidhi Rules 2014 and interest rate ceilings prescribed by RBI."
+        description="Track deposit applications, approve account openings, and manage Fixed Deposits, Recurring Deposits, and Savings accounts. All deposit schemes comply with Nidhi Rules 2014 and interest rate ceilings prescribed by RBI."
       >
         <HeaderStat value={<span className="text-secondary">{"\u20B939.5Cr"}</span>} label="Total Deposits" />
+        <HeaderStat value={pendingApps} label="Pending Approval" className="bg-warning-50 text-warning" />
         <HeaderStat value={<span className="text-success">{"12,450"}</span>} label="Active Accounts" />
       </PageHeader>
 

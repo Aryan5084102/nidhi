@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { chitSchemes } from "@/data/mockData";
+import { chitSchemes, chitFundEnrollments } from "@/data/mockData";
 
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
@@ -10,9 +10,11 @@ import TabBar from "@/components/ui/TabBar";
 
 import SchemeCard from "./SchemeCard";
 import EnrollmentModal from "./EnrollmentModal";
+import EnrollmentsTab from "./EnrollmentsTab";
 import ForemanCommissionTab from "./ForemanCommissionTab";
 
 const mainTabs = [
+  { id: "enrollments", label: "Enrollments" },
   { id: "schemes", label: "Schemes" },
   { id: "commission", label: "Foreman Commission" },
 ];
@@ -24,9 +26,13 @@ const filterTabs = [
 ];
 
 export default function ChitFundsView() {
-  const [mainTab, setMainTab] = useState("schemes");
+  const [mainTab, setMainTab] = useState("enrollments");
   const [enrollScheme, setEnrollScheme] = useState(null);
   const [filterStatus, setFilterStatus] = useState("All");
+
+  const pendingEnrollments = chitFundEnrollments.filter(
+    (e) => e.status === "Pending" || e.status === "Under Review"
+  ).length;
 
   const filtered = chitSchemes.filter(
     (s) => filterStatus === "All" || s.status === filterStatus
@@ -35,24 +41,31 @@ export default function ChitFundsView() {
   return (
     <div className="animate-fade-in">
       <PageHeader
-        title="Chit Fund Schemes"
-        description="Browse available chit fund schemes and enroll subscribers. Each scheme collects monthly contributions and distributes the pot to one member per month on a rotation basis. Governed by the Chit Funds Act, 1982."
+        title="Chit Fund Management"
+        description="Manage chit fund enrollments, track member applications, approve or reject enrollment requests, and monitor scheme performance. Governed by the Chit Funds Act, 1982."
       >
         <HeaderStat
-          value={chitSchemes.length}
-          label="Total Schemes"
+          value={chitFundEnrollments.length}
+          label="Total Enrollments"
           className="bg-slate-50 text-primary"
         />
         <HeaderStat
+          value={pendingEnrollments}
+          label="Pending Approval"
+          className="bg-warning-50 text-warning"
+        />
+        <HeaderStat
           value={chitSchemes.filter((s) => s.status === "Open").length}
-          label="Open for Enrollment"
+          label="Open Schemes"
           className="bg-slate-50 text-success"
         />
       </PageHeader>
 
       <TabBar tabs={mainTabs} activeTab={mainTab} onChange={setMainTab} />
 
-      {mainTab === "commission" ? (
+      {mainTab === "enrollments" ? (
+        <EnrollmentsTab />
+      ) : mainTab === "commission" ? (
         <ForemanCommissionTab />
       ) : (
         <>

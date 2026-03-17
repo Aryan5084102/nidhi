@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { loanApplications } from "@/data/mockData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
@@ -25,6 +26,10 @@ const tabs = [
 export default function LoansView() {
   const [activeTab, setActiveTab] = useState("dashboard");
 
+  const pendingCount = loanApplications.filter(
+    (a) => a.status === "Pending" || a.status === "Under Review"
+  ).length;
+
   const renderTab = () => {
     switch (activeTab) {
       case "dashboard": return <DashboardTab />;
@@ -40,19 +45,17 @@ export default function LoansView() {
 
   return (
     <div className="animate-fade-in">
-      {/* Page Header */}
       <PageHeader
         title="Loans Management"
-        description="Comprehensive loan management system with AI-powered risk analysis, automated approval workflows, and real-time portfolio monitoring. All loans comply with Nidhi Company (Amendment) Rules, 2022."
+        description="Track loan applications from submission to disbursement. Review, approve or reject applications with AI-powered risk analysis. All loans comply with Nidhi Company (Amendment) Rules, 2022."
       >
         <HeaderStat value="5,200" label="Active Loans" className="bg-slate-50 text-primary" />
+        <HeaderStat value={pendingCount} label="Pending Approval" className="bg-warning-50 text-warning" />
         <HeaderStat value={"\u20B92.4Cr"} label="Portfolio Value" className="bg-slate-50 text-success" />
       </PageHeader>
 
-      {/* Sub-tabs */}
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-      {/* Active Tab Content */}
       {renderTab()}
     </div>
   );

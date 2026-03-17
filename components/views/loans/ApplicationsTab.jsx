@@ -4,8 +4,8 @@ import { useState } from "react";
 import { loanApplications } from "@/data/mockData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import DataTable from "@/components/ui/DataTable";
+import MetricGrid from "@/components/ui/MetricGrid";
 
-/* ─── Risk Badge ─── */
 function RiskTag({ level }) {
   const styles = {
     Low: "bg-success-50 text-success border-success-200/60",
@@ -24,7 +24,9 @@ const columns = [
   { key: "member", label: "Member" },
   { key: "amount", label: "Amount" },
   { key: "purpose", label: "Purpose" },
+  { key: "tenure", label: "Tenure" },
   { key: "risk", label: "Risk" },
+  { key: "sti", label: "STI" },
   { key: "status", label: "Status" },
   { key: "applied", label: "Applied" },
 ];
@@ -32,8 +34,19 @@ const columns = [
 export default function ApplicationsTab() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
+  const [applications] = useState(loanApplications);
 
-  const filtered = loanApplications.filter((app) => {
+  const pending = applications.filter((a) => a.status === "Pending").length;
+  const underReview = applications.filter((a) => a.status === "Under Review").length;
+  const approved = applications.filter((a) => a.status === "Approved" || a.status === "Disbursed").length;
+  const metrics = [
+    { label: "Total Applications", value: applications.length.toString(), color: "#6B8ABF" },
+    { label: "Pending", value: pending.toString(), change: "Awaiting Review", color: "#C49A4C" },
+    { label: "Under Review", value: underReview.toString(), change: "In Progress", color: "#3B82F6" },
+    { label: "Approved / Disbursed", value: approved.toString(), color: "#5B9E8A" },
+  ];
+
+  const filtered = applications.filter((app) => {
     const matchesSearch = app.memberName.toLowerCase().includes(search.toLowerCase()) || app.id.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = filterStatus === "All" || app.status === filterStatus;
     return matchesSearch && matchesStatus;
@@ -41,13 +54,16 @@ export default function ApplicationsTab() {
 
   return (
     <div className="animate-fade-in">
+      {/* Metrics */}
+      <MetricGrid metrics={metrics} columns="grid-cols-2 md:grid-cols-4" />
+
       {/* Search & Filter */}
       <div className="flex flex-col gap-3 mb-5">
         <div className="relative">
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name or ID..."
+            placeholder="Search by name or application ID..."
             className="w-full bg-white border border-slate-200 rounded-xl py-2.5 px-4 pr-10 text-body text-[13px] outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
           />
           {search && (
@@ -62,7 +78,7 @@ export default function ApplicationsTab() {
           )}
         </div>
         <div className="flex gap-2 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
-          {["All", "Pending", "Under Review", "Approved", "Rejected"].map((f) => (
+          {["All", "Pending", "Under Review", "Approved", "Disbursed", "Rejected"].map((f) => (
             <button
               key={f}
               onClick={() => setFilterStatus(f)}
@@ -100,7 +116,13 @@ export default function ApplicationsTab() {
             </td>
             <td className="px-5 py-3 text-[13px] font-bold text-body font-mono">{app.amount}</td>
             <td className="px-5 py-3 text-[12px] text-slate-500">{app.purpose}</td>
+            <td className="px-5 py-3 text-[12px] text-slate-500">{app.tenure}</td>
             <td className="px-5 py-3"><RiskTag level={app.risk} /></td>
+            <td className="px-5 py-3">
+              <span className={`text-[12px] font-bold font-mono ${app.stiScore >= 80 ? "text-success" : app.stiScore >= 55 ? "text-warning" : "text-danger-500"}`}>
+                {app.stiScore}
+              </span>
+            </td>
             <td className="px-5 py-3"><StatusBadge status={app.status} /></td>
             <td className="px-5 py-3 text-[12px] text-heading">{app.appliedDate}</td>
           </tr>

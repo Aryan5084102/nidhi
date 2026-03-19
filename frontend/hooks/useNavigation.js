@@ -44,7 +44,17 @@ for (const [navId, path] of Object.entries(NAV_TO_PATH)) {
 export function getNavIdFromPath(pathname) {
   if (!pathname) return null;
   const clean = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-  return PATH_TO_NAV[clean] || PATH_TO_NAV[pathname] || null;
+  // Exact match first
+  if (PATH_TO_NAV[clean]) return PATH_TO_NAV[clean];
+  if (PATH_TO_NAV[pathname]) return PATH_TO_NAV[pathname];
+  // Dynamic route fallback — match parent path (e.g. /member/chit-funds/CS-001 → my_chitfunds)
+  const segments = clean.split("/");
+  while (segments.length > 1) {
+    segments.pop();
+    const parent = segments.join("/");
+    if (PATH_TO_NAV[parent]) return PATH_TO_NAV[parent];
+  }
+  return null;
 }
 
 export function getPathFromNavId(navId) {

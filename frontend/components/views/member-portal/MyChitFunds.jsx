@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useChitSchemes, useMember, useMemberEnrollments, useChitSchemeMembers } from "@/hooks/useData";
 import useNavigation from "@/hooks/useNavigation";
@@ -122,6 +123,7 @@ function MembersModal({ scheme, onClose, currentMemberId }) {
 
 export default function MyChitFunds() {
   const { navigate: onNavigate } = useNavigation();
+  const router = useRouter();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
   const { data: member } = useMember(memberId);
@@ -401,7 +403,8 @@ export default function MyChitFunds() {
               const myEnrollment = memberEnrollments.find(e => e.schemeId === scheme.id);
 
               return (
-                <div key={scheme.id} className="bg-white rounded-2xl p-5 card-shadow border border-success-200/60 hover:shadow-md transition-all duration-300">
+                <div key={scheme.id} onClick={() => router.push(`/member/chit-funds/${scheme.id}`)}
+                  className="bg-white rounded-2xl p-5 card-shadow border border-success-200/60 hover:shadow-md transition-all duration-300 cursor-pointer">
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <div className="text-[15px] font-bold text-heading">{scheme.name}</div>
@@ -454,7 +457,7 @@ export default function MyChitFunds() {
 
                   {/* View Members Button */}
                   <button
-                    onClick={() => setViewMembersScheme(scheme)}
+                    onClick={(e) => { e.stopPropagation(); setViewMembersScheme(scheme); }}
                     className="w-full py-2.5 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[13px] font-semibold hover:bg-primary-100 hover:border-primary-300 transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

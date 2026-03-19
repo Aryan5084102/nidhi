@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useMember, useChitSchemes, useMemberLoans, useMemberDeposits, useMemberEnrollments, useMemberPayments } from "@/hooks/useData";
+import { useRouter } from "next/navigation";
 import useNavigation from "@/hooks/useNavigation";
 import { PRIMARY, SUCCESS, SECONDARY, WARNING, SKY, ROSE } from "@/lib/colors";
 import SectionCard from "@/components/ui/SectionCard";
@@ -125,6 +126,7 @@ const savingsTrendOptions = {
 
 export default function MemberDashboard() {
   const { navigate: onNavigate } = useNavigation();
+  const router = useRouter();
   const { user } = useAuth();
   const memberId = user?.memberId;
 
@@ -445,7 +447,7 @@ export default function MemberDashboard() {
               const accent = schemeAccentColors[idx % schemeAccentColors.length];
 
               return (
-                <div key={scheme.id} className="bg-white rounded-2xl overflow-hidden card-shadow border border-slate-100 hover:shadow-md transition-all duration-300 flex">
+                <div key={scheme.id} onClick={() => router.push(`/member/chit-funds/${scheme.id}`)} className="bg-white rounded-2xl overflow-hidden card-shadow border border-slate-100 hover:shadow-md transition-all duration-300 flex cursor-pointer">
                   {/* Accent bar */}
                   <div className="w-1 shrink-0 rounded-l-2xl" style={{ background: accent }} />
                   <div className="flex-1 p-4">

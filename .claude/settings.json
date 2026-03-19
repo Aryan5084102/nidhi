@@ -6,7 +6,8 @@
       "Bash(fnm ls:*)"
     ],
     "additionalDirectories": [
-      "/home/aryan/Desktop/Glimmora International/Glimmora Nidhi/chit-fund/frontend/app/[...slug]"
+      "/home/aryan/Desktop/Glimmora International/Glimmora Nidhi/chit-fund/frontend/app/[...slug]",
+      "/home/aryan/Desktop/Glimmora International/Glimmora Nidhi/chit-fund/frontend/app/(dashboard)/member/chit-funds"
     ]
   }
 }

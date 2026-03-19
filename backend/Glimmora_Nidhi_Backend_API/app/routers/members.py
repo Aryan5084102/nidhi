@@ -13,7 +13,7 @@ from ..schemas.member import MemberCreate, MemberUpdate, MemberOut, STIResponse,
 
 router = APIRouter(prefix="/members", tags=["Members"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER", "FIELD_AGENT")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 
 def _member_out(m: Member) -> dict:
@@ -149,7 +149,7 @@ def update_member(
 def deactivate_member(
     member_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     m = db.query(Member).filter(Member.id == member_id).first()
     if not m:

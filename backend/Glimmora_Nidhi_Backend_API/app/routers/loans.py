@@ -14,7 +14,7 @@ from ..schemas.loan import LoanApplyRequest, LoanApproveRequest, LoanRejectReque
 
 router = APIRouter(prefix="/loans", tags=["Loans"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 
 def _calculate_emi(principal: float, annual_rate: float, tenure_months: int) -> float:

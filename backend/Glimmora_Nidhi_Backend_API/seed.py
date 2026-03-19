@@ -31,17 +31,14 @@ def seed():
 
     # ------------------------------------------------------------------ Users
     users = [
-        User(id="U-001", name="Aryan Kumar", email="superadmin@glimmora.com",
-             hashed_password=hash_password("Super@123"), role="SUPER_ADMIN", is_active=True,
+        User(id="U-001", name="Aryan Kumar", email="admin@glimmora.com",
+             hashed_password=hash_password("Admin@123"), role="ADMIN", is_active=True,
              last_login=datetime.utcnow()),
-        User(id="U-002", name="Priya Sharma", email="admin@glimmora.com",
-             hashed_password=hash_password("Admin@123"), role="ADMIN", is_active=True),
-        User(id="U-003", name="Anita Desai", email="manager@glimmora.com",
+        User(id="U-002", name="Anita Desai", email="manager@glimmora.com",
              hashed_password=hash_password("Manager@123"), role="BRANCH_MANAGER", is_active=True),
-        User(id="U-004", name="Ramesh Gupta", email="loanofficer@glimmora.com",
-             hashed_password=hash_password("Loan@123"), role="LOAN_OFFICER", is_active=True),
-        User(id="U-005", name="Suresh Nair", email="agent@glimmora.com",
-             hashed_password=hash_password("Agent@123"), role="FIELD_AGENT", is_active=True),
+        User(id="U-003", name="Rajesh Kumar", email="member@glimmora.com",
+             hashed_password=hash_password("Member@123"), role="MEMBER", is_active=True,
+             member_id="M-1001"),
     ]
     for u in users:
         if not db.query(User).filter(User.id == u.id).first():
@@ -326,11 +323,9 @@ def seed():
     db.commit()
     print("Seeding complete!")
     print("\nDefault credentials:")
-    print("  Super Admin : superadmin@glimmora.com / Super@123")
-    print("  Admin       : admin@glimmora.com / Admin@123")
-    print("  Manager     : manager@glimmora.com / Manager@123")
-    print("  Loan Officer: loanofficer@glimmora.com / Loan@123")
-    print("  Field Agent : agent@glimmora.com / Agent@123")
+    print("  Admin   : admin@glimmora.com / Admin@123")
+    print("  Manager : manager@glimmora.com / Manager@123")
+    print("  Member  : member@glimmora.com / Member@123")
     db.close()
 
 

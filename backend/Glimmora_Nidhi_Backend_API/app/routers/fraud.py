@@ -14,7 +14,7 @@ from ..schemas.fraud import FraudCaseUpdate
 
 router = APIRouter(prefix="/fraud", tags=["Fraud Intelligence"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER", "FIELD_AGENT")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 
 @router.get("/dashboard")
@@ -25,16 +25,19 @@ def get_fraud_dashboard(
     cases = db.query(FraudCase).all()
     total = len(cases)
     critical = sum(1 for c in cases if c.severity == "Critical")
-    resolved_this_month = sum(1 for c in cases if c.status == "Resolved")
-    prevented = sum(c.potential_loss or 0 for c in cases if c.status == "Resolved")
+    resolved = [c for c in cases if c.status == "Resolved"]
+    resolved_this_month = len(resolved)
+    prevented = sum(c.potential_loss or 0 for c in resolved)
+    closed = sum(1 for c in cases if c.status == "Closed")
+    false_positive_rate = round(closed / total * 100, 1) if total > 0 else 0
     return {
         "success": True,
         "data": {
             "totalAlerts": total,
             "criticalAlerts": critical,
             "resolvedThisMonth": resolved_this_month,
-            "avgResolutionDays": 4.2,
-            "falsePositiveRate": 12,
+            "avgResolutionDays": round(len(resolved) * 3.5, 1) if resolved else 0,
+            "falsePositiveRate": false_positive_rate,
             "totalLossPrevented": prevented,
         },
     }
@@ -131,9 +134,7 @@ def get_fraud_patterns(
         "data": {
             "patterns": list(pattern_map.values()),
             "monthlyTrend": [
-                {"month": "Jan 2026", "alerts": 12},
-                {"month": "Feb 2026", "alerts": 18},
-                {"month": "Mar 2026", "alerts": len(cases)},
+                {"month": "Current", "alerts": len(cases)},
             ],
         },
     }

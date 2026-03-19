@@ -83,7 +83,7 @@ def get_scheme(
 def create_scheme(
     payload: ChitSchemeCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     scheme = ChitScheme(
         id=_generate_scheme_id(db),

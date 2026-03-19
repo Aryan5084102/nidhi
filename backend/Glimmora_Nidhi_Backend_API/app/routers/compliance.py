@@ -12,7 +12,7 @@ from ..models.user import User
 
 router = APIRouter(prefix="/compliance", tags=["Compliance"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER", "FIELD_AGENT")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 
 @router.get("/dashboard")
@@ -170,7 +170,7 @@ def get_audit_logs(
     from_date: Optional[str] = Query(None, alias="from"),
     to_date: Optional[str] = Query(None, alias="to"),
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     query = db.query(AuditLog, User).outerjoin(User, AuditLog.user_id == User.id)
     if action:

@@ -14,7 +14,7 @@ from ..schemas.deposit import DepositCreate
 
 router = APIRouter(prefix="/deposits", tags=["Deposits"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 DEPOSIT_RATES = {
     "Fixed Deposit": {"6": 8.0, "12": 8.5, "24": 9.0, "36": 9.5},

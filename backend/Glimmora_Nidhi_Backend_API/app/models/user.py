@@ -14,6 +14,7 @@ class User(Base):
     role = Column(String, nullable=False, default="MEMBER")
     avatar = Column(String, nullable=True)
     phone = Column(String, nullable=True)
+    member_id = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     is_google_user = Column(Boolean, default=False)
     last_login = Column(DateTime, nullable=True)
@@ -25,11 +26,8 @@ class User(Base):
     audit_logs = relationship("AuditLog", back_populates="user")
 
     ROLES = {
-        "SUPER_ADMIN": "Super Admin",
         "ADMIN": "Admin",
         "BRANCH_MANAGER": "Branch Manager",
-        "LOAN_OFFICER": "Loan Officer",
-        "FIELD_AGENT": "Field Agent",
         "MEMBER": "Member",
     }
 

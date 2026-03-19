@@ -174,7 +174,7 @@ def place_bid(
 def close_auction(
     auction_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER")),
+    current_user: User = Depends(require_roles("ADMIN", "BRANCH_MANAGER")),
 ):
     auction = db.query(Auction).filter(Auction.id == auction_id).first()
     if not auction:

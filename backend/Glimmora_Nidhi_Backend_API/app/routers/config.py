@@ -82,7 +82,7 @@ def _build_full_config(db: Session) -> dict:
 @router.get("")
 def get_config(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     return {"success": True, "data": _build_full_config(db)}
 
@@ -91,7 +91,7 @@ def get_config(
 def update_config(
     payload: SystemConfigUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     update_data = payload.model_dump(exclude_none=True)
     for category, fields in update_data.items():
@@ -106,7 +106,7 @@ def update_config(
 @router.get("/users")
 def get_users(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     users = db.query(User).all()
     return {
@@ -130,7 +130,7 @@ def get_users(
 def create_user(
     payload: UserCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     user = User(
         id=f"U-{uuid.uuid4().hex[:6].upper()}",
@@ -155,7 +155,7 @@ def update_user(
     user_id: str,
     payload: UserUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -170,12 +170,6 @@ def update_user(
 
 ROLES_DATA = [
     {
-        "role": "SUPER_ADMIN",
-        "label": "Super Admin",
-        "permissions": ["*"],
-        "navAccess": ["*"],
-    },
-    {
         "role": "ADMIN",
         "label": "Admin",
         "permissions": [
@@ -189,18 +183,6 @@ ROLES_DATA = [
         "label": "Branch Manager",
         "permissions": ["MANAGE_MEMBERS", "APPROVE_LOANS", "VIEW_REPORTS"],
         "navAccess": ["dashboard", "members", "loans", "deposits", "chit-funds", "reports"],
-    },
-    {
-        "role": "LOAN_OFFICER",
-        "label": "Loan Officer",
-        "permissions": ["VIEW_MEMBERS", "PROCESS_LOANS", "VIEW_REPORTS"],
-        "navAccess": ["dashboard", "loans", "members", "collections"],
-    },
-    {
-        "role": "FIELD_AGENT",
-        "label": "Field Agent",
-        "permissions": ["VIEW_MEMBERS", "RECORD_PAYMENT", "VIEW_COLLECTIONS"],
-        "navAccess": ["collections", "members"],
     },
     {
         "role": "MEMBER",
@@ -220,6 +202,6 @@ ROLES_DATA = [
 @router.get("/roles")
 def get_roles(
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("SUPER_ADMIN", "ADMIN")),
+    current_user: User = Depends(require_roles("ADMIN")),
 ):
     return {"success": True, "data": ROLES_DATA}

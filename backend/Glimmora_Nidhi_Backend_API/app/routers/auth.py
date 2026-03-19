@@ -26,6 +26,8 @@ def _user_to_out(user: User) -> dict:
         "role": user.role,
         "roleLabel": user.role_label,
         "avatar": user.avatar,
+        "memberId": user.member_id,
+        "phone": user.phone,
     }
 
 
@@ -92,43 +94,63 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 @router.post("/forgot-password")
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    import random
     user = db.query(User).filter(User.email == payload.email).first()
-    if user:
-        token_str = uuid.uuid4().hex
-        reset_token = PasswordResetToken(
-            id=uuid.uuid4().hex,
-            user_id=user.id,
-            token=token_str,
-            expires_at=datetime.utcnow() + timedelta(hours=1),
-        )
-        db.add(reset_token)
-        db.commit()
-        # In production: send email with token_str
-    return {"success": True, "message": "Password reset link sent to your email"}
+    if not user:
+        raise BadRequestException("No account found with this email", "USER_NOT_FOUND")
+    # Invalidate any existing unused tokens for this user
+    db.query(PasswordResetToken).filter(
+        PasswordResetToken.user_id == user.id,
+        PasswordResetToken.used == False,
+    ).update({"used": True})
+    # Generate 6-digit OTP
+    otp = str(random.randint(100000, 999999))
+    reset_token = PasswordResetToken(
+        id=uuid.uuid4().hex,
+        user_id=user.id,
+        token=otp,
+        expires_at=datetime.utcnow() + timedelta(minutes=10),
+    )
+    db.add(reset_token)
+    db.commit()
+    # In production: send OTP via email. For dev, return it in response.
+    return {
+        "success": True,
+        "message": "OTP sent to your email",
+        "otp": otp,  # Remove this in production
+    }
 
 
 @router.post("/reset-password")
 def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
     if payload.newPassword != payload.confirmPassword:
         raise BadRequestException("Passwords do not match", "PASSWORD_MISMATCH")
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user:
+        raise BadRequestException("No account found with this email", "USER_NOT_FOUND")
     record = (
         db.query(PasswordResetToken)
         .filter(
-            PasswordResetToken.token == payload.token,
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.token == payload.otp,
             PasswordResetToken.used == False,
             PasswordResetToken.expires_at > datetime.utcnow(),
         )
         .first()
     )
     if not record:
-        raise BadRequestException("Invalid or expired reset token", "INVALID_RESET_TOKEN")
-    user = db.query(User).filter(User.id == record.user_id).first()
-    if not user:
-        raise NotFoundException("User not found")
+        raise BadRequestException("Invalid or expired OTP", "INVALID_OTP")
     user.hashed_password = hash_password(payload.newPassword)
     record.used = True
     db.commit()
+    # Debug: verify the new password works immediately after saving
+    print(f"[RESET] email={payload.email}, newPassword='{payload.newPassword}', verify={verify_password(payload.newPassword, user.hashed_password)}")
     return {"success": True, "message": "Password reset successful"}
+
+
+@router.get("/me")
+def me(current_user: User = Depends(get_current_user)):
+    return {"success": True, "data": _user_to_out(current_user)}
 
 
 @router.post("/logout")

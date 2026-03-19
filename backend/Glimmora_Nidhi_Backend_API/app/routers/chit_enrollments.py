@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
-import uuid
+from typing import Optional
+import uuid, math
 
 from ..core.database import get_db
-from ..core.dependencies import get_current_user
+from ..core.dependencies import get_current_user, require_roles
 from ..core.exceptions import NotFoundException, BadRequestException, ConflictException
 from ..models.chit_scheme import ChitScheme
 from ..models.chit_enrollment import ChitEnrollment
@@ -13,10 +14,85 @@ from ..schemas.chit_enrollment import ChitEnrollmentCreate
 
 router = APIRouter(tags=["Chit Enrollments"])
 
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
+
 
 def _generate_enrollment_id(db: Session) -> str:
     count = db.query(ChitEnrollment).count()
     return f"EN-{str(count + 1).zfill(3)}"
+
+
+@router.get("/chit-enrollments")
+def get_all_enrollments(
+    page: int = Query(1, ge=1),
+    limit: int = Query(100, ge=1, le=200),
+    status: Optional[str] = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(*STAFF_ROLES)),
+):
+    query = (
+        db.query(ChitEnrollment, ChitScheme, Member)
+        .join(ChitScheme, ChitEnrollment.scheme_id == ChitScheme.id)
+        .join(Member, ChitEnrollment.member_id == Member.id)
+    )
+    if status:
+        query = query.filter(ChitEnrollment.status == status)
+    total = query.count()
+    results = query.order_by(ChitEnrollment.created_at.desc()).offset((page - 1) * limit).limit(limit).all()
+    data = []
+    for e, s, m in results:
+        data.append({
+            "id": e.id,
+            "memberId": e.member_id,
+            "memberName": m.name,
+            "schemeId": e.scheme_id,
+            "schemeName": s.name,
+            "monthlyAmount": s.monthly_amount,
+            "stiScore": m.sti,
+            "kyc": m.kyc,
+            "nomineeName": e.nominee_name,
+            "nomineeRelation": e.nominee_relationship,
+            "appliedDate": e.enrolled_date,
+            "status": e.status,
+        })
+    return {
+        "success": True,
+        "data": data,
+        "pagination": {
+            "page": page, "limit": limit, "total": total,
+            "totalPages": math.ceil(total / limit) if limit else 1,
+        },
+    }
+
+
+@router.put("/chit-enrollments/{enrollment_id}/approve")
+def approve_enrollment(
+    enrollment_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(*STAFF_ROLES)),
+):
+    enrollment = db.query(ChitEnrollment).filter(ChitEnrollment.id == enrollment_id).first()
+    if not enrollment:
+        raise NotFoundException("Enrollment not found")
+    if enrollment.status == "Active":
+        raise BadRequestException("Enrollment is already active", "ALREADY_ACTIVE")
+    enrollment.status = "Active"
+    db.commit()
+    return {"success": True, "message": "Enrollment approved successfully"}
+
+
+@router.put("/chit-enrollments/{enrollment_id}/reject")
+def reject_enrollment(
+    enrollment_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(*STAFF_ROLES)),
+):
+    enrollment = db.query(ChitEnrollment).filter(ChitEnrollment.id == enrollment_id).first()
+    if not enrollment:
+        raise NotFoundException("Enrollment not found")
+    enrollment.status = "Rejected"
+    db.commit()
+    return {"success": True, "message": "Enrollment rejected"}
 
 
 @router.post("/chit-schemes/{scheme_id}/enroll", status_code=201)

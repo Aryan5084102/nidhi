@@ -12,7 +12,7 @@ from ..schemas.ai_assistant import ChatRequest, QueryRequest
 
 router = APIRouter(prefix="/ai-assistant", tags=["AI Assistant"])
 
-STAFF_ROLES = ("SUPER_ADMIN", "ADMIN", "BRANCH_MANAGER", "LOAN_OFFICER", "FIELD_AGENT")
+STAFF_ROLES = ("ADMIN", "BRANCH_MANAGER")
 
 PREDEFINED_RESPONSES = {
     "npa": {

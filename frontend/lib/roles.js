@@ -20,9 +20,9 @@ export const ROLE_COLORS = {
 
 // Navigation items accessible per role
 export const ROLE_NAV_ACCESS = {
-  [ROLES.ADMIN]: ["executive", "members", "chitfunds", "agents", "loans", "deposits", "collections", "compliance", "airisk", "fraud", "reports", "config", "collateral", "governance", "aiassistant", "profile"],
-  [ROLES.BRANCH_MANAGER]: ["executive", "members", "chitfunds", "loans", "deposits", "collections", "compliance", "collateral", "reports", "profile"],
-  [ROLES.MEMBER]: ["member_dashboard", "my_chitfunds", "my_loans", "my_deposits", "my_payments", "enroll_chitfund", "apply_loan", "open_deposit", "profile"],
+  [ROLES.ADMIN]: ["executive", "members", "chitfunds", "agents", "loans", "deposits", "collections", "compliance", "airisk", "fraud", "reports", "config", "collateral", "governance", "aiassistant", "helpcenter", "profile"],
+  [ROLES.BRANCH_MANAGER]: ["executive", "members", "chitfunds", "loans", "deposits", "collections", "compliance", "collateral", "reports", "helpcenter", "profile"],
+  [ROLES.MEMBER]: ["member_dashboard", "my_chitfunds", "my_loans", "my_deposits", "my_payments", "enroll_chitfund", "apply_loan", "open_deposit", "aiassistant", "helpcenter", "profile"],
 };
 
 // Action-level permissions

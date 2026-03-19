@@ -1,3 +1,5 @@
+"use client";
+
 import MetricCard from "../MetricCard";
 import LiquidityChart from "../LiquidityChart";
 import LoanPortfolioChart from "../LoanPortfolioChart";
@@ -6,9 +8,23 @@ import RiskHeatmap from "../RiskHeatmap";
 import AgentCard from "../AgentCard";
 import FraudAlerts from "../FraudAlerts";
 import ScrollReveal from "../ui/ScrollReveal";
-import { metrics, agents } from "@/data/mockData";
+import { useDashboardMetrics, useAgents } from "@/hooks/useData";
+
+const METRIC_ICONS = [
+  require("../../public/icon/members.png"),
+  require("../../public/icon/loan.png"),
+  require("../../public/icon/deposit.png"),
+  require("../../public/icon/liquidity.png"),
+  require("../../public/icon/alert.png"),
+  require("../../public/icon/compliance.png"),
+];
 
 export default function ExecutiveDashboard() {
+  const { data: apiMetrics = [] } = useDashboardMetrics();
+  const { data: agents = [] } = useAgents();
+
+  const metrics = apiMetrics.map((m, i) => ({ ...m, icon: METRIC_ICONS[i] || null, color: m.color }));
+
   return (
     <div className="animate-fade-in">
       {/* Metrics Grid */}

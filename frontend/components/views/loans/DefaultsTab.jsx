@@ -1,6 +1,6 @@
 "use client";
 
-import { loanDefaults } from "@/data/mockData";
+import { useLoanDefaults } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import MetricGrid from "@/components/ui/MetricGrid";
 import DataTable from "@/components/ui/DataTable";
@@ -15,6 +15,8 @@ const defaultColumns = [
 ];
 
 export default function DefaultsTab() {
+  const { data: loanDefaults = [] } = useLoanDefaults();
+
   const defaultMetrics = [
     { label: "Total Defaults", value: loanDefaults.length.toString(), color: "#DC2626" },
     { label: "Default Amount", value: "\u20B98.2L", color: "#BF6F6D" },

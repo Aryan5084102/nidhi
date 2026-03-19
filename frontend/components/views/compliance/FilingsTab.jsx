@@ -1,8 +1,11 @@
-import { regulatoryFilings } from "@/data/mockData";
+"use client";
+
+import { useRegulatoryFilings } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import HeaderStat from "@/components/ui/HeaderStat";
 
 export default function FilingsTab() {
+  const { data: regulatoryFilings = [] } = useRegulatoryFilings();
   return (
     <div className="animate-fade-in">
       <div className="bg-white rounded-2xl p-5 mb-5 card-shadow border border-slate-100">

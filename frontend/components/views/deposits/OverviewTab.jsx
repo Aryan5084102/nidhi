@@ -1,4 +1,6 @@
-import { depositSchemes, depositTrend } from "@/data/mockData";
+"use client";
+
+import { useDepositSchemes, useDepositChart } from "@/hooks/useData";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
 import BarChart from "@/components/ui/BarChart";
@@ -19,12 +21,22 @@ const bars = [
 ];
 
 export default function OverviewTab() {
+  const { data: depositSchemes = [] } = useDepositSchemes();
+  const { data: depositTrend = [] } = useDepositChart();
+
+  // Calculate maxVal dynamically from data with 20% headroom
+  const computedMax = depositTrend.reduce((max, d) => {
+    const rowMax = Math.max(d.fd || 0, d.rd || 0, d.savings || 0);
+    return rowMax > max ? rowMax : max;
+  }, 0);
+  const maxVal = Math.ceil((computedMax * 1.2) / 100) * 100 || 600;
+
   return (
     <div className="animate-fade-in">
       <MetricGrid metrics={metrics} columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" />
 
       <SectionCard title="Deposit Inflow Trend (\u20B9 Lakhs)" className="mb-6">
-        <BarChart data={depositTrend} bars={bars} maxVal={600} labelKey="month" />
+        <BarChart data={depositTrend} bars={bars} maxVal={maxVal} labelKey="month" />
       </SectionCard>
 
       {/* Scheme Summary Cards */}

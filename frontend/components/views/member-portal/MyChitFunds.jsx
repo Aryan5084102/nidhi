@@ -1,37 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuth } from "@/context/AuthContext";
-import { chitSchemes, members, chitPayoutHistory, schemeMembers } from "@/data/mockData";
+import { useChitSchemes, useMember, useMemberEnrollments, useChitSchemeMembers } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import SectionCard from "@/components/ui/SectionCard";
 import StatusBadge from "@/components/ui/StatusBadge";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { SUCCESS, DANGER_500, SCHEME_ACCENTS } from "@/lib/colors";
-
-const ENROLLMENT_KEY = "glimmora_member_enrollments";
-
-function getEnrollments(memberId) {
-  if (typeof window === "undefined") return [];
-  try {
-    const data = JSON.parse(localStorage.getItem(ENROLLMENT_KEY) || "{}");
-    return data[memberId] || [];
-  } catch {
-    return [];
-  }
-}
-
-function saveEnrollment(memberId, schemeId) {
-  const data = JSON.parse(localStorage.getItem(ENROLLMENT_KEY) || "{}");
-  const existing = data[memberId] || [];
-  if (!existing.includes(schemeId)) {
-    data[memberId] = [...existing, schemeId];
-    localStorage.setItem(ENROLLMENT_KEY, JSON.stringify(data));
-  }
-  return data[memberId];
-}
 
 // Derive an icon for a chit scheme based on its name or id
 function getSchemeIcon(scheme) {
@@ -63,16 +42,14 @@ const schemeAccentColors = SCHEME_ACCENTS;
 
 /* ─── Members List Modal ─── */
 function MembersModal({ scheme, onClose, currentMemberId }) {
-  const memberIds = schemeMembers[scheme.id] || [];
-  const enrolledMembers = memberIds.map((id) => members.find((m) => m.id === id)).filter(Boolean);
-  const payouts = chitPayoutHistory.filter((p) => p.schemeId === scheme.id);
-  const paidMemberIds = payouts.filter((p) => p.status === "Paid").map((p) => p.memberId);
-  const nextPayout = payouts.find((p) => p.status === "Upcoming");
+  const { data: schemeDetail } = useChitSchemeMembers(scheme.id);
+  const enrolledMembers = schemeDetail?.members || [];
+  const wonMembers = enrolledMembers.filter((m) => m.hasWonAuction);
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl max-w-2xl w-full shadow-xl border border-slate-100 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        <div className="p-5 border-b border-slate-100">
+      <div className="bg-white rounded-2xl sm:max-w-2xl w-full shadow-xl border border-slate-100 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="p-4 sm:p-5 border-b border-slate-100">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-[16px] font-bold text-heading">{scheme.name} — Members</h3>
@@ -84,18 +61,18 @@ function MembersModal({ scheme, onClose, currentMemberId }) {
           </div>
 
           {/* Rotation Info */}
-          <div className="grid grid-cols-3 gap-3 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mt-4">
             <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
               <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Monthly Pot</div>
               <div className="text-[15px] font-mono font-bold text-success">{scheme.potSize}</div>
             </div>
             <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
               <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Received</div>
-              <div className="text-[15px] font-mono font-bold text-primary">{paidMemberIds.length}/{enrolledMembers.length}</div>
+              <div className="text-[15px] font-mono font-bold text-primary">{wonMembers.length}/{enrolledMembers.length}</div>
             </div>
             <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-              <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Next Payout</div>
-              <div className="text-[13px] font-semibold text-body">{nextPayout ? nextPayout.memberName : "TBD"}</div>
+              <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Enrolled</div>
+              <div className="text-[13px] font-semibold text-body">{scheme.enrolledMembers}/{scheme.totalMembers}</div>
             </div>
           </div>
         </div>
@@ -103,90 +80,57 @@ function MembersModal({ scheme, onClose, currentMemberId }) {
         {/* Members Table */}
         <div className="p-5">
           <div className="text-[10px] text-heading uppercase tracking-wider mb-3">Enrolled Members</div>
-          <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
-            {enrolledMembers.map((m, idx) => {
-              const hasPaid = paidMemberIds.includes(m.id);
-              const isNext = nextPayout?.memberId === m.id;
-              const isYou = m.id === currentMemberId;
-              return (
-                <div key={m.id} className={`flex items-center justify-between p-3 rounded-xl border ${isYou ? "bg-primary-50 border-primary-200/60" : "bg-slate-50 border-slate-100"}`}>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold ${isYou ? "bg-primary-100 text-primary" : "bg-slate-200 text-slate-500"}`}>
-                      {m.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[13px] font-semibold text-body">{m.name}</span>
-                        {isYou && <span className="text-[10px] font-semibold text-primary bg-primary-100 px-1.5 py-0.5 rounded">You</span>}
-                      </div>
-                      <span className="text-[11px] text-heading font-mono">{m.id}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {hasPaid && <StatusBadge status="Paid" />}
-                    {isNext && <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-200/60">Next</span>}
-                    {!hasPaid && !isNext && <span className="text-[11px] text-heading">Waiting</span>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Payout History */}
-        {payouts.length > 0 && (
-          <div className="p-5 border-t border-slate-100">
-            <div className="text-[10px] text-heading uppercase tracking-wider mb-3">Payout History</div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100">
-                    <th className="text-left px-3 py-2 text-[11px] text-heading font-semibold uppercase tracking-wide">Month</th>
-                    <th className="text-left px-3 py-2 text-[11px] text-heading font-semibold uppercase tracking-wide">Member</th>
-                    <th className="text-left px-3 py-2 text-[11px] text-heading font-semibold uppercase tracking-wide">Date</th>
-                    <th className="text-left px-3 py-2 text-[11px] text-heading font-semibold uppercase tracking-wide">Amount</th>
-                    <th className="text-left px-3 py-2 text-[11px] text-heading font-semibold uppercase tracking-wide">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {payouts.map((p) => (
-                    <tr key={`${p.schemeId}-${p.month}`} className="border-b border-slate-50">
-                      <td className="px-3 py-2.5 text-[12px] font-mono text-slate-500">#{p.month}</td>
-                      <td className="px-3 py-2.5 text-[13px] font-semibold text-body">{p.memberName} {p.memberId === currentMemberId && <span className="text-primary">(You)</span>}</td>
-                      <td className="px-3 py-2.5 text-[12px] text-slate-500">{p.date}</td>
-                      <td className="px-3 py-2.5 text-[13px] font-mono text-success">{p.amount}</td>
-                      <td className="px-3 py-2.5"><StatusBadge status={p.status} /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {enrolledMembers.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-[13px] text-heading">Loading members...</p>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
+              {enrolledMembers.map((m) => {
+                const isYou = m.memberId === currentMemberId;
+                return (
+                  <div key={m.memberId} className={`flex items-center justify-between p-3 rounded-xl border ${isYou ? "bg-primary-50 border-primary-200/60" : "bg-slate-50 border-slate-100"}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold ${isYou ? "bg-primary-100 text-primary" : "bg-slate-200 text-slate-500"}`}>
+                        {m.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[13px] font-semibold text-body">{m.name}</span>
+                          {isYou && <span className="text-[10px] font-semibold text-primary bg-primary-100 px-1.5 py-0.5 rounded">You</span>}
+                        </div>
+                        <span className="text-[11px] text-heading font-mono">{m.memberId}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {m.hasWonAuction ? (
+                        <StatusBadge status="Paid" />
+                      ) : (
+                        <span className="text-[11px] text-heading">Waiting</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-export default function MyChitFunds({ onNavigate }) {
+export default function MyChitFunds() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
-  const member = members.find((m) => m.id === memberId) || members[0];
-  const [enrolledIds, setEnrolledIds] = useState([]);
+  const { data: member } = useMember(memberId);
+  const { data: chitSchemes = [] } = useChitSchemes();
+  const { data: memberEnrollments = [] } = useMemberEnrollments(memberId);
   const [viewMembersScheme, setViewMembersScheme] = useState(null);
   const [schemeSearch, setSchemeSearch] = useState("");
 
-  useEffect(() => {
-    const stored = getEnrollments(memberId);
-    if (memberId === "M-1001" && stored.length === 0) {
-      saveEnrollment("M-1001", "CS-001");
-      saveEnrollment("M-1001", "CS-005");
-      setEnrolledIds(["CS-001", "CS-005"]);
-    } else {
-      setEnrolledIds(stored);
-    }
-  }, [memberId]);
-
+  const enrolledIds = memberEnrollments.map(e => e.schemeId);
   const enrolledSchemes = chitSchemes.filter((s) => enrolledIds.includes(s.id));
   const allAvailable = chitSchemes.filter(
     (s) => !enrolledIds.includes(s.id) && s.status === "Open"
@@ -201,12 +145,9 @@ export default function MyChitFunds({ onNavigate }) {
       )
     : allAvailable;
 
-  // ─── Dashboard Calculations ───
-  const allMyPayouts = chitPayoutHistory.filter((p) => p.memberId === memberId);
-  const paidPayouts = allMyPayouts.filter((p) => p.status === "Paid");
-  const upcomingPayouts = allMyPayouts.filter((p) => p.status === "Upcoming");
+  // ─── Dashboard Calculations (from API data) ───
 
-  // Total contributed (mock: sum monthlyAmount numeric × currentMonth for each enrolled scheme)
+  // Total contributed: sum monthlyAmount numeric × currentMonth for each enrolled scheme
   const totalContributed = enrolledSchemes.reduce((sum, s) => {
     const amt = parseInt(s.monthlyAmount.replace(/[₹,]/g, "")) || 0;
     return sum + amt * (s.currentMonth || 0);
@@ -218,14 +159,12 @@ export default function MyChitFunds({ onNavigate }) {
     return sum + pot;
   }, 0);
 
-  // Payout amounts received
-  const totalPayoutReceived = paidPayouts.reduce((sum, p) => {
-    const amt = parseInt(p.amount.replace(/[₹,]/g, "")) || 0;
-    return sum + amt;
+  // Payout info from enrollment data (hasWonAuction)
+  const wonEnrollments = memberEnrollments.filter(e => e.hasWonAuction);
+  const totalPayoutReceived = wonEnrollments.reduce((sum, e) => {
+    const pot = parseInt(String(e.potSize || "₹0").replace(/[₹,]/g, "")) || 0;
+    return sum + pot;
   }, 0);
-
-  // Next upcoming payout date
-  const nextPayoutEntry = upcomingPayouts.length > 0 ? upcomingPayouts[0] : null;
 
   // Contribution timeline — last 6 months
   const timelineMonths = (() => {
@@ -235,41 +174,24 @@ export default function MyChitFunds({ onNavigate }) {
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const label = monthNames[d.getMonth()];
-      const year = d.getFullYear();
-      const monthNum = d.getMonth();
-      // Calculate total monthly contribution across enrolled schemes
       const monthlyTotal = enrolledSchemes.reduce((sum, s) => {
         const amt = parseInt(s.monthlyAmount.replace(/[₹,]/g, "")) || 0;
         return sum + amt;
       }, 0);
       const isCurrent = i === 0;
       const isPaid = i > 0;
-      months.push({ label, year, monthNum, amount: monthlyTotal, isCurrent, isPaid });
+      months.push({ label, year: d.getFullYear(), monthNum: d.getMonth(), amount: monthlyTotal, isCurrent, isPaid });
     }
     return months;
   })();
 
-  // My payout summary — determine status across all schemes
+  // My payout summary from enrollment data
   const myPayoutSummary = (() => {
-    // Check if any upcoming payout is for this member
-    const myUpcoming = allMyPayouts.find((p) => p.status === "Upcoming");
-    if (myUpcoming) {
-      return { type: "next", amount: myUpcoming.amount, date: myUpcoming.date, schemeId: myUpcoming.schemeId };
+    if (wonEnrollments.length > 0) {
+      return { type: "received", count: wonEnrollments.length };
     }
-    // Check if received any payout
-    if (paidPayouts.length > 0) {
-      const latest = paidPayouts[paidPayouts.length - 1];
-      return { type: "received", amount: latest.amount, date: latest.date, count: paidPayouts.length };
-    }
-    // Waiting — calculate position
-    const firstScheme = enrolledSchemes[0];
-    if (firstScheme) {
-      const schemePayouts = chitPayoutHistory.filter((p) => p.schemeId === firstScheme.id);
-      const paidCount = schemePayouts.filter((p) => p.status === "Paid").length;
-      const schemeMemberIds = schemeMembers[firstScheme.id] || [];
-      const myIndex = schemeMemberIds.indexOf(memberId);
-      const membersBeforeMe = myIndex >= 0 ? Math.max(0, myIndex - paidCount) : 0;
-      return { type: "waiting", membersBefore: membersBeforeMe };
+    if (enrolledSchemes.length > 0) {
+      return { type: "waiting", membersBefore: 0 };
     }
     return { type: "waiting", membersBefore: 0 };
   })();
@@ -287,7 +209,7 @@ export default function MyChitFunds({ onNavigate }) {
       >
         <HeaderStat value={enrolledSchemes.length} label="Enrolled" className="bg-slate-50 text-success" />
         <HeaderStat value={availableSchemes.length} label="Available" className="bg-slate-50 text-primary" />
-        <HeaderStat value={member.sti} label="Your STI" className={`bg-slate-50 ${member.sti >= 80 ? "text-success" : member.sti >= 60 ? "text-warning" : "text-danger-500"}`} />
+        <HeaderStat value={member?.sti || 0} label="Your STI" className={`bg-slate-50 ${(member?.sti || 0) >= 80 ? "text-success" : (member?.sti || 0) >= 60 ? "text-warning" : "text-danger-500"}`} />
       </PageHeader>
 
       {/* ─── Chit Fund Dashboard ─── */}
@@ -299,7 +221,7 @@ export default function MyChitFunds({ onNavigate }) {
           </div>
 
           {/* 1. Overview Stats Row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-6">
             {/* Total Contributed */}
             <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
               <div className="w-1 rounded-full bg-success-500 shrink-0" />
@@ -330,7 +252,7 @@ export default function MyChitFunds({ onNavigate }) {
               <div className="p-4 flex-1">
                 <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Payouts Received</div>
                 <div className="font-mono font-bold text-[20px] text-secondary">
-                  {paidPayouts.length}
+                  {wonEnrollments.length}
                 </div>
                 <div className="text-[11px] text-heading mt-1">
                   {totalPayoutReceived > 0 ? `Total: ${formatCurrency(totalPayoutReceived)}` : "No payouts yet"}
@@ -338,22 +260,13 @@ export default function MyChitFunds({ onNavigate }) {
               </div>
             </div>
 
-            {/* Next Payout */}
+            {/* Schemes Enrolled */}
             <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
               <div className="w-1 rounded-full bg-warning-500 shrink-0" />
               <div className="p-4 flex-1">
-                <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Next Payout</div>
-                {nextPayoutEntry ? (
-                  <>
-                    <div className="font-mono font-bold text-[20px] text-warning">{nextPayoutEntry.amount}</div>
-                    <div className="text-[11px] text-heading mt-1">{nextPayoutEntry.date}</div>
-                  </>
-                ) : (
-                  <>
-                    <div className="font-mono font-bold text-[20px] text-subtle">--</div>
-                    <div className="text-[11px] text-heading mt-1">No upcoming payouts</div>
-                  </>
-                )}
+                <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Schemes Enrolled</div>
+                <div className="font-mono font-bold text-[20px] text-warning">{enrolledSchemes.length}</div>
+                <div className="text-[11px] text-heading mt-1">{availableSchemes.length} more available</div>
               </div>
             </div>
           </div>
@@ -361,8 +274,8 @@ export default function MyChitFunds({ onNavigate }) {
           {/* 2. Contribution Timeline */}
           <div className="mb-6">
             <div className="text-[10px] text-heading uppercase tracking-wider mb-4">Contribution Timeline</div>
-            <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-              <div className="flex items-center justify-between">
+            <div className="bg-white rounded-2xl p-3 sm:p-5 card-shadow border border-slate-100 overflow-x-auto">
+              <div className="flex items-center justify-between min-w-[400px]">
                 {timelineMonths.map((m, idx) => (
                   <div key={idx} className="flex flex-col items-center flex-1">
                     {/* Circle + connector */}
@@ -424,30 +337,10 @@ export default function MyChitFunds({ onNavigate }) {
                   </div>
                   <div>
                     <div className="text-[14px] font-bold text-success-700">
-                      You received {myPayoutSummary.amount} on {myPayoutSummary.date}
+                      You have received {myPayoutSummary.count} payout{myPayoutSummary.count > 1 ? "s" : ""}
                     </div>
                     <div className="text-[12px] text-heading mt-0.5">
-                      {myPayoutSummary.count} payout{myPayoutSummary.count > 1 ? "s" : ""} received so far · Total: {formatCurrency(totalPayoutReceived)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {myPayoutSummary.type === "next" && (
-              <div className="bg-primary-50 rounded-2xl p-5 card-shadow border border-primary-200/60">
-                <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-primary-100 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-[14px] font-bold text-primary-700">
-                      You're next! Payout of {myPayoutSummary.amount} scheduled for {myPayoutSummary.date}
-                    </div>
-                    <div className="text-[12px] text-heading mt-0.5">
-                      Ensure your monthly contributions are up to date
+                      Total received: {formatCurrency(totalPayoutReceived)}
                     </div>
                   </div>
                 </div>
@@ -505,10 +398,7 @@ export default function MyChitFunds({ onNavigate }) {
             {enrolledSchemes.map((scheme) => {
               const totalMonths = parseInt(scheme.duration) || 0;
               const rotationPct = totalMonths > 0 ? ((scheme.currentMonth || 0) / totalMonths) * 100 : 0;
-              const payouts = chitPayoutHistory.filter((p) => p.schemeId === scheme.id);
-              const myPayout = payouts.find((p) => p.memberId === memberId);
-              const nextPayout = payouts.find((p) => p.status === "Upcoming");
-              const paidCount = payouts.filter((p) => p.status === "Paid").length;
+              const myEnrollment = memberEnrollments.find(e => e.schemeId === scheme.id);
 
               return (
                 <div key={scheme.id} className="bg-white rounded-2xl p-5 card-shadow border border-success-200/60 hover:shadow-md transition-all duration-300">
@@ -545,7 +435,7 @@ export default function MyChitFunds({ onNavigate }) {
                   {scheme.currentMonth > 0 && (
                     <div className="mb-4">
                       <div className="flex justify-between mb-1.5">
-                        <span className="text-[11px] text-heading">{paidCount} of {scheme.enrolledMembers} members received</span>
+                        <span className="text-[11px] text-heading">{scheme.enrolledMembers} members enrolled</span>
                         <span className="text-[11px] text-heading font-mono">{rotationPct.toFixed(0)}%</span>
                       </div>
                       <ProgressBar value={scheme.currentMonth} max={totalMonths} color={SUCCESS} />
@@ -553,24 +443,14 @@ export default function MyChitFunds({ onNavigate }) {
                   )}
 
                   {/* Your Payout Status */}
-                  <div className={`rounded-xl p-3 mb-3 border ${myPayout?.status === "Paid" ? "bg-success-50 border-success-200/60" : myPayout?.status === "Upcoming" ? "bg-blue-50 border-blue-200/60" : "bg-slate-50 border-slate-100"}`}>
+                  <div className={`rounded-xl p-3 mb-3 border ${myEnrollment?.hasWonAuction ? "bg-success-50 border-success-200/60" : "bg-slate-50 border-slate-100"}`}>
                     <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Your Payout Status</div>
-                    {myPayout?.status === "Paid" ? (
-                      <div className="text-[13px] font-semibold text-success">Received {myPayout.amount} on {myPayout.date}</div>
-                    ) : myPayout?.status === "Upcoming" ? (
-                      <div className="text-[13px] font-semibold text-blue-600">You're next! Payout of {myPayout.amount} on {myPayout.date}</div>
+                    {myEnrollment?.hasWonAuction ? (
+                      <div className="text-[13px] font-semibold text-success">Payout received</div>
                     ) : (
                       <div className="text-[13px] font-semibold text-slate-500">Waiting for your turn in rotation</div>
                     )}
                   </div>
-
-                  {/* Next Payout Info */}
-                  {nextPayout && (
-                    <div className="flex items-center justify-between text-[11px] text-heading mb-3">
-                      <span>Next payout: <strong className="text-body">{nextPayout.memberName}</strong></span>
-                      <span>{nextPayout.date}</span>
-                    </div>
-                  )}
 
                   {/* View Members Button */}
                   <button
@@ -603,7 +483,7 @@ export default function MyChitFunds({ onNavigate }) {
                 value={schemeSearch}
                 onChange={(e) => setSchemeSearch(e.target.value)}
                 placeholder="Search schemes..."
-                className="pl-9 pr-3 py-2 w-56 bg-slate-50 border border-slate-200 rounded-xl text-[12px] text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
+                className="pl-9 pr-3 py-2 w-full sm:w-56 bg-slate-50 border border-slate-200 rounded-xl text-[12px] text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
               />
             </div>
             <span className="text-[11px] text-heading whitespace-nowrap">{availableSchemes.length} found</span>
@@ -617,7 +497,7 @@ export default function MyChitFunds({ onNavigate }) {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {availableSchemes.map((scheme, idx) => {
-              const eligible = member.sti >= scheme.minSTI;
+              const eligible = (member?.sti || 0) >= scheme.minSTI;
               const fillPct = (scheme.enrolledMembers / scheme.totalMembers) * 100;
               const spotsFull = scheme.enrolledMembers >= scheme.totalMembers;
               const spotsLeft = scheme.totalMembers - scheme.enrolledMembers;
@@ -687,7 +567,7 @@ export default function MyChitFunds({ onNavigate }) {
                     <button
                       onClick={() => {
                         if (eligible && !spotsFull) {
-                          localStorage.setItem("glimmora_enroll_scheme", JSON.stringify(scheme));
+                          try { localStorage.setItem("glimmora_enroll_scheme", JSON.stringify(scheme)); } catch {}
                           onNavigate("enroll_chitfund");
                         }
                       }}

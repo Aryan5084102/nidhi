@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { complianceChecklist } from "@/data/mockData";
+import { useComplianceChecklist } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import TabBar from "@/components/ui/TabBar";
 import DataTable from "@/components/ui/DataTable";
 
 export default function ChecklistTab() {
+  const { data: complianceChecklist = [] } = useComplianceChecklist();
   const [filterStatus, setFilterStatus] = useState("All");
 
   const filtered = complianceChecklist.filter((c) => filterStatus === "All" || c.status === filterStatus);

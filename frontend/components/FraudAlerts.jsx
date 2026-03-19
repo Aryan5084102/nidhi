@@ -1,7 +1,11 @@
+"use client";
+
 import RiskBadge from "./badges/RiskBadge";
-import { fraudAlerts } from "@/data/mockData";
+import { useFraudAlerts } from "@/hooks/useData";
 
 export default function FraudAlerts() {
+  const { data: fraudAlerts = [] } = useFraudAlerts();
+
   return (
     <div className="bg-white rounded-2xl p-3 md:p-5 hover:shadow-md transition-all duration-300 card-shadow border border-slate-100">
       <h3 className="text-sm font-semibold text-slate-800 mb-3 md:mb-4">

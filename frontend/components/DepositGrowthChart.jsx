@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { depositTrend } from "@/data/mockData";
+import { useDepositChart } from "@/hooks/useData";
 
 ChartJS.register(
   CategoryScale,
@@ -24,6 +24,8 @@ ChartJS.register(
 );
 
 export default function DepositGrowthChart() {
+  const { data: depositTrend = [] } = useDepositChart();
+
   const chartData = {
     labels: depositTrend.map((d) => d.month),
     datasets: [

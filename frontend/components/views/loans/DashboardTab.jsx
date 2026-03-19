@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { loanApplications, loanPortfolio } from "@/data/mockData";
+import { useLoanApplications, useLoanPortfolio } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
@@ -45,6 +44,9 @@ const colorMap = {
 };
 
 export default function DashboardTab() {
+  const { data: loanApplications = [] } = useLoanApplications();
+  const { data: loanPortfolio = [] } = useLoanPortfolio();
+
   const pending = loanApplications.filter((a) => a.status === "Pending").length;
   const underReview = loanApplications.filter((a) => a.status === "Under Review").length;
   const approved = loanApplications.filter((a) => a.status === "Approved").length;

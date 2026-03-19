@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { signupSchema } from "./schemas";
 import FormInput from "./FormInput";
 import GoogleIcon from "./GoogleIcon";
+import { post } from "@/lib/api";
 
 function SignupForm({ onSwitch, onGoogleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,30 +31,29 @@ function SignupForm({ onSwitch, onGoogleLogin }) {
     { value: "branch_manager", label: "Branch Manager (Foreman)" },
   ];
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setServerError("");
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
-      const existingUser = users.find((u) => u.email === data.email);
-      if (existingUser) {
-        setServerError("An account with this email already exists. Please sign in.");
-        return;
-      }
-      const newUser = {
-        email: data.email,
+    try {
+      const result = await post("/auth/register", {
         name: data.fullName,
+        email: data.email,
         phone: data.phone,
         password: data.password,
-        role: selectedRole,
-        memberId: selectedRole === "member" ? `M-${Date.now().toString().slice(-4)}` : null,
-      };
-      users.push(newUser);
-      localStorage.setItem("glimmora_users", JSON.stringify(users));
-      toast.success("Signup successful! Please sign in with your email and password.");
-      onSwitch("login");
-    }, 1500);
+        confirmPassword: data.confirmPassword,
+        role: selectedRole === "branch_manager" ? "BRANCH_MANAGER" : "MEMBER",
+      });
+      if (result.success) {
+        toast.success("Signup successful! Please sign in with your email and password.");
+        onSwitch("login");
+      } else {
+        setServerError(result.error || "Registration failed");
+      }
+    } catch (err) {
+      setServerError(err.message || "Registration failed. Is the backend running?");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

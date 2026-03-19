@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { loanApplications } from "@/data/mockData";
+import { useState, useEffect } from "react";
+import { useLoanApplications } from "@/hooks/useData";
+import { put } from "@/lib/api";
 import StatusBadge from "@/components/ui/StatusBadge";
 import SectionCard from "@/components/ui/SectionCard";
 
@@ -26,20 +27,37 @@ const processSteps = [
 ];
 
 export default function ApprovalTab() {
-  const [applications, setApplications] = useState(loanApplications);
+  const { data: loanApplications = [], refetch } = useLoanApplications();
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    setApplications(loanApplications);
+  }, [loanApplications]);
   const pendingApprovals = applications.filter((a) => a.status === "Pending" || a.status === "Under Review");
   const recentActions = applications.filter((a) => a.status === "Approved" || a.status === "Rejected" || a.status === "Disbursed");
 
-  const handleApprove = (id) => {
-    setApplications((prev) =>
-      prev.map((a) => a.id === id ? { ...a, status: "Approved" } : a)
-    );
+  const handleApprove = async (id) => {
+    try {
+      await put(`/loans/${id}/approve`, {});
+      setApplications((prev) =>
+        prev.map((a) => a.id === id ? { ...a, status: "Approved" } : a)
+      );
+      refetch();
+    } catch (err) {
+      console.error("Failed to approve loan:", err.message);
+    }
   };
 
-  const handleReject = (id) => {
-    setApplications((prev) =>
-      prev.map((a) => a.id === id ? { ...a, status: "Rejected" } : a)
-    );
+  const handleReject = async (id) => {
+    try {
+      await put(`/loans/${id}/reject`, {});
+      setApplications((prev) =>
+        prev.map((a) => a.id === id ? { ...a, status: "Rejected" } : a)
+      );
+      refetch();
+    } catch (err) {
+      console.error("Failed to reject loan:", err.message);
+    }
   };
 
   const handleDisburse = (id) => {

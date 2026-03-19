@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import useNavigation from "@/hooks/useNavigation";
 
 const HomeIcon = () => (
   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -56,7 +57,8 @@ const memberNavItems = [
   { id: "my_payments", label: "Payments", icon: <PaymentsIcon /> },
 ];
 
-export default function MobileBottomNav({ activeNav, setActiveNav, onMorePress }) {
+export default function MobileBottomNav({ onMorePress }) {
+  const { activeNav, navigate: setActiveNav } = useNavigation();
   const { isMember } = useAuth();
   const navItems = isMember ? memberNavItems : adminNavItems;
 
@@ -69,7 +71,7 @@ export default function MobileBottomNav({ activeNav, setActiveNav, onMorePress }
             <button
               key={item.id}
               onClick={() => item.id === "more" ? onMorePress?.() : setActiveNav(item.id)}
-              className={`flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl transition-all duration-200 min-w-[60px] cursor-pointer ${
+              className={`flex flex-col items-center gap-0.5 py-2 px-1.5 sm:px-3 rounded-xl transition-all duration-200 flex-1 cursor-pointer ${
                 isActive
                   ? "text-success dark:text-success-400"
                   : "text-heading active:text-body"

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { chitSchemes, chitFundEnrollments } from "@/data/mockData";
+import { useChitSchemes, useChitEnrollments } from "@/hooks/useData";
 
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
@@ -26,11 +26,13 @@ const filterTabs = [
 ];
 
 export default function ChitFundsView() {
+  const { data: chitSchemes = [] } = useChitSchemes();
+  const { data: chitEnrollments = [] } = useChitEnrollments();
   const [mainTab, setMainTab] = useState("enrollments");
   const [enrollScheme, setEnrollScheme] = useState(null);
   const [filterStatus, setFilterStatus] = useState("All");
 
-  const pendingEnrollments = chitFundEnrollments.filter(
+  const pendingEnrollments = chitEnrollments.filter(
     (e) => e.status === "Pending" || e.status === "Under Review"
   ).length;
 
@@ -45,7 +47,7 @@ export default function ChitFundsView() {
         description="Manage chit fund enrollments, track member applications, approve or reject enrollment requests, and monitor scheme performance. Governed by the Chit Funds Act, 1982."
       >
         <HeaderStat
-          value={chitFundEnrollments.length}
+          value={chitEnrollments.length}
           label="Total Enrollments"
           className="bg-slate-50 text-primary"
         />

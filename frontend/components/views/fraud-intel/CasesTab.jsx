@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { fraudCases } from "@/data/mockData";
+import { useFraudCases } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 
 export default function CasesTab() {
   const [search, setSearch] = useState("");
   const [filterSeverity, setFilterSeverity] = useState("All");
+  const { data: fraudCases = [] } = useFraudCases();
 
   const filtered = fraudCases.filter((c) => {
     const matchesSearch = c.type.toLowerCase().includes(search.toLowerCase()) || c.id.toLowerCase().includes(search.toLowerCase());

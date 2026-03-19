@@ -6,7 +6,6 @@ import LeftPanel from "./LeftPanel";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
-import ResetPasswordForm from "./ResetPasswordForm";
 import { useAuth } from "@/context/AuthContext";
 import { ROLES } from "@/lib/roles";
 
@@ -95,8 +94,6 @@ export default function LoginPage() {
         return <SignupForm onSwitch={setView} onGoogleLogin={handleGoogleLogin} />;
       case "forgot-password":
         return <ForgotPasswordForm onSwitch={setView} />;
-      case "reset-password":
-        return <ResetPasswordForm onSwitch={setView} />;
       default:
         return (
           <LoginForm

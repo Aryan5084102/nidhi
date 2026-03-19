@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { systemConfig } from "@/data/mockData";
+import { useSystemConfig } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import TabBar from "@/components/ui/TabBar";
 import ConfigSection from "./ConfigSection";
@@ -27,6 +27,7 @@ const tabs = [
 ];
 
 export default function ConfigView() {
+  const { data: systemConfig = { general: [], deposits: [], loans: [], chitFunds: [], ai: [], notifications: [] } } = useSystemConfig();
   const [activeTab, setActiveTab] = useState("general");
 
   const renderTab = () => {

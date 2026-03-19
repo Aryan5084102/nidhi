@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { complianceScore } from "@/data/mockData";
+import { useComplianceScore } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import TabBar from "@/components/ui/TabBar";
 import DashboardTab from "./DashboardTab";
@@ -31,6 +31,7 @@ const tabs = [
 ];
 
 export default function ComplianceView() {
+  const { data: complianceScore = { overall: 0, categories: [] } } = useComplianceScore();
   const [activeTab, setActiveTab] = useState("dashboard");
 
   const renderTab = () => {

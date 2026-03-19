@@ -1,9 +1,11 @@
 "use client";
 
-import { loanPortfolio } from "@/data/mockData";
+import { useLoanPortfolio } from "@/hooks/useData";
 import ProgressBar from "@/components/ui/ProgressBar";
 
 export default function PortfolioTab() {
+  const { data: loanPortfolio = [] } = useLoanPortfolio();
+
   return (
     <div className="animate-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

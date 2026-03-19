@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { depositApplications } from "@/data/mockData";
+import { useDepositApplications } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
@@ -20,6 +20,7 @@ const tabs = [
 ];
 
 export default function DepositsView() {
+  const { data: depositApplications = [] } = useDepositApplications();
   const [activeTab, setActiveTab] = useState("overview");
 
   const pendingApps = depositApplications.filter(

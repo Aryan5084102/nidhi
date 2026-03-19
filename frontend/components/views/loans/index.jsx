@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { loanApplications } from "@/data/mockData";
+import { useLoanApplications } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
@@ -24,6 +24,7 @@ const tabs = [
 ];
 
 export default function LoansView() {
+  const { data: loanApplications = [] } = useLoanApplications();
   const [activeTab, setActiveTab] = useState("dashboard");
 
   const pendingCount = loanApplications.filter(

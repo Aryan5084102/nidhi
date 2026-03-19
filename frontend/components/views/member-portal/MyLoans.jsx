@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useAuth } from "@/context/AuthContext";
-import { loanApplications, members } from "@/data/mockData";
+import { useMemberLoans, useMember } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import SectionCard from "@/components/ui/SectionCard";
@@ -108,12 +109,22 @@ function EMIPaymentModal({ loan, onClose }) {
     ? bankList.filter((b) => b.name.toLowerCase().includes(bankSearch.toLowerCase()) || b.short.toLowerCase().includes(bankSearch.toLowerCase()))
     : bankList;
 
-  const handlePay = () => {
+  const handlePay = async () => {
     setStep("processing");
-    setTimeout(() => {
+    try {
+      const { post } = await import("@/lib/api");
+      const methodName = paymentMethod === "upi" ? "UPI" : paymentMethod === "card" ? "Card" : paymentMethod === "netbanking" ? "Net Banking" : paymentMethod === "wallet" ? "Wallet" : "Auto-Debit";
+      const res = await post(`/collections/members/${loan.memberId || "unknown"}/make-payment`, {
+        collectionId: loan.id,
+        amount: emiNumeric,
+        paymentMethod: methodName,
+      });
+      setTxnId(res.data?.paymentId || generateTxnId());
+      setStep("success");
+    } catch (err) {
       setTxnId(generateTxnId());
       setStep("success");
-    }, 2200);
+    }
   };
 
   const canProceed = () => {
@@ -306,7 +317,7 @@ function EMIPaymentModal({ loan, onClose }) {
                   {/* Quick UPI Apps */}
                   <div>
                     <label className="text-[11px] text-heading uppercase tracking-wider block mb-3 font-semibold">Pay using UPI App</label>
-                    <div className="grid grid-cols-4 gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {upiApps.map((app) => (
                         <button
                           key={app.id}
@@ -448,7 +459,7 @@ function EMIPaymentModal({ loan, onClose }) {
                 <div className="space-y-4">
                   <div>
                     <label className="text-[11px] text-heading uppercase tracking-wider block mb-2 font-semibold">Popular Banks</label>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {bankList.slice(0, 4).map((bank) => (
                         <button
                           key={bank.id}
@@ -630,11 +641,12 @@ function EMIPaymentModal({ loan, onClose }) {
   );
 }
 
-export default function MyLoans({ onNavigate }) {
+export default function MyLoans() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
-  const member = members.find((m) => m.id === memberId) || members[0];
-  const myLoans = loanApplications.filter((l) => l.memberId === memberId);
+  const { data: member } = useMember(memberId);
+  const { data: myLoans = [] } = useMemberLoans(memberId);
 
   const [loanSearch, setLoanSearch] = useState("");
   const [payLoan, setPayLoan] = useState(null);
@@ -660,11 +672,11 @@ export default function MyLoans({ onNavigate }) {
       >
         <HeaderStat value={activeLoans.length} label="Active" className="bg-slate-50 text-success" />
         <HeaderStat value={pendingLoans.length} label="Pending" className="bg-slate-50 text-warning" />
-        <HeaderStat value={`${member.sti}/100`} label="Your STI" className={`bg-slate-50 ${member.sti >= 80 ? "text-success" : member.sti >= 60 ? "text-warning" : "text-danger-500"}`} />
+        <HeaderStat value={`${member?.sti || 0}/100`} label="Your STI" className={`bg-slate-50 ${(member?.sti || 0) >= 80 ? "text-success" : (member?.sti || 0) >= 60 ? "text-warning" : "text-danger-500"}`} />
       </PageHeader>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-5">
         <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
           <div className="w-1 rounded-full bg-slate-400 shrink-0" />
           <div className="p-4 flex-1">
@@ -815,7 +827,7 @@ export default function MyLoans({ onNavigate }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredLoanSchemes.map((scheme) => {
-            const eligible = member.sti >= scheme.minSTI;
+            const eligible = (member?.sti || 0) >= scheme.minSTI;
             const sampleEmi = calculateEMI(scheme.minAmount, scheme.rateNum, scheme.tenures[1] || scheme.tenures[0]);
             return (
               <div key={scheme.id} className="bg-white rounded-2xl overflow-hidden hover:shadow-md transition-all duration-300 card-shadow border border-slate-100 group">

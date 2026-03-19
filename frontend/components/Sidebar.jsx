@@ -7,8 +7,10 @@ import Tooltip from "./Tooltip";
 import logo from '../public/icon/logo.png'
 import { useAuth } from "@/context/AuthContext";
 import { ROLE_COLORS } from "@/lib/roles";
+import useNavigation from "@/hooks/useNavigation";
 
-export default function Sidebar({ activeNav, setActiveNav, expanded, setExpanded }) {
+export default function Sidebar({ expanded, setExpanded }) {
+  const { activeNav, navigate: setActiveNav } = useNavigation();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { user, canAccessNav, logout, roleLabel } = useAuth();
   const userName = user?.name;

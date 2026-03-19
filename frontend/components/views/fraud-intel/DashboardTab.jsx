@@ -1,17 +1,8 @@
-import { fraudCases, fraudMetrics, fraudTrend } from "@/data/mockData";
+import { useFraudCases, useFraudDashboard, useFraudPatterns } from "@/hooks/useData";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
 import BarChart from "@/components/ui/BarChart";
 import StatusBadge from "@/components/ui/StatusBadge";
-
-const metrics = [
-  { label: "Active Alerts", value: fraudMetrics.totalAlerts, color: "#BF6F6D" },
-  { label: "Critical Alerts", value: fraudMetrics.criticalAlerts, color: "#DC2626" },
-  { label: "Resolved This Month", value: fraudMetrics.resolvedThisMonth, color: "#059669" },
-  { label: "Avg Resolution Time", value: fraudMetrics.avgResolutionTime, color: "#6B8ABF" },
-  { label: "False Positive Rate", value: fraudMetrics.falsePositiveRate, color: "#C49A4C" },
-  { label: "Total Prevented Loss", value: fraudMetrics.totalPreventedLoss, color: "#9585B5" },
-];
 
 const bars = [
   { key: "alerts", label: "Total Alerts", gradient: "linear-gradient(to top, #DC2626, #F87171)" },
@@ -20,6 +11,20 @@ const bars = [
 ];
 
 export default function DashboardTab() {
+  const { data: fraudCases = [] } = useFraudCases();
+  const { data: fraudMetrics } = useFraudDashboard();
+  const { data: fraudPatternsData } = useFraudPatterns();
+  const fraudTrend = fraudPatternsData?.monthlyTrend || [];
+
+  const metrics = [
+    { label: "Active Alerts", value: fraudMetrics?.totalAlerts, color: "#BF6F6D" },
+    { label: "Critical Alerts", value: fraudMetrics?.criticalAlerts, color: "#DC2626" },
+    { label: "Resolved This Month", value: fraudMetrics?.resolvedThisMonth, color: "#059669" },
+    { label: "Avg Resolution Time", value: fraudMetrics?.avgResolutionTime, color: "#6B8ABF" },
+    { label: "False Positive Rate", value: fraudMetrics?.falsePositiveRate, color: "#C49A4C" },
+    { label: "Total Prevented Loss", value: fraudMetrics?.totalPreventedLoss, color: "#9585B5" },
+  ];
+
   return (
     <div className="animate-fade-in">
       <MetricGrid metrics={metrics} columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" />

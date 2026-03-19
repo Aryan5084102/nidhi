@@ -1,7 +1,11 @@
+"use client";
+
 import AgentCard from "../AgentCard";
-import { agents } from "@/data/mockData";
+import { useAgents } from "@/hooks/useData";
 
 export default function AgentsView() {
+  const { data: agents = [] } = useAgents();
+
   return (
     <div className="animate-fade-in">
       {/* Description Card */}

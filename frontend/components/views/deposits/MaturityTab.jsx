@@ -1,4 +1,6 @@
-import { depositAccounts } from "@/data/mockData";
+"use client";
+
+import { useMaturityTracker } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
@@ -13,6 +15,7 @@ const columns = [
 ];
 
 export default function MaturityTab() {
+  const { data: depositAccounts = [] } = useMaturityTracker();
   const maturing = depositAccounts.filter((a) => a.status === "Maturing Soon" || a.status === "Matured");
   const upcoming = depositAccounts.filter((a) => a.status === "Active" && a.maturityDate !== "\u2014");
 

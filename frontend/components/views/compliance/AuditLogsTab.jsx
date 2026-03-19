@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { auditLog } from "@/data/mockData";
+import { useAuditLogs } from "@/hooks/useData";
 import TabBar from "@/components/ui/TabBar";
 import DataTable from "@/components/ui/DataTable";
 
@@ -31,6 +31,7 @@ const columns = [
 ];
 
 export default function AuditLogsTab() {
+  const { data: auditLog = [] } = useAuditLogs();
   const [filterCategory, setFilterCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 

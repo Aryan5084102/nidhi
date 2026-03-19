@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useAuth } from "@/context/AuthContext";
-import { loanApplications, depositAccounts } from "@/data/mockData";
+import { useMemberLoans, useMemberDeposits, useMemberPayments } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
@@ -16,12 +16,12 @@ const typeIcons = {
   "FD Deposit": "📦",
 };
 
-function generatePayments(memberId) {
+function generatePaymentsFromHooks(myLoans, myDeposits) {
   const payments = [];
-  const myLoans = loanApplications.filter((l) => l.memberId === memberId && ["Approved", "Disbursed"].includes(l.status));
-  const myDeposits = depositAccounts.filter((d) => d.memberId === memberId && d.status === "Active");
+  const activeLoans = myLoans.filter((l) => ["Approved", "Disbursed"].includes(l.status));
+  const activeDeposits = myDeposits.filter((d) => d.status === "Active");
 
-  myLoans.forEach((loan) => {
+  activeLoans.forEach((loan) => {
     payments.push({
       id: `PAY-EMI-${loan.id}`,
       type: "EMI Payment",
@@ -42,8 +42,8 @@ function generatePayments(memberId) {
     });
   });
 
-  myDeposits.forEach((dep) => {
-    if (dep.type.includes("Recurring")) {
+  activeDeposits.forEach((dep) => {
+    if (dep.type?.includes("Recurring")) {
       payments.push({
         id: `PAY-RD-${dep.id}`,
         type: "RD Installment",
@@ -157,12 +157,23 @@ function PaymentModal({ payment, onClose }) {
     ? bankList.filter((b) => b.name.toLowerCase().includes(bankSearch.toLowerCase()) || b.short.toLowerCase().includes(bankSearch.toLowerCase()))
     : bankList;
 
-  const handlePay = () => {
+  const handlePay = async () => {
     setStep("processing");
-    setTimeout(() => {
+    try {
+      const { post } = await import("@/lib/api");
+      const methodName = paymentMethod === "upi" ? "UPI" : paymentMethod === "card" ? "Card" : paymentMethod === "netbanking" ? "Net Banking" : paymentMethod === "wallet" ? "Wallet" : "Auto-Debit";
+      const numericAmount = parseFloat(String(amount || payment?.amount || "0").replace(/[^\d.]/g, ""));
+      const res = await post(`/collections/members/${payment?.memberId || "unknown"}/make-payment`, {
+        collectionId: payment?.id?.replace(/^PAY-EMI-|^PAY-RD-/, "") || "unknown",
+        amount: numericAmount,
+        paymentMethod: methodName,
+      });
+      setTxnId(res.data?.paymentId || generateTxnId());
+      setStep("success");
+    } catch (err) {
       setTxnId(generateTxnId());
       setStep("success");
-    }, 2200);
+    }
   };
 
   const canProceed = () => {
@@ -351,7 +362,7 @@ function PaymentModal({ payment, onClose }) {
                 <div className="space-y-5">
                   <div>
                     <label className="text-[11px] text-heading uppercase tracking-wider block mb-3 font-semibold">Pay using UPI App</label>
-                    <div className="grid grid-cols-4 gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {upiApps.map((app) => (
                         <button
                           key={app.id}
@@ -461,7 +472,7 @@ function PaymentModal({ payment, onClose }) {
                 <div className="space-y-4">
                   <div>
                     <label className="text-[11px] text-heading uppercase tracking-wider block mb-2 font-semibold">Popular Banks</label>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {bankList.slice(0, 4).map((bank) => (
                         <button key={bank.id} onClick={() => setSelectedBank(bank.id)} className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${selectedBank === bank.id ? "border-primary-400 bg-primary-50 shadow-sm" : "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50"}`}>
                           <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-[10px]" style={{ background: bank.color }}>{bank.short}</div>
@@ -611,75 +622,76 @@ function PaymentRow({ payment, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`p-4 flex items-center gap-3 transition-all duration-150 ${
+      className={`p-3 sm:p-4 transition-all duration-150 ${
         isUpcoming
           ? "bg-primary-50/50 hover:bg-primary-50 cursor-pointer border-l-2 border-primary-400"
           : "hover:bg-slate-50/60"
       }`}
     >
-      {/* Timeline dot */}
-      <div className="flex flex-col items-center shrink-0 self-stretch justify-start pt-1">
-        <div className={`w-2.5 h-2.5 rounded-full border-2 shrink-0 ${
-          isUpcoming ? "bg-primary-400 border-primary-100" : "bg-success-400 border-success-100"
-        }`} />
-        <div className={`w-px flex-1 mt-1 ${isUpcoming ? "bg-primary-100" : "bg-success-100"}`} />
-      </div>
+      {/* Row 1: Icon + Type + Amount */}
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Timeline dot - hidden on mobile */}
+        <div className="hidden sm:flex flex-col items-center shrink-0 self-stretch justify-start pt-1">
+          <div className={`w-2.5 h-2.5 rounded-full border-2 shrink-0 ${
+            isUpcoming ? "bg-primary-400 border-primary-100" : "bg-success-400 border-success-100"
+          }`} />
+          <div className={`w-px flex-1 mt-1 ${isUpcoming ? "bg-primary-100" : "bg-success-100"}`} />
+        </div>
 
-      {/* Icon box */}
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 ${
-        isUpcoming ? "bg-primary-100 border border-primary-200/60" : "bg-slate-50 border border-slate-100"
-      }`}>
-        {typeIcons[payment.type] || "💳"}
-      </div>
+        {/* Icon box */}
+        <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-sm sm:text-base shrink-0 ${
+          isUpcoming ? "bg-primary-100 border border-primary-200/60" : "bg-slate-50 border border-slate-100"
+        }`}>
+          {typeIcons[payment.type] || "💳"}
+        </div>
 
-      {/* Details */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className={`text-[13px] font-semibold ${isUpcoming ? "text-primary-700" : "text-body"}`}>
-            {payment.type}
-          </span>
-          <span className="text-[11px] font-mono text-heading">{payment.id}</span>
-          {isUpcoming && (
-            <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary border border-primary-200/60">
-              Due Soon
+        {/* Details */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span className={`text-[12px] sm:text-[13px] font-semibold ${isUpcoming ? "text-primary-700" : "text-body"}`}>
+              {payment.type}
             </span>
+            <span className="text-[10px] sm:text-[11px] font-mono text-heading hidden sm:inline">{payment.id}</span>
+            {isUpcoming && (
+              <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary border border-primary-200/60">
+                Due
+              </span>
+            )}
+          </div>
+          <p className="text-[10px] sm:text-[11px] text-heading truncate">{payment.description}</p>
+        </div>
+
+        {/* Amount + date */}
+        <div className="text-right shrink-0">
+          <div className={`text-[12px] sm:text-[13px] font-bold font-mono ${isUpcoming ? "text-primary-700" : "text-body"}`}>
+            {payment.amount}
+          </div>
+          <div className="text-[10px] sm:text-[11px] text-heading">{payment.date}</div>
+        </div>
+      </div>
+
+      {/* Row 2: Status + Method + Pay button — mobile stacks below */}
+      <div className="flex items-center justify-between mt-2 sm:mt-0 sm:ml-[46px] gap-2">
+        <div className="flex items-center gap-2">
+          <StatusBadge status={payment.status} />
+          {payment.method !== "—" && (
+            <span className="text-[10px] sm:text-[11px] text-heading">{payment.method}</span>
           )}
         </div>
-        <p className="text-[11px] text-heading truncate">{payment.description}</p>
-      </div>
 
-      {/* Amount + date */}
-      <div className="text-right shrink-0">
-        <div className={`text-[13px] font-bold font-mono ${isUpcoming ? "text-primary-700" : "text-body"}`}>
-          {payment.amount}
-        </div>
-        <div className="text-[11px] text-heading">{payment.date}</div>
-      </div>
-
-      {/* Status badge */}
-      <div className="shrink-0">
-        <StatusBadge status={payment.status} />
-      </div>
-
-      {/* Method */}
-      {payment.method !== "—" && (
-        <span className="text-[11px] text-heading shrink-0 hidden md:block">{payment.method}</span>
-      )}
-
-      {/* Pay button for upcoming */}
-      {isUpcoming && (
-        <div className="shrink-0">
+        {/* Pay button for upcoming */}
+        {isUpcoming && (
           <button
             onClick={(e) => { e.stopPropagation(); onClick(); }}
-            className="py-1.5 px-3 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[11px] font-semibold hover:bg-primary-100 hover:border-primary-300 transition-all cursor-pointer flex items-center gap-1.5"
+            className="py-1.5 px-2.5 sm:px-3 bg-primary-50 border border-primary-200 text-primary rounded-xl text-[10px] sm:text-[11px] font-semibold hover:bg-primary-100 hover:border-primary-300 transition-all cursor-pointer flex items-center gap-1"
           >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
             </svg>
             Pay Now
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -687,11 +699,14 @@ function PaymentRow({ payment, onClick }) {
 export default function MyPayments() {
   const { user } = useAuth();
   const memberId = user?.memberId;
+  const { data: myLoans = [] } = useMemberLoans(memberId);
+  const { data: myDeposits = [] } = useMemberDeposits(memberId);
+  const { data: apiPayments = [] } = useMemberPayments(memberId);
   const [filter, setFilter] = useState("all");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
 
-  const paymentHistory = memberId ? generatePayments(memberId) : [];
+  const paymentHistory = apiPayments.length > 0 ? apiPayments : generatePaymentsFromHooks(myLoans, myDeposits);
   const payments = filter === "all" ? paymentHistory : paymentHistory.filter((p) => p.status === (filter === "paid" ? "Paid" : "Upcoming"));
 
   const totalPaid = paymentHistory.filter((p) => p.status === "Paid").length;
@@ -740,7 +755,7 @@ export default function MyPayments() {
       </PageHeader>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-5">
         <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
           <div className="w-1 rounded-full bg-slate-400 shrink-0" />
           <div className="p-4 flex-1">

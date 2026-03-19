@@ -60,12 +60,20 @@ const SmoothScroll = forwardRef(function SmoothScroll({ children, className, con
       targetPos.current = Math.max(0, Math.min(targetPos.current + delta, maxScroll));
     };
 
+    const onScrollTop = () => {
+      scrollPos.current = 0;
+      targetPos.current = 0;
+      gsap.set(content, { y: 0 });
+    };
+    window.addEventListener("smooth-scroll-top", onScrollTop);
+
     container.addEventListener("wheel", onWheel, { passive: false });
     container.addEventListener("touchstart", onTouchStart, { passive: true });
     container.addEventListener("touchmove", onTouchMove, { passive: false });
     rafId.current = requestAnimationFrame(updateScroll);
 
     return () => {
+      window.removeEventListener("smooth-scroll-top", onScrollTop);
       container.removeEventListener("wheel", onWheel);
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchmove", onTouchMove);

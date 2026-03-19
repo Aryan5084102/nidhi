@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { loanApplications } from "@/data/mockData";
+import { useLoanApplications } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import DataTable from "@/components/ui/DataTable";
 import MetricGrid from "@/components/ui/MetricGrid";
@@ -32,9 +32,10 @@ const columns = [
 ];
 
 export default function ApplicationsTab() {
+  const { data: loanApplications = [] } = useLoanApplications();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [applications] = useState(loanApplications);
+  const applications = loanApplications;
 
   const pending = applications.filter((a) => a.status === "Pending").length;
   const underReview = applications.filter((a) => a.status === "Under Review").length;

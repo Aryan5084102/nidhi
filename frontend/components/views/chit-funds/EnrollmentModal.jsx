@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { members } from "@/data/mockData";
+import { useMembers } from "@/hooks/useData";
+import { post } from "@/lib/api";
 import ProgressBar from "@/components/ui/ProgressBar";
 
 export default function EnrollmentFlow({ scheme, onClose, onEnroll, memberId: prefillMemberId, memberName: prefillName }) {
+  const { data: members = [] } = useMembers();
   const member = members.find((m) => m.id === prefillMemberId) || members[0];
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -20,18 +22,33 @@ export default function EnrollmentFlow({ scheme, onClose, onEnroll, memberId: pr
   });
   const [processing, setProcessing] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [enrollResult, setEnrollResult] = useState(null);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
+    try {
+      const res = await post(`/chit-schemes/${scheme.id}/enroll`, {
+        memberId: formData.memberId,
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        nomineeName: formData.nomineeName,
+        nomineeRelationship: formData.nomineeRelation,
+        acceptedTerms: formData.agreeTerms,
+        authorizedAutoDeduction: formData.agreeDeduction,
+      });
+      setEnrollResult(res.data);
       setSubmitted(true);
       if (onEnroll) onEnroll(scheme.id);
-    }, 2000);
+    } catch (err) {
+      console.error("Enrollment failed:", err.message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const totalMonths = parseInt(scheme.duration) || 0;
@@ -81,7 +98,7 @@ export default function EnrollmentFlow({ scheme, onClose, onEnroll, memberId: pr
             <div className="text-[10px] text-heading uppercase tracking-wider mb-3">Enrollment Summary</div>
             <div className="space-y-2.5">
               {[
-                ["Enrollment ID", `EN-${Date.now().toString().slice(-6)}`],
+                ["Enrollment ID", enrollResult?.enrollmentId || "—"],
                 ["Scheme", scheme.name],
                 ["Monthly Contribution", scheme.monthlyAmount],
                 ["Duration", scheme.duration],

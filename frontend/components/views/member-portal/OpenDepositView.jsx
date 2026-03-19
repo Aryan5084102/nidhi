@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { members } from "@/data/mockData";
+import { post } from "@/lib/api";
+import { useMember } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 
 const depositSchemeDetails = {
   "Glimmora Fixed Deposit": {
@@ -66,15 +68,12 @@ function calculateMaturity(principal, ratePercent, months, type) {
   return Math.round(maturity);
 }
 
-function generateAccountId(type) {
-  const prefix = type === "FD" ? "FD" : type === "RD" ? "RD" : "SD";
-  return `${prefix}-${Date.now().toString().slice(-8)}`;
-}
 
-export default function OpenDepositView({ onNavigate }) {
+export default function OpenDepositView() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
-  const member = members.find((m) => m.id === memberId) || members[0];
+  const { data: member } = useMember(memberId);
 
   const [scheme, setScheme] = useState(null);
   const [step, setStep] = useState(1);
@@ -87,6 +86,8 @@ export default function OpenDepositView({ onNavigate }) {
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
   const [accountId, setAccountId] = useState("");
+  const [depositResult, setDepositResult] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     try {
@@ -99,6 +100,7 @@ export default function OpenDepositView({ onNavigate }) {
           setAmount(details.minAmount);
           setTenure(details.tenures[0]);
         }
+        localStorage.removeItem("glimmora_open_deposit_scheme");
       }
     } catch {
       // invalid JSON
@@ -127,13 +129,26 @@ export default function OpenDepositView({ onNavigate }) {
   const interestEarned = maturityAmount - (scheme.id === "RD" ? amount * tenure : amount);
   const isFlexible = scheme.id === "SD";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
-      setAccountId(generateAccountId(scheme.id));
+    setSubmitError(null);
+    try {
+      const depositType = scheme.id === "FD" ? "Fixed Deposit" : scheme.id === "RD" ? "Recurring Deposit" : "Savings";
+      const res = await post("/deposits/accounts", {
+        memberId,
+        type: depositType,
+        amount,
+        tenure: isFlexible ? null : tenure,
+        autoRenewal: false,
+      });
+      setDepositResult(res.data);
+      setAccountId(res.data?.id || "");
       setSuccess(true);
-    }, 2500);
+    } catch (err) {
+      setSubmitError(err.data?.error || err.message || "Failed to open deposit account. Please try again.");
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const steps = isFlexible
@@ -262,7 +277,7 @@ export default function OpenDepositView({ onNavigate }) {
                   </div>
                 </div>
                 {!isFlexible && (
-                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/20">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-white/20">
                     <div>
                       <div className="text-[10px] text-white/60">Min Amount</div>
                       <div className="text-[14px] font-bold font-mono">{formatINR(scheme.minAmount)}</div>
@@ -340,7 +355,7 @@ export default function OpenDepositView({ onNavigate }) {
                     <div className="text-[10px] text-heading uppercase tracking-wider mb-4">
                       {scheme.id === "RD" ? "Returns Calculator" : "Maturity Calculator"}
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
                       <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 text-center">
                         <div className="text-[10px] text-heading uppercase tracking-wider mb-1">
                           {scheme.id === "RD" ? "Total Invested" : "Principal"}
@@ -440,22 +455,22 @@ export default function OpenDepositView({ onNavigate }) {
               {/* Pre-filled Info */}
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
                 <div className="text-[10px] text-heading uppercase tracking-wider mb-4">Account Holder</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                   <div>
                     <div className="text-[10px] text-heading mb-1">Full Name</div>
-                    <div className="text-[13px] font-semibold text-body">{member.name}</div>
+                    <div className="text-[13px] font-semibold text-body">{member?.name}</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-heading mb-1">Member ID</div>
-                    <div className="text-[13px] font-mono font-semibold text-body">{member.id}</div>
+                    <div className="text-[13px] font-mono font-semibold text-body">{member?.id}</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-heading mb-1">Phone</div>
-                    <div className="text-[13px] text-body">{member.phone}</div>
+                    <div className="text-[13px] text-body">{member?.phone}</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-heading mb-1">KYC Status</div>
-                    <div className={`text-[13px] font-bold ${member.kyc === "Verified" ? "text-success" : "text-warning"}`}>{member.kyc}</div>
+                    <div className={`text-[13px] font-bold ${member?.kyc === "Verified" ? "text-success" : "text-warning"}`}>{member?.kyc}</div>
                   </div>
                 </div>
               </div>
@@ -463,7 +478,7 @@ export default function OpenDepositView({ onNavigate }) {
               {/* Deposit Summary */}
               <div className="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
                 <div className="text-[10px] text-heading uppercase tracking-wider mb-3">Deposit Details</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
                   <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
                     <div className="text-[10px] text-heading uppercase tracking-wider mb-1">
                       {scheme.id === "RD" ? "Monthly Installment" : "Amount"}
@@ -566,7 +581,7 @@ export default function OpenDepositView({ onNavigate }) {
                 </div>
 
                 {!isFlexible && (
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-4">
                     <div className="bg-slate-50 rounded-xl p-3">
                       <div className="text-[10px] text-heading uppercase tracking-wider mb-1">
                         {scheme.id === "RD" ? "Monthly Amount" : "Deposit Amount"}
@@ -588,8 +603,8 @@ export default function OpenDepositView({ onNavigate }) {
                     ["Interest Rate", `${rate}% p.a.`],
                     ...(isFlexible ? [] : [["Interest Earned", formatINR(interestEarned)]]),
                     ...(isFlexible ? [] : [["Maturity Amount", formatINR(maturityAmount)]]),
-                    ["Account Holder", member.name],
-                    ["Member ID", member.id],
+                    ["Account Holder", member?.name || "—"],
+                    ["Member ID", member?.id || "—"],
                     ["Nominee", nomineeName || "—"],
                     ...(nomineeRelation ? [["Nominee Relation", nomineeRelation]] : []),
                     ["Funding", "Auto-Debit (XXXX 4521)"],
@@ -623,6 +638,13 @@ export default function OpenDepositView({ onNavigate }) {
             </div>
           )}
 
+          {/* Error Message */}
+          {submitError && (
+            <div className="mt-4 p-4 bg-danger-50 border border-danger-200/60 rounded-xl">
+              <p className="text-[13px] text-danger-600 font-medium">{submitError}</p>
+            </div>
+          )}
+
           {/* Footer Navigation */}
           <div className="flex gap-3 mt-8 pt-6 border-t border-slate-100">
             {step > 1 && (
@@ -641,7 +663,7 @@ export default function OpenDepositView({ onNavigate }) {
             ) : (
               <button
                 onClick={handleSubmit}
-                disabled={!agreeTerms || !agreeDeduction}
+                disabled={!agreeTerms || !agreeDeduction || processing}
                 className={`flex-1 py-3 rounded-xl text-[13px] font-semibold transition-all ${agreeTerms && agreeDeduction ? "bg-success text-white cursor-pointer hover:bg-success-700" : "bg-slate-100 text-subtle cursor-not-allowed"}`}
               >
                 Open Account

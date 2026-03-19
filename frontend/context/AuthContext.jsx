@@ -2,70 +2,78 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { ROLES, ROLE_LABELS, hasPermission, hasNavAccess, getDefaultNav } from "@/lib/roles";
+import { login as apiLogin, logout as apiLogout, get, getToken, clearAuth } from "@/lib/api";
+import { clearApiCache } from "@/hooks/useData";
 
 const AuthContext = createContext(null);
 
-// Demo users — 3 roles: Admin, Branch Manager (Foreman), Member
-const DEMO_USERS = [
-  { email: "admin@glimmora.com", password: "Admin@123", name: "Aryan Kumar", role: ROLES.ADMIN, phone: "9876500001", memberId: null },
-  { email: "manager@glimmora.com", password: "Manager@123", name: "Vikram Singh", role: ROLES.BRANCH_MANAGER, phone: "9876500003", memberId: null },
-  { email: "member@glimmora.com", password: "Member@123", name: "Rajesh Kumar", role: ROLES.MEMBER, phone: "9876543210", memberId: "M-1001" },
-];
+// Map backend roles to frontend roles
+const ROLE_MAP = {
+  ADMIN: ROLES.ADMIN,
+  BRANCH_MANAGER: ROLES.BRANCH_MANAGER,
+  MEMBER: ROLES.MEMBER,
+};
+
+function mapBackendUser(backendUser) {
+  return {
+    id: backendUser.id,
+    email: backendUser.email,
+    name: backendUser.name,
+    role: ROLE_MAP[backendUser.role] || ROLES.MEMBER,
+    backendRole: backendUser.role,
+    phone: backendUser.phone || "",
+    memberId: backendUser.memberId || null,
+    avatar: backendUser.avatar || null,
+  };
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // On mount, check if we have a valid token and restore session
   useEffect(() => {
-    const stored = localStorage.getItem("glimmora_current_user");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        // Ensure role exists (backward compat)
-        if (!parsed.role) parsed.role = ROLES.ADMIN;
-        setUser(parsed);
-      } catch {
-        localStorage.removeItem("glimmora_current_user");
+    async function restoreSession() {
+      const token = getToken();
+      if (!token) {
+        // No token — clear any stale user data and show login
+        clearAuth();
+        setIsLoading(false);
+        return;
       }
+
+      try {
+        // Validate token by fetching current user profile
+        const data = await get("/auth/me");
+        if (data.success && data.data) {
+          const userData = mapBackendUser(data.data);
+          setUser(userData);
+          localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
+        } else {
+          clearAuth();
+        }
+      } catch {
+        // Token expired or invalid — clear and let user re-login
+        clearAuth();
+      }
+      setIsLoading(false);
     }
-    setIsLoading(false);
+    restoreSession();
   }, []);
 
-  const login = useCallback((email, password) => {
-    // Check demo users first
-    const demoUser = DEMO_USERS.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (demoUser) {
-      const userData = {
-        email: demoUser.email,
-        name: demoUser.name,
-        role: demoUser.role,
-        phone: demoUser.phone,
-        memberId: demoUser.memberId,
-      };
-      setUser(userData);
-      localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
-      return { success: true, user: userData };
+  const login = useCallback(async (email, password) => {
+    try {
+      const data = await apiLogin(email, password);
+      if (data.success && data.data?.user) {
+        const userData = mapBackendUser(data.data.user);
+        setUser(userData);
+        localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
+        return { success: true, user: userData };
+      }
+      return { success: false, error: data.error || "Login failed" };
+    } catch (err) {
+      return { success: false, error: err.message || "Login failed. Is the backend running?" };
     }
-
-    // Check registered users in localStorage
-    const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
-    const found = users.find((u) => u.email === email && u.password === password);
-    if (found) {
-      const userData = {
-        email: found.email,
-        name: found.name,
-        role: found.role || ROLES.MEMBER,
-        phone: found.phone,
-        memberId: found.memberId || null,
-      };
-      setUser(userData);
-      localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
-      return { success: true, user: userData };
-    }
-
-    return { success: false, error: "Invalid email or password." };
   }, []);
 
   const loginWithGoogle = useCallback((googleUser) => {
@@ -79,7 +87,8 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem("glimmora_current_user");
+    apiLogout();
+    clearApiCache();
   }, []);
 
   const can = useCallback(

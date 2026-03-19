@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { members } from "@/data/mockData";
+import { post } from "@/lib/api";
+import { useMember } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 
 function formatINR(num) {
   return "₹" + num.toLocaleString("en-IN");
@@ -15,10 +17,11 @@ function calculateEMI(principal, ratePercent, months) {
   return Math.round(emi);
 }
 
-export default function ApplyLoanView({ onNavigate }) {
+export default function ApplyLoanView() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
-  const member = members.find((m) => m.id === memberId) || members[0];
+  const { data: member } = useMember(memberId);
 
   const [scheme, setScheme] = useState(null);
   const [step, setStep] = useState(1);
@@ -31,6 +34,8 @@ export default function ApplyLoanView({ onNavigate }) {
   const [agreeDeduction, setAgreeDeduction] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [approved, setApproved] = useState(false);
+  const [loanResult, setLoanResult] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     try {
@@ -41,6 +46,7 @@ export default function ApplyLoanView({ onNavigate }) {
         setAmount(parsed.minAmount);
         setTenure(parsed.tenures[1] || parsed.tenures[0]);
         setPurpose(parsed.name);
+        localStorage.removeItem("glimmora_apply_loan_scheme");
       }
     } catch {
       // invalid JSON
@@ -68,12 +74,23 @@ export default function ApplyLoanView({ onNavigate }) {
   const totalPayable = emi * tenure;
   const totalInterest = totalPayable - amount;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
+    setSubmitError(null);
+    try {
+      const res = await post("/loans/apply", {
+        memberId,
+        amount,
+        purpose,
+        tenure,
+      });
+      setLoanResult(res.data);
       setApproved(true);
-    }, 2500);
+    } catch (err) {
+      setSubmitError(err.data?.error || err.message || "Loan application failed. Please try again.");
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const steps = [
@@ -115,12 +132,12 @@ export default function ApplyLoanView({ onNavigate }) {
             <div className="text-[10px] text-heading uppercase tracking-wider mb-3">Application Summary</div>
             <div className="space-y-2.5">
               {[
-                ["Application ID", `LA-${Date.now().toString().slice(-6)}`],
-                ["Loan Type", scheme.name],
-                ["Amount", formatINR(amount)],
-                ["Tenure", `${tenure} months`],
-                ["Interest Rate", scheme.rate],
-                ["Monthly EMI", formatINR(emi)],
+                ["Application ID", loanResult?.id || "—"],
+                ["Loan Type", loanResult?.purpose || scheme.name],
+                ["Amount", formatINR(loanResult?.amount || amount)],
+                ["Tenure", `${loanResult?.tenure || tenure} months`],
+                ["Interest Rate", loanResult?.interestRate ? `${loanResult.interestRate}%` : scheme.rate],
+                ["Monthly EMI", formatINR(loanResult?.emi || emi)],
                 ["Status", null],
               ].map(([label, value]) => (
                 <div key={label} className="flex items-center justify-between">
@@ -128,7 +145,7 @@ export default function ApplyLoanView({ onNavigate }) {
                   {value ? (
                     <span className="text-[12px] font-semibold text-body font-mono">{value}</span>
                   ) : (
-                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-warning-50 text-warning border border-warning-200/60">Under Review</span>
+                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-warning-50 text-warning border border-warning-200/60">{loanResult?.status || "Under Review"}</span>
                   )}
                 </div>
               ))}
@@ -216,7 +233,7 @@ export default function ApplyLoanView({ onNavigate }) {
               {/* EMI Calculator Card */}
               <div className="bg-gradient-to-br from-primary via-primary-700 to-secondary-700 rounded-2xl p-5 text-white">
                 <div className="text-[10px] uppercase tracking-wider text-primary-200 mb-3">Your EMI Breakdown</div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
                   <div>
                     <div className="text-[10px] text-primary-200 mb-1">Monthly EMI</div>
                     <div className="text-[20px] font-bold font-mono">{formatINR(emi)}</div>
@@ -265,11 +282,11 @@ export default function ApplyLoanView({ onNavigate }) {
               {/* Pre-filled Member Info */}
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                 <div className="text-[10px] text-heading uppercase tracking-wider mb-3">From Your Profile</div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div><div className="text-[10px] text-heading">Full Name</div><div className="text-[13px] font-semibold text-body">{member.name}</div></div>
-                  <div><div className="text-[10px] text-heading">Member ID</div><div className="text-[13px] font-mono text-body">{member.id}</div></div>
-                  <div><div className="text-[10px] text-heading">Phone</div><div className="text-[13px] text-body">{member.phone}</div></div>
-                  <div><div className="text-[10px] text-heading">STI Score</div><div className="text-[13px] font-bold" style={{ color: member.sti >= 80 ? "#059669" : member.sti >= 60 ? "#D97706" : "#DC2626" }}>{member.sti}/100</div></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                  <div><div className="text-[10px] text-heading">Full Name</div><div className="text-[13px] font-semibold text-body">{member?.name}</div></div>
+                  <div><div className="text-[10px] text-heading">Member ID</div><div className="text-[13px] font-mono text-body">{member?.id}</div></div>
+                  <div><div className="text-[10px] text-heading">Phone</div><div className="text-[13px] text-body">{member?.phone}</div></div>
+                  <div><div className="text-[10px] text-heading">STI Score</div><div className="text-[13px] font-bold" style={{ color: (member?.sti || 0) >= 80 ? "#059669" : (member?.sti || 0) >= 60 ? "#D97706" : "#DC2626" }}>{member?.sti || 0}/100</div></div>
                 </div>
               </div>
 
@@ -289,9 +306,9 @@ export default function ApplyLoanView({ onNavigate }) {
                 </div>
                 <div>
                   <label className="block text-[12px] text-slate-500 mb-1.5 font-medium">Employment Type</label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                     {["Salaried", "Self-Employed", "Business"].map((e) => (
-                      <button key={e} onClick={() => setEmployment(e)} className={`py-3 rounded-xl text-[12px] font-semibold border transition-all cursor-pointer ${employment === e ? "bg-primary border-primary text-white" : "bg-white border-slate-200 text-slate-500 hover:border-primary-300"}`}>
+                      <button key={e} onClick={() => setEmployment(e)} className={`py-2.5 sm:py-3 rounded-xl text-[11px] sm:text-[12px] font-semibold border transition-all cursor-pointer ${employment === e ? "bg-primary border-primary text-white" : "bg-white border-slate-200 text-slate-500 hover:border-primary-300"}`}>
                         {e}
                       </button>
                     ))}
@@ -304,20 +321,20 @@ export default function ApplyLoanView({ onNavigate }) {
               </div>
 
               {/* Eligibility Check */}
-              <div className={`rounded-2xl p-4 border ${member.sti >= scheme.minSTI ? "bg-success-50 border-success-200/60" : "bg-danger-50 border-danger-200/60"}`}>
+              <div className={`rounded-2xl p-4 border ${(member?.sti || 0) >= scheme.minSTI ? "bg-success-50 border-success-200/60" : "bg-danger-50 border-danger-200/60"}`}>
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${member.sti >= scheme.minSTI ? "bg-success-100" : "bg-danger-100"}`}>
-                    {member.sti >= scheme.minSTI ? (
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${(member?.sti || 0) >= scheme.minSTI ? "bg-success-100" : "bg-danger-100"}`}>
+                    {(member?.sti || 0) >= scheme.minSTI ? (
                       <svg className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
                     ) : (
                       <svg className="w-5 h-5 text-danger-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
                     )}
                   </div>
                   <div>
-                    <div className={`text-[13px] font-semibold ${member.sti >= scheme.minSTI ? "text-success-700" : "text-danger"}`}>
-                      {member.sti >= scheme.minSTI ? "You're eligible for this loan!" : "STI score below minimum requirement"}
+                    <div className={`text-[13px] font-semibold ${(member?.sti || 0) >= scheme.minSTI ? "text-success-700" : "text-danger"}`}>
+                      {(member?.sti || 0) >= scheme.minSTI ? "You're eligible for this loan!" : "STI score below minimum requirement"}
                     </div>
-                    <div className="text-[11px] text-heading mt-0.5">Your STI: {member.sti} · Required: {scheme.minSTI}</div>
+                    <div className="text-[11px] text-heading mt-0.5">Your STI: {member?.sti || 0} · Required: {scheme.minSTI}</div>
                   </div>
                 </div>
               </div>
@@ -342,7 +359,7 @@ export default function ApplyLoanView({ onNavigate }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-4">
                   <div className="bg-slate-50 rounded-xl p-3">
                     <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Loan Amount</div>
                     <div className="text-[18px] font-bold text-primary font-mono">{formatINR(amount)}</div>
@@ -362,9 +379,9 @@ export default function ApplyLoanView({ onNavigate }) {
                     ["Total Payable", formatINR(totalPayable)],
                     ["Employment", employment || "—"],
                     ["Monthly Income", income ? `₹${income}` : "—"],
-                    ["Applicant", member.name],
-                    ["Member ID", member.id],
-                    ["STI Score", `${member.sti}/100`],
+                    ["Applicant", member?.name || "—"],
+                    ["Member ID", member?.id || "—"],
+                    ["STI Score", `${member?.sti || 0}/100`],
                   ].map(([label, value]) => (
                     <div key={label} className="flex items-center justify-between py-1.5">
                       <span className="text-[12px] text-heading">{label}</span>
@@ -388,6 +405,13 @@ export default function ApplyLoanView({ onNavigate }) {
             </div>
           )}
 
+          {/* Error Message */}
+          {submitError && (
+            <div className="mt-4 p-4 bg-danger-50 border border-danger-200/60 rounded-xl">
+              <p className="text-[13px] text-danger-600 font-medium">{submitError}</p>
+            </div>
+          )}
+
           {/* Footer Navigation */}
           <div className="flex gap-3 mt-8 pt-6 border-t border-slate-100">
             {step > 1 && (
@@ -400,7 +424,7 @@ export default function ApplyLoanView({ onNavigate }) {
                 Continue
               </button>
             ) : (
-              <button onClick={handleSubmit} disabled={!agreeTerms || !agreeDeduction} className={`flex-1 py-3 rounded-xl text-[13px] font-semibold transition-all ${agreeTerms && agreeDeduction ? "bg-success text-white cursor-pointer hover:bg-success-700" : "bg-slate-100 text-subtle cursor-not-allowed"}`}>
+              <button onClick={handleSubmit} disabled={!agreeTerms || !agreeDeduction || processing} className={`flex-1 py-3 rounded-xl text-[13px] font-semibold transition-all ${agreeTerms && agreeDeduction ? "bg-success text-white cursor-pointer hover:bg-success-700" : "bg-slate-100 text-subtle cursor-not-allowed"}`}>
                 Submit Application
               </button>
             )}

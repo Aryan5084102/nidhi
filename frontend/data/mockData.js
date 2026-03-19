@@ -569,13 +569,13 @@ export const navItems = [
   { icon: config, label: "Config", id: "config" },
   { icon: compliance, label: "Collateral", id: "collateral" },
   { icon: executive, label: "Governance", id: "governance" },
-  { icon: assistant, label: "AI Assistant", id: "aiassistant" },
   // Member portal navigation
   { icon: executive, label: "Dashboard", id: "member_dashboard" },
   { icon: fund, label: "My Chit Funds", id: "my_chitfunds" },
   { icon: loan, label: "My Loans", id: "my_loans" },
   { icon: deposit, label: "My Deposits", id: "my_deposits" },
   { icon: collection, label: "My Payments", id: "my_payments" },
+  { icon: assistant, label: "AI Assistant", id: "aiassistant" },
   // Shared
   { icon: agent, label: "Profile", id: "profile" },
 ];

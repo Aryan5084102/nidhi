@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { members, chitSchemes, loanApplications, depositAccounts, chitPayoutHistory } from "@/data/mockData";
+import { useMember, useChitSchemes, useMemberLoans, useMemberDeposits, useMemberEnrollments, useMemberPayments } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 import { PRIMARY, SUCCESS, SECONDARY, WARNING, SKY, ROSE } from "@/lib/colors";
 import SectionCard from "@/components/ui/SectionCard";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -21,18 +21,6 @@ import {
 import { Line, Doughnut } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Filler, Tooltip, Legend);
-
-const ENROLLMENT_KEY = "glimmora_member_enrollments";
-
-function getEnrollments(memberId) {
-  if (typeof window === "undefined") return [];
-  try {
-    const data = JSON.parse(localStorage.getItem(ENROLLMENT_KEY) || "{}");
-    return data[memberId] || [];
-  } catch {
-    return [];
-  }
-}
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -81,38 +69,33 @@ const QuickAction = ({ icon, label, onClick, color }) => {
 // Chit fund scheme accent colors mapped by index
 const schemeAccentColors = [PRIMARY, SUCCESS, SECONDARY, WARNING, ROSE, SKY];
 
-// Monthly savings trend data (mock for member)
-const savingsTrendData = {
-  labels: ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
-  datasets: [
-    {
-      label: "Deposits",
-      data: [12000, 18000, 15000, 22000, 20000, 25000],
-      borderColor: SUCCESS,
-      backgroundColor: "rgba(5, 150, 105, 0.08)",
-      fill: true,
-      tension: 0.4,
-      pointRadius: 4,
-      pointBackgroundColor: SUCCESS,
-      pointBorderColor: "#fff",
-      pointBorderWidth: 2,
-      borderWidth: 2,
-    },
-    {
-      label: "EMI Paid",
-      data: [9420, 9420, 9420, 9420, 9420, 9420],
-      borderColor: PRIMARY,
-      backgroundColor: "rgba(99, 102, 241, 0.06)",
-      fill: true,
-      tension: 0.4,
-      pointRadius: 4,
-      pointBackgroundColor: PRIMARY,
-      pointBorderColor: "#fff",
-      pointBorderWidth: 2,
-      borderWidth: 2,
-    },
-  ],
-};
+// Build savings trend data from payments
+function buildSavingsTrendData(payments) {
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const now = new Date();
+  const labels = [];
+  const depositData = [];
+  const emiData = [];
+
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    labels.push(monthNames[d.getMonth()]);
+    const monthStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const monthPayments = payments.filter((p) => (p.date || "").startsWith(monthStr));
+    const depTotal = monthPayments.filter((p) => p.type === "Deposit" || p.type === "RD Installment").reduce((s, p) => s + (parseFloat(String(p.amount).replace(/[₹,]/g, "")) || 0), 0);
+    const emiTotal = monthPayments.filter((p) => p.type === "EMI" || p.type === "EMI Payment").reduce((s, p) => s + (parseFloat(String(p.amount).replace(/[₹,]/g, "")) || 0), 0);
+    depositData.push(depTotal);
+    emiData.push(emiTotal);
+  }
+
+  return {
+    labels,
+    datasets: [
+      { label: "Deposits", data: depositData, borderColor: SUCCESS, backgroundColor: "rgba(5, 150, 105, 0.08)", fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: SUCCESS, pointBorderColor: "#fff", pointBorderWidth: 2, borderWidth: 2 },
+      { label: "EMI Paid", data: emiData, borderColor: PRIMARY, backgroundColor: "rgba(99, 102, 241, 0.06)", fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: PRIMARY, pointBorderColor: "#fff", pointBorderWidth: 2, borderWidth: 2 },
+    ],
+  };
+}
 
 const savingsTrendOptions = {
   responsive: true,
@@ -140,22 +123,21 @@ const savingsTrendOptions = {
   },
 };
 
-export default function MemberDashboard({ onNavigate }) {
+export default function MemberDashboard() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId;
 
-  const member = memberId ? members.find((m) => m.id === memberId) : null;
-  const myLoans = memberId ? loanApplications.filter((l) => l.memberId === memberId) : [];
-  const myDeposits = memberId ? depositAccounts.filter((d) => d.memberId === memberId) : [];
+  const { data: member } = useMember(memberId);
+  const { data: chitSchemes = [] } = useChitSchemes();
+  const { data: myLoans = [] } = useMemberLoans(memberId);
+  const { data: myDeposits = [] } = useMemberDeposits(memberId);
+  const { data: memberEnrollments = [] } = useMemberEnrollments(memberId);
+  const { data: myPayments = [] } = useMemberPayments(memberId);
 
-  const [enrolledIds, setEnrolledIds] = useState([]);
+  const savingsTrendData = buildSavingsTrendData(myPayments);
 
-  useEffect(() => {
-    if (memberId) {
-      setEnrolledIds(getEnrollments(memberId));
-    }
-  }, [memberId]);
-
+  const enrolledIds = memberEnrollments.map(e => e.schemeId);
   const enrolledSchemes = chitSchemes.filter((s) => enrolledIds.includes(s.id));
   const availableChits = chitSchemes.filter((s) => s.status === "Open" && !enrolledIds.includes(s.id)).slice(0, 3);
 
@@ -172,20 +154,21 @@ export default function MemberDashboard({ onNavigate }) {
   const hasChitFund = enrolledIds.length > 0;
   const hasSavings = myDeposits.length > 0;
 
-  // Helper: get payout status for a member in a scheme
+  // Helper: get enrollment status for a member in a scheme
   function getPayoutStatus(schemeId) {
-    const payouts = chitPayoutHistory.filter((p) => p.schemeId === schemeId);
-    const myPayout = payouts.find((p) => p.memberId === memberId);
-    if (!myPayout) return { label: "Waiting", color: "slate" };
-    if (myPayout.status === "Paid") return { label: "Received", color: "emerald" };
-    if (myPayout.status === "Upcoming") return { label: "Next", color: "amber" };
-    return { label: "Waiting", color: "slate" };
+    const enrollment = memberEnrollments.find(e => e.schemeId === schemeId);
+    if (!enrollment) return { label: "Waiting", color: "slate" };
+    if (enrollment.hasWonAuction) return { label: "Received", color: "emerald" };
+    return { label: "Active", color: "slate" };
   }
 
   // Doughnut data for portfolio breakdown
-  const depositTotal = myDeposits.length > 0 ? parseInt((member?.deposits || "₹0").replace(/[₹,]/g, "")) || 50000 : 0;
-  const loanTotal = myLoans.length > 0 ? parseInt((member?.loans || "₹0").replace(/[₹,]/g, "")) || 10000 : 0;
-  const chitTotal = enrolledSchemes.length * 5000; // estimate
+  const depositTotal = myDeposits.length > 0 ? parseInt((member?.deposits || "₹0").replace(/[₹,]/g, "")) || 0 : 0;
+  const loanTotal = myLoans.length > 0 ? parseInt((member?.loans || "₹0").replace(/[₹,]/g, "")) || 0 : 0;
+  const chitTotal = enrolledSchemes.reduce((sum, s) => {
+    const amt = parseInt((s.monthlyAmount || "₹0").replace(/[₹,]/g, "")) || 0;
+    return sum + amt * (s.currentMonth || 1);
+  }, 0);
 
   const portfolioData = {
     labels: ["Deposits", "Loans", "Chit Funds"],
@@ -234,7 +217,7 @@ export default function MemberDashboard({ onNavigate }) {
             <p className="text-[13px] text-success-100/80 leading-relaxed">
               {member
                 ? `Member ID: ${member.id} · KYC: ${member.kyc} · Since ${member.joinDate}`
-                : `${user?.email || ""} · Complete your profile to get started`}
+                : "Welcome to Glimmora Nidhi! Explore chit funds, deposits & loans."}
             </p>
             {member && (
               <div className="mt-3 flex items-center gap-2">
@@ -255,23 +238,21 @@ export default function MemberDashboard({ onNavigate }) {
               </div>
             )}
           </div>
-          {member && (
-            <div className="flex items-center gap-3">
-              {/* Trust Score Circular Indicator */}
-              <div className="relative w-18 h-18 flex items-center justify-center">
-                <div
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    background: `conic-gradient(#fff ${stiDeg}deg, rgba(255,255,255,0.15) ${stiDeg}deg)`,
-                  }}
-                />
-                <div className="absolute inset-1.25 rounded-full bg-success-700/80 flex flex-col items-center justify-center">
-                  <span className="text-[18px] font-bold font-mono text-white leading-none">{stiScore}</span>
-                  <span className="text-[8px] text-success-100 uppercase tracking-wider mt-0.5">Trust</span>
-                </div>
+          <div className="flex items-center gap-3">
+            {/* Trust Score Circular Indicator */}
+            <div className="relative w-18 h-18 flex items-center justify-center">
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: `conic-gradient(#fff ${stiDeg}deg, rgba(255,255,255,0.15) ${stiDeg}deg)`,
+                }}
+              />
+              <div className="absolute inset-1.25 rounded-full bg-success-700/80 flex flex-col items-center justify-center">
+                <span className="text-[18px] font-bold font-mono text-white leading-none">{stiScore}</span>
+                <span className="text-[8px] text-success-100 uppercase tracking-wider mt-0.5">Trust</span>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
@@ -333,7 +314,7 @@ export default function MemberDashboard({ onNavigate }) {
       )}
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-5">
         {/* Total Deposits */}
         <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
           <div className="w-1 rounded-full bg-success-500 shrink-0" />
@@ -422,7 +403,7 @@ export default function MemberDashboard({ onNavigate }) {
 
       {/* Quick Actions */}
       <SectionCard title="Quick Actions" className="mb-5">
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
           <QuickAction icon="💰" label="My Deposits" onClick={() => onNavigate?.("my_deposits")} color="emerald" />
           <QuickAction icon="🏦" label="My Loans" onClick={() => onNavigate?.("my_loans")} color="indigo" />
           <QuickAction icon="🔄" label="Chit Funds" onClick={() => onNavigate?.("my_chitfunds")} color="purple" />
@@ -600,7 +581,7 @@ export default function MemberDashboard({ onNavigate }) {
           <button onClick={() => onNavigate?.("my_chitfunds")} className="text-[12px] text-primary font-semibold hover:text-primary-700 cursor-pointer">View All →</button>
         </div>
         {availableChits.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {availableChits.map((scheme) => {
               const fillPct = (scheme.enrolledMembers / scheme.totalMembers) * 100;
               return (

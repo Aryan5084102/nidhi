@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { fraudMetrics } from "@/data/mockData";
+import { useFraudDashboard } from "@/hooks/useData";
 import PageHeader from "@/components/ui/PageHeader";
 import HeaderStat from "@/components/ui/HeaderStat";
 import TabBar from "@/components/ui/TabBar";
@@ -19,6 +19,7 @@ const tabs = [
 
 export default function FraudIntelView() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { data: fraudMetrics } = useFraudDashboard();
 
   const renderTab = () => {
     switch (activeTab) {
@@ -36,8 +37,8 @@ export default function FraudIntelView() {
         title="Fraud Intelligence Center"
         description="AI-powered fraud detection and prevention system designed for Nidhi companies. Monitors auction manipulation, identity fraud, deposit layering, and collusion patterns across all member activities."
       >
-        <HeaderStat value={<span className="text-danger-500">{fraudMetrics.criticalAlerts}</span>} label="Critical" className="bg-danger-50 border border-danger-200/60" />
-        <HeaderStat value={<span className="text-success">{fraudMetrics.totalPreventedLoss}</span>} label="Loss Prevented" className="bg-success-50 border border-success-200/60" />
+        <HeaderStat value={<span className="text-danger-500">{fraudMetrics?.criticalAlerts}</span>} label="Critical" className="bg-danger-50 border border-danger-200/60" />
+        <HeaderStat value={<span className="text-success">{fraudMetrics?.totalPreventedLoss}</span>} label="Loss Prevented" className="bg-success-50 border border-success-200/60" />
       </PageHeader>
 
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />

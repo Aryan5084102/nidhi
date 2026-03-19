@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { chitFundEnrollments } from "@/data/mockData";
+import { useChitEnrollments } from "@/hooks/useData";
+import { put } from "@/lib/api";
 import StatusBadge from "@/components/ui/StatusBadge";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
@@ -28,10 +29,11 @@ const processSteps = [
 ];
 
 export default function EnrollmentsTab() {
-  const [enrollments, setEnrollments] = useState(chitFundEnrollments);
+  const { data: enrollments = [], refetch } = useChitEnrollments();
   const [filterStatus, setFilterStatus] = useState("All");
   const [search, setSearch] = useState("");
   const [selectedEnrollment, setSelectedEnrollment] = useState(null);
+  const [actionLoading, setActionLoading] = useState(null);
 
   const pending = enrollments.filter((e) => e.status === "Pending" || e.status === "Under Review");
   const active = enrollments.filter((e) => e.status === "Active");
@@ -50,26 +52,30 @@ export default function EnrollmentsTab() {
     return matchesSearch && matchesStatus;
   });
 
-  const handleApprove = (id) => {
-    setEnrollments((prev) =>
-      prev.map((e) =>
-        e.id === id
-          ? { ...e, status: "Active", approvedDate: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }), approvedBy: "Branch Manager" }
-          : e
-      )
-    );
-    setSelectedEnrollment(null);
+  const handleApprove = async (id) => {
+    setActionLoading(id);
+    try {
+      await put(`/chit-enrollments/${id}/approve`);
+      refetch();
+    } catch (err) {
+      console.error("Approve failed:", err.message);
+    } finally {
+      setActionLoading(null);
+      setSelectedEnrollment(null);
+    }
   };
 
-  const handleReject = (id, reason) => {
-    setEnrollments((prev) =>
-      prev.map((e) =>
-        e.id === id
-          ? { ...e, status: "Rejected", rejectionReason: reason || "Rejected by Branch Manager" }
-          : e
-      )
-    );
-    setSelectedEnrollment(null);
+  const handleReject = async (id) => {
+    setActionLoading(id);
+    try {
+      await put(`/chit-enrollments/${id}/reject`);
+      refetch();
+    } catch (err) {
+      console.error("Reject failed:", err.message);
+    } finally {
+      setActionLoading(null);
+      setSelectedEnrollment(null);
+    }
   };
 
   return (
@@ -152,13 +158,15 @@ export default function EnrollmentsTab() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleApprove(enr.id)}
-                    className="flex-1 py-2.5 bg-success-50 border border-success-200 text-success rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-success-100 transition-colors"
+                    disabled={actionLoading === enr.id}
+                    className="flex-1 py-2.5 bg-success-50 border border-success-200 text-success rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-success-100 transition-colors disabled:opacity-50"
                   >
-                    Approve
+                    {actionLoading === enr.id ? "Processing..." : "Approve"}
                   </button>
                   <button
-                    onClick={() => handleReject(enr.id, "Does not meet eligibility criteria")}
-                    className="flex-1 py-2.5 bg-danger-50 border border-danger-200 text-danger-500 rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors"
+                    onClick={() => handleReject(enr.id)}
+                    disabled={actionLoading === enr.id}
+                    className="flex-1 py-2.5 bg-danger-50 border border-danger-200 text-danger-500 rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors disabled:opacity-50"
                   >
                     Reject
                   </button>
@@ -241,21 +249,23 @@ export default function EnrollmentsTab() {
                       <div className="flex gap-1.5">
                         <button
                           onClick={() => handleApprove(enr.id)}
-                          className="px-2.5 py-1 bg-success-50 border border-success-200 text-success rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-success-100 transition-colors"
+                          disabled={actionLoading === enr.id}
+                          className="px-2.5 py-1 bg-success-50 border border-success-200 text-success rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-success-100 transition-colors disabled:opacity-50"
                         >
                           Approve
                         </button>
                         <button
-                          onClick={() => handleReject(enr.id, "Does not meet eligibility criteria")}
-                          className="px-2.5 py-1 bg-danger-50 border border-danger-200 text-danger-500 rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors"
+                          onClick={() => handleReject(enr.id)}
+                          disabled={actionLoading === enr.id}
+                          className="px-2.5 py-1 bg-danger-50 border border-danger-200 text-danger-500 rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors disabled:opacity-50"
                         >
                           Reject
                         </button>
                       </div>
                     ) : enr.status === "Active" ? (
-                      <span className="text-[11px] text-success font-medium">Approved {enr.approvedDate}</span>
+                      <span className="text-[11px] text-success font-medium">Active</span>
                     ) : (
-                      <span className="text-[11px] text-danger-500 font-medium" title={enr.rejectionReason}>{enr.rejectionReason?.substring(0, 30)}...</span>
+                      <span className="text-[11px] text-danger-500 font-medium">Rejected</span>
                     )}
                   </td>
                 </tr>

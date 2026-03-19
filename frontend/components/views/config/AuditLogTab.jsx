@@ -1,6 +1,6 @@
 "use client";
 
-import { auditLog } from "@/data/mockData";
+import { useAuditLogs } from "@/hooks/useData";
 import SectionCard from "@/components/ui/SectionCard";
 import DataTable from "@/components/ui/DataTable";
 
@@ -13,6 +13,7 @@ const auditColumns = [
 ];
 
 export default function AuditLogTab() {
+  const { data: auditLog = [] } = useAuditLogs();
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">

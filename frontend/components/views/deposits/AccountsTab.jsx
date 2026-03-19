@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { depositAccounts } from "@/data/mockData";
+import { useDepositAccounts } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import DataTable from "@/components/ui/DataTable";
 
@@ -16,6 +16,7 @@ const columns = [
 ];
 
 export default function AccountsTab() {
+  const { data: depositAccounts = [] } = useDepositAccounts();
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("All");
 

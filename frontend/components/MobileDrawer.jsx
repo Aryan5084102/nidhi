@@ -5,8 +5,10 @@ import Image from "next/image";
 import { navItems } from "@/data/mockData";
 import { useAuth } from "@/context/AuthContext";
 import { ROLE_COLORS } from "@/lib/roles";
+import useNavigation from "@/hooks/useNavigation";
 
-export default function MobileDrawer({ open, onClose, activeNav, setActiveNav }) {
+export default function MobileDrawer({ open, onClose }) {
+  const { activeNav, navigate: setActiveNav } = useNavigation();
   const { user, canAccessNav, logout, roleLabel } = useAuth();
   const userName = user?.name;
   const roleColor = ROLE_COLORS[user?.role];

@@ -1,6 +1,6 @@
 "use client";
 
-import { systemConfig } from "@/data/mockData";
+import { useSystemConfig } from "@/hooks/useData";
 import SectionCard from "@/components/ui/SectionCard";
 import StatusBadge from "@/components/ui/StatusBadge";
 import DataTable from "@/components/ui/DataTable";
@@ -33,6 +33,7 @@ const thresholdColumns = [
 ];
 
 export default function AIAgentConfigTab() {
+  const { data: systemConfig = { general: [], deposits: [], loans: [], chitFunds: [], ai: [], notifications: [] } } = useSystemConfig();
   return (
     <div className="animate-fade-in">
       <SectionCard className="mb-5">

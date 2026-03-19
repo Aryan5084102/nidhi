@@ -1,7 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { depositAccounts, depositSchemes } from "@/data/mockData";
+import { useMemberDeposits, useDepositSchemes } from "@/hooks/useData";
+import useNavigation from "@/hooks/useNavigation";
 
 import { PRIMARY, SUCCESS, SECONDARY, TEAL, WARNING, DANGER } from "@/lib/colors";
 const schemeColors = [PRIMARY, SUCCESS, SECONDARY, TEAL, WARNING, DANGER];
@@ -59,13 +60,26 @@ function getDepositProgressColor(type) {
   return SUCCESS;
 }
 
-export default function MyDeposits({ onNavigate }) {
+export default function MyDeposits() {
+  const { navigate: onNavigate } = useNavigation();
   const { user } = useAuth();
   const memberId = user?.memberId || "M-1001";
-  const myDeposits = depositAccounts.filter((d) => d.memberId === memberId);
+  const { data: myDeposits = [] } = useMemberDeposits(memberId);
+  const { data: depositSchemes = [] } = useDepositSchemes();
 
   const totalDeposited = myDeposits.length;
   const activeCount = myDeposits.filter((d) => d.status === "Active").length;
+
+  // Compute best rate from deposit schemes data
+  const bestRate = depositSchemes.reduce((max, s) => {
+    const rateStr = s.rate || "";
+    const rates = rateStr.match(/[\d.]+/g);
+    if (rates) {
+      const highest = Math.max(...rates.map(Number));
+      return highest > max ? highest : max;
+    }
+    return max;
+  }, 0);
 
   return (
     <div className="animate-fade-in">
@@ -76,11 +90,11 @@ export default function MyDeposits({ onNavigate }) {
       >
         <HeaderStat value={totalDeposited} label="Total Accounts" className="bg-slate-50 text-body" />
         <HeaderStat value={activeCount} label="Active" className="bg-slate-50 text-success" />
-        <HeaderStat value="9.5%" label="Best Rate" className="bg-slate-50 text-primary" />
+        <HeaderStat value={bestRate > 0 ? `${bestRate}%` : "—"} label="Best Rate" className="bg-slate-50 text-primary" />
       </PageHeader>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-5">
         <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden">
           <div className="w-1 rounded-full bg-slate-400 shrink-0" />
           <div className="p-4 flex-1">
@@ -97,11 +111,11 @@ export default function MyDeposits({ onNavigate }) {
             <div className="text-[11px] text-heading mt-1">{activeCount === 0 ? "No active deposits" : "Currently earning"}</div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden col-span-2 lg:col-span-1">
+        <div className="bg-white rounded-2xl card-shadow border border-slate-100 flex overflow-hidden sm:col-span-2 lg:col-span-1">
           <div className="w-1 rounded-full bg-primary-500 shrink-0" />
           <div className="p-4 flex-1">
             <div className="text-[10px] text-heading uppercase tracking-wider mb-2">Best Rate Available</div>
-            <div className="text-[20px] font-bold font-mono text-primary">9.5% p.a.</div>
+            <div className="text-[20px] font-bold font-mono text-primary">{bestRate > 0 ? `${bestRate}%` : "—"} p.a.</div>
             <div className="text-[11px] text-heading mt-1">On select FD schemes</div>
           </div>
         </div>
@@ -142,7 +156,7 @@ export default function MyDeposits({ onNavigate }) {
                     </div>
 
                     {/* 4-stat grid with visual hierarchy */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-4">
                       <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
                         <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Amount</div>
                         <div className={`text-[15px] font-bold font-mono ${amountColorClass}`}>{dep.amount}</div>

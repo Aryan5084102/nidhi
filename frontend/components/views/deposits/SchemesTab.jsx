@@ -1,7 +1,11 @@
-import { depositSchemes } from "@/data/mockData";
+"use client";
+
+import { useDepositSchemes } from "@/hooks/useData";
 import SectionCard from "@/components/ui/SectionCard";
 
 export default function SchemesTab() {
+  const { data: depositSchemes = [] } = useDepositSchemes();
+
   return (
     <div className="animate-fade-in">
       <div className="grid grid-cols-1 gap-4">

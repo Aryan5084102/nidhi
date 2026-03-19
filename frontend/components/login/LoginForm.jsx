@@ -25,18 +25,21 @@ function LoginForm({ onSwitch, onForgotPassword, onGoogleLogin }) {
     mode: "onTouched",
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setServerError("");
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      const result = login(data.email, data.password);
+    try {
+      const result = await login(data.email, data.password);
       if (result.success) {
         toast.success(`Welcome back, ${result.user.name}! (${ROLE_LABELS[result.user.role]})`);
       } else {
         setServerError(result.error);
       }
-    }, 1200);
+    } catch (err) {
+      setServerError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,12 +70,18 @@ function LoginForm({ onSwitch, onForgotPassword, onGoogleLogin }) {
         />
 
         <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 rounded border-white/30 lg:border-slate-300 accent-success-500 cursor-pointer"
-            />
-            <span className="text-xs text-subtle lg:text-slate-500">Remember me</span>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                className="peer sr-only"
+              />
+              <div className="w-4 h-4 rounded border border-white/30 lg:border-slate-300 peer-checked:bg-success-500 peer-checked:border-success-500 transition-all" />
+              <svg className="absolute w-2.5 h-2.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <span className="text-xs text-slate-400 lg:text-slate-500">Remember me</span>
           </label>
           <button
             type="button"

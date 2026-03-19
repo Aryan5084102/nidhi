@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { resetPasswordSchema } from "./schemas";
 import FormInput from "./FormInput";
+import { post } from "@/lib/api";
 
 function ResetPasswordForm({ onSwitch }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,12 +22,26 @@ function ResetPasswordForm({ onSwitch }) {
     mode: "onTouched",
   });
 
-  const onSubmit = () => {
+  const [serverError, setServerError] = useState("");
+
+  const onSubmit = async (data) => {
     setLoading(true);
-    setTimeout(() => {
+    setServerError("");
+    try {
+      const result = await post("/auth/reset-password", {
+        otp: data.otp,
+        new_password: data.newPassword,
+      });
+      if (result.success) {
+        setSuccess(true);
+      } else {
+        setServerError(result.error || "Reset failed");
+      }
+    } catch (err) {
+      setServerError(err.message || "Reset failed");
+    } finally {
       setLoading(false);
-      setSuccess(true);
-    }, 1200);
+    }
   };
 
   if (success) {

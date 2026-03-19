@@ -1,8 +1,13 @@
-import { complianceChecklist, complianceScore } from "@/data/mockData";
+"use client";
+
+import { useComplianceChecklist, useComplianceScore } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import SectionCard from "@/components/ui/SectionCard";
 
 export default function DashboardTab() {
+  const { data: complianceChecklist = [] } = useComplianceChecklist();
+  const { data: complianceScore = { overall: 0, categories: [] } } = useComplianceScore();
+
   const compliant = complianceChecklist.filter((c) => c.status === "Compliant").length;
   const warning = complianceChecklist.filter((c) => c.status === "Warning").length;
   const action = complianceChecklist.filter((c) => c.status === "Action Required").length;
@@ -63,7 +68,7 @@ export default function DashboardTab() {
       </div>
 
       {/* Action Items */}
-      <SectionCard title="Items Requiring Attention">
+      <SectionCard title="Items Requiring Attention">                       
         <div className="flex flex-col gap-3">
           {complianceChecklist.filter((c) => c.status !== "Compliant").map((item) => (
             <div key={item.id} className="flex items-start gap-3 bg-slate-50 rounded-xl p-4">

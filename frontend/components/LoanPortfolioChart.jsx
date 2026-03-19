@@ -7,11 +7,13 @@ import {
   Legend,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { loanPortfolio } from "@/data/mockData";
+import { useLoanPortfolio } from "@/hooks/useData";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function LoanPortfolioChart() {
+  const { data: loanPortfolio = [] } = useLoanPortfolio();
+
   const totalDisbursed = loanPortfolio.reduce((sum, l) => sum + l.disbursed, 0);
 
   const chartData = {

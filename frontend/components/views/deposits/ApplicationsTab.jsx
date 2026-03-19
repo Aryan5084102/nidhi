@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { depositApplications } from "@/data/mockData";
+import { useDepositApplications } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
@@ -14,7 +14,7 @@ const processSteps = [
 ];
 
 export default function ApplicationsTab() {
-  const [applications, setApplications] = useState(depositApplications);
+  const { data: applications = [] } = useDepositApplications();
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
 
@@ -24,7 +24,7 @@ export default function ApplicationsTab() {
 
   const metrics = [
     { label: "Total Applications", value: applications.length.toString(), color: "#6B8ABF" },
-    { label: "Pending Approval", value: pending.length.toString(), change: "Needs Action", color: "#C49A4C" },
+    { label: "Pending Approval", value: pending.length.toString(), change: pending.length > 0 ? "Needs Action" : "", color: "#C49A4C" },
     { label: "Active Accounts", value: active.length.toString(), color: "#5B9E8A" },
     { label: "Rejected", value: rejected.length.toString(), color: "#BF6F6D" },
   ];
@@ -34,24 +34,6 @@ export default function ApplicationsTab() {
     const matchesStatus = filterStatus === "All" || a.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
-
-  const handleApprove = (id) => {
-    setApplications((prev) =>
-      prev.map((a) =>
-        a.id === id
-          ? { ...a, status: "Active", approvedDate: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }), accountId: `${a.type === "Fixed Deposit" ? "FD" : a.type === "Recurring Deposit" ? "RD" : "SD"}-${Math.random().toString().slice(2, 6)}` }
-          : a
-      )
-    );
-  };
-
-  const handleReject = (id) => {
-    setApplications((prev) =>
-      prev.map((a) =>
-        a.id === id ? { ...a, status: "Rejected", rejectionReason: "Does not meet eligibility criteria" } : a
-      )
-    );
-  };
 
   return (
     <div className="animate-fade-in">
@@ -82,73 +64,6 @@ export default function ApplicationsTab() {
           ))}
         </div>
       </SectionCard>
-
-      {/* Pending Approvals */}
-      {pending.length > 0 && (
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[15px] font-bold text-heading">Pending Approvals ({pending.length})</h3>
-            <span className="text-[11px] bg-warning-50 text-warning border border-warning-200/60 px-3 py-1 rounded-full font-semibold">Needs Your Action</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {pending.map((app) => (
-              <div key={app.id} className="bg-white rounded-2xl p-5 card-shadow border border-slate-100 hover:shadow-md transition-all duration-300">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-secondary-50 border border-secondary-200/60 rounded-full flex items-center justify-center text-[13px] font-bold text-secondary">
-                      {app.memberName.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="text-[14px] font-bold text-heading">{app.memberName}</div>
-                      <div className="text-[11px] text-heading font-mono">{app.id} &middot; {app.memberId}</div>
-                    </div>
-                  </div>
-                  <StatusBadge status={app.status} />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-slate-50 rounded-xl p-3">
-                    <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Type</div>
-                    <div className="text-[12px] font-semibold text-body">{app.type}</div>
-                  </div>
-                  <div className="bg-slate-50 rounded-xl p-3">
-                    <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Amount</div>
-                    <div className="text-[14px] font-bold text-primary font-mono">{app.amount}</div>
-                  </div>
-                  <div className="bg-slate-50 rounded-xl p-3">
-                    <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Rate</div>
-                    <div className="text-[13px] font-semibold text-success font-mono">{app.rate}</div>
-                  </div>
-                  <div className="bg-slate-50 rounded-xl p-3">
-                    <div className="text-[10px] text-heading uppercase tracking-wider mb-1">Tenure</div>
-                    <div className="text-[13px] font-semibold text-body">{app.tenure}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 mb-4 text-[11px] text-heading">
-                  <span>Nominee: <strong className="text-body">{app.nomineeName}</strong> ({app.nomineeRelation})</span>
-                </div>
-                <div className="text-[11px] text-heading mb-4">Applied: <strong className="text-body">{app.appliedDate}</strong></div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => handleApprove(app.id)}
-                    className="flex-1 py-2.5 bg-success-50 border border-success-200 text-success rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-success-100 transition-colors"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReject(app.id)}
-                    className="flex-1 py-2.5 bg-danger-50 border border-danger-200 text-danger-500 rounded-xl text-[13px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* All Applications Table */}
       <SectionCard title="All Deposit Applications">
@@ -189,7 +104,7 @@ export default function ApplicationsTab() {
           <table className="w-full text-left min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-100">
-                {["Application ID", "Member", "Type", "Amount", "Rate", "Tenure", "Nominee", "Applied", "Status", "Actions"].map((col) => (
+                {["Application ID", "Member", "Type", "Amount", "Rate", "Tenure", "Nominee", "Applied", "Status", "Account"].map((col) => (
                   <th key={col} className="text-[10px] text-heading uppercase tracking-wider font-semibold pb-3 pr-4 whitespace-nowrap">{col}</th>
                 ))}
               </tr>
@@ -217,25 +132,10 @@ export default function ApplicationsTab() {
                   <td className="py-3 pr-4 text-[12px] text-heading">{app.appliedDate}</td>
                   <td className="py-3 pr-4"><StatusBadge status={app.status} /></td>
                   <td className="py-3 pr-4">
-                    {(app.status === "Pending" || app.status === "Under Review") ? (
-                      <div className="flex gap-1.5">
-                        <button
-                          onClick={() => handleApprove(app.id)}
-                          className="px-2.5 py-1 bg-success-50 border border-success-200 text-success rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-success-100 transition-colors"
-                        >
-                          Approve
-                        </button>
-                        <button
-                          onClick={() => handleReject(app.id)}
-                          className="px-2.5 py-1 bg-danger-50 border border-danger-200 text-danger-500 rounded-lg text-[11px] font-semibold cursor-pointer hover:bg-danger-100 transition-colors"
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    ) : app.status === "Active" ? (
-                      <span className="text-[11px] text-success font-medium">{app.accountId}</span>
+                    {app.status === "Active" ? (
+                      <span className="text-[11px] text-success font-medium font-mono">{app.accountId}</span>
                     ) : (
-                      <span className="text-[11px] text-danger-500 font-medium">{app.rejectionReason?.substring(0, 25) || "Rejected"}</span>
+                      <span className="text-[11px] text-heading">{app.status}</span>
                     )}
                   </td>
                 </tr>

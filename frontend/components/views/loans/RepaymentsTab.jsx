@@ -1,6 +1,6 @@
 "use client";
 
-import { loanApplications } from "@/data/mockData";
+import { useLoanApplications } from "@/hooks/useData";
 import StatusBadge from "@/components/ui/StatusBadge";
 import MetricGrid from "@/components/ui/MetricGrid";
 import SectionCard from "@/components/ui/SectionCard";
@@ -28,6 +28,8 @@ const barChartBars = [
 ];
 
 export default function RepaymentsTab() {
+  const { data: loanApplications = [] } = useLoanApplications();
+
   return (
     <div className="animate-fade-in">
       {/* Repayment Metrics */}

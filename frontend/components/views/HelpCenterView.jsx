@@ -151,7 +151,7 @@ export default function HelpCenterView() {
   const allCategories = faqs.map((c) => c.category);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="space-y-6">
       {/* ── Hero Section ─────────────────────────────────────────────── */}
       <div className="bg-gradient-to-br from-primary-500/10 via-success-500/5 to-transparent border border-primary-200/40 dark:border-primary-800/30 rounded-2xl p-6 md:p-8 text-center">
         <div className="w-14 h-14 bg-primary-100 dark:bg-primary-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">

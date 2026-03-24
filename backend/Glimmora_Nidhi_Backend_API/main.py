@@ -1,8 +1,10 @@
+import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from contextlib import asynccontextmanager
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.core.config import settings
 from app.core.database import Base, engine
@@ -22,8 +24,10 @@ from app.routers import (
     auth, members, chit_schemes, chit_enrollments, auctions,
     loans, deposits, collections, compliance, fraud,
     ai_risk, notifications, reports, config, dashboard,
-    ai_assistant, profile,
+    ai_assistant, profile, collateral, governance,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -32,25 +36,47 @@ async def lifespan(app: FastAPI):
     yield
 
 
+# Disable docs in production
+_docs_url = "/api/docs" if settings.DEBUG else None
+_redoc_url = "/api/redoc" if settings.DEBUG else None
+_openapi_url = "/api/openapi.json" if settings.DEBUG else None
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     description="Production-grade REST API for Glimmora Nidhi — a Nidhi company management system",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
+    docs_url=_docs_url,
+    redoc_url=_redoc_url,
+    openapi_url=_openapi_url,
     lifespan=lifespan,
 )
+
+
+# ── Security Headers Middleware ────────────────────────────
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        if not settings.DEBUG:
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        return response
+
+
+app.add_middleware(SecurityHeadersMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 
 
+# ── Exception Handlers ─────────────────────────────────────
 @app.exception_handler(AppException)
 async def app_exception_handler(request: Request, exc: AppException):
     detail = exc.detail if isinstance(exc.detail, dict) else {"error": str(exc.detail), "code": "ERROR"}
@@ -72,14 +98,14 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception):
-    import traceback
-    traceback.print_exc()
+    logger.error(f"Unhandled exception on {request.method} {request.url.path}: {exc}", exc_info=settings.DEBUG)
     return JSONResponse(
         status_code=500,
         content={"success": False, "error": "Internal server error", "code": "INTERNAL_ERROR"},
     )
 
 
+# ── Routers ────────────────────────────────────────────────
 PREFIX = settings.API_V1_PREFIX
 
 app.include_router(auth.router, prefix=PREFIX)
@@ -99,6 +125,8 @@ app.include_router(config.router, prefix=PREFIX)
 app.include_router(dashboard.router, prefix=PREFIX)
 app.include_router(ai_assistant.router, prefix=PREFIX)
 app.include_router(profile.router, prefix=PREFIX)
+app.include_router(collateral.router, prefix=PREFIX)
+app.include_router(governance.router, prefix=PREFIX)
 
 
 @app.get("/", tags=["Health"])

@@ -110,7 +110,7 @@ export default function OpenDepositView() {
   if (!scheme) {
     return (
       <div className="animate-fade-in">
-        <div className="max-w-lg mx-auto px-4 py-16 text-center">
+        <div className="px-4 py-16 text-center">
           <div className="w-16 h-16 rounded-full bg-slate-50 border-2 border-slate-200 flex items-center justify-center mx-auto mb-6">
             <svg className="w-8 h-8 text-heading" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
           </div>
@@ -167,7 +167,7 @@ export default function OpenDepositView() {
     <div className="animate-fade-in">
       {/* Top Bar */}
       <div className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3 mb-6">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => onNavigate("my_deposits")} className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-heading hover:text-body hover:bg-slate-100 cursor-pointer transition-all">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
@@ -185,7 +185,7 @@ export default function OpenDepositView() {
 
       {/* Success State */}
       {success ? (
-        <div className="max-w-lg mx-auto px-4 py-16 text-center">
+        <div className="px-4 py-16 text-center">
           <div className="w-20 h-20 rounded-full bg-success-50 border-2 border-success-200 flex items-center justify-center mx-auto mb-6 animate-bounce">
             <svg className="w-10 h-10 text-success-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
           </div>
@@ -226,14 +226,14 @@ export default function OpenDepositView() {
         </div>
 
       ) : processing ? (
-        <div className="max-w-lg mx-auto px-4 py-24 text-center">
+        <div className="px-4 py-24 text-center">
           <div className="w-16 h-16 rounded-full border-4 border-slate-200 border-t-primary animate-spin mx-auto mb-6" />
           <h3 className="text-[16px] font-bold text-heading mb-2">Opening Your Account</h3>
           <p className="text-[12px] text-heading">Verifying KYC and setting up your deposit account...</p>
         </div>
 
       ) : (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+        <div className="px-4 sm:px-6 py-6">
           {/* Step Progress */}
           <div className="flex items-center justify-center gap-1 mb-8">
             {steps.map((s, i) => (

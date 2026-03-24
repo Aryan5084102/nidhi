@@ -411,7 +411,7 @@ export default function EnrollChitFundView() {
     const shareText = `I just enrolled in ${scheme.name} on Glimmora Nidhi! 🎉 Monthly: ${scheme.monthlyAmount}, Pot: ${scheme.potSize}`;
     return (
       <div className="animate-fade-in">
-        <div className="max-w-lg mx-auto px-4 py-10">
+        <div className="px-4 py-10">
           <div className="text-center mb-8">
             <div className="relative inline-block mb-6">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-2xl shadow-emerald-400/30">
@@ -513,7 +513,7 @@ export default function EnrollChitFundView() {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3.5 mb-0">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <button onClick={() => step > 1 ? goToStep(step - 1) : navigate("my_chitfunds")}
             className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 cursor-pointer transition-all">
             <ChevronLeft className="w-5 h-5" />
@@ -528,7 +528,7 @@ export default function EnrollChitFundView() {
 
       {/* Step Indicator */}
       <div className="bg-white border-b border-slate-100 px-4 sm:px-6 py-4 mb-6">
-        <div className="max-w-2xl mx-auto">
+        <div>
           <div className="flex items-center">
             {STEPS.map((s, i) => {
               const Icon = s.icon;
@@ -558,7 +558,7 @@ export default function EnrollChitFundView() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 pb-10">
+      <div className="px-4 sm:px-6 pb-10">
 
         {/* ═══ STEP 1: Scheme Overview + Calculator + FAQ ═══ */}
         {step === 1 && (

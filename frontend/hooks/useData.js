@@ -789,6 +789,55 @@ export function useFraudPatterns() {
   });
 }
 
+// ─── Collateral ─────────────────────────────────────────────────────────────
+
+export function useCollateralRegistry() {
+  return useApi("/collateral/registry", {
+    transform: (res) => res.data || { items: [], totalValue: 0, totalItems: 0, byType: [] },
+    fallback: { items: [], totalValue: 0, totalItems: 0, byType: [] },
+  });
+}
+
+export function useGuarantors() {
+  return useApi("/collateral/guarantors", {
+    transform: (res) => res.data || { guarantors: [], totalGuarantors: 0 },
+    fallback: { guarantors: [], totalGuarantors: 0 },
+  });
+}
+
+export function useExposureAnalysis() {
+  return useApi("/collateral/exposure", {
+    transform: (res) => res.data || { totalExposure: 0, totalLoans: 0, byRisk: [], byCategory: [] },
+    fallback: { totalExposure: 0, totalLoans: 0, byRisk: [], byCategory: [] },
+  });
+}
+
+// ─── Governance ─────────────────────────────────────────────────────────────
+
+export function useBoardPack() {
+  return useApi("/governance/board-pack", {
+    transform: (res) => res.data || { kpis: [], complianceScore: 0, filings: [] },
+    fallback: { kpis: [], complianceScore: 0, filings: [] },
+  });
+}
+
+export function useComplianceReview() {
+  return useApi("/governance/compliance-review", {
+    transform: (res) => res.data || { rules: [], riskDistribution: {}, stiDistribution: {}, totalMembers: 0 },
+    fallback: { rules: [], riskDistribution: {}, stiDistribution: {}, totalMembers: 0 },
+  });
+}
+
+export function useGovernanceAuditTrail() {
+  return useApi("/governance/audit-trail", {
+    transform: (res) => (res.data || []).map((l) => ({
+      ...l,
+      timestamp: l.timestamp ? new Date(l.timestamp).toLocaleString("en-IN") : "—",
+    })),
+    fallback: [],
+  });
+}
+
 // ─── AI Assistant ───────────────────────────────────────────────────────────
 
 export function useAIInsights() {

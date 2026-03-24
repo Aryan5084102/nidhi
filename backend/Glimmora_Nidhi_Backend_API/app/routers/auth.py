@@ -1,21 +1,46 @@
-from fastapi import APIRouter, Depends, Request
-from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+import secrets
 import uuid
+import re
+import logging
+from datetime import datetime, timedelta, timezone
+
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
 from ..core.database import get_db
 from ..core.security import hash_password, verify_password, create_access_token
-from ..core.exceptions import UnauthorizedException, BadRequestException, ConflictException, NotFoundException
+from ..core.exceptions import UnauthorizedException, BadRequestException, ConflictException
 from ..core.dependencies import get_current_user
 from ..models.user import User
 from ..models.password_reset import PasswordResetToken
 from ..schemas.auth import (
     LoginRequest, RegisterRequest, ForgotPasswordRequest,
-    ResetPasswordRequest, GoogleLoginRequest, ChangePasswordRequest,
+    ResetPasswordRequest, GoogleLoginRequest,
     UserOut, TokenResponse,
 )
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+# ── Password policy ──────────────────────────────────────
+MIN_PASSWORD_LENGTH = 8
+PASSWORD_REGEX = re.compile(
+    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$"
+)
+
+
+def _validate_password(password: str):
+    if len(password) < MIN_PASSWORD_LENGTH:
+        raise BadRequestException(
+            f"Password must be at least {MIN_PASSWORD_LENGTH} characters",
+            "PASSWORD_TOO_SHORT",
+        )
+    if not PASSWORD_REGEX.match(password):
+        raise BadRequestException(
+            "Password must contain uppercase, lowercase, number, and special character (@$!%*?&#)",
+            "PASSWORD_WEAK",
+        )
 
 
 def _user_to_out(user: User) -> dict:
@@ -36,7 +61,7 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email, User.is_active == True).first()
     if not user or not verify_password(payload.password, user.hashed_password or ""):
         raise UnauthorizedException("Invalid email or password", "INVALID_CREDENTIALS")
-    user.last_login = datetime.utcnow()
+    user.last_login = datetime.now(timezone.utc)
     db.commit()
     token = create_access_token({"sub": user.id, "role": user.role})
     return {"success": True, "data": {"token": token, "user": _user_to_out(user)}}
@@ -44,8 +69,11 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
 @router.post("/google")
 def google_login(payload: GoogleLoginRequest, db: Session = Depends(get_db)):
-    # Simplified Google OAuth — in production verify the Google token via Google's API
-    # Here we simulate by decoding a fake token payload
+    # TODO: In production, verify the Google token via Google's tokeninfo API:
+    #   https://oauth2.googleapis.com/tokeninfo?id_token=<token>
+    # For development, we simulate with a derived email.
+    if not payload.googleToken or len(payload.googleToken) < 10:
+        raise BadRequestException("Invalid Google token", "INVALID_GOOGLE_TOKEN")
     fake_email = f"google_{payload.googleToken[:8]}@gmail.com"
     user = db.query(User).filter(User.email == fake_email).first()
     is_new = False
@@ -59,7 +87,7 @@ def google_login(payload: GoogleLoginRequest, db: Session = Depends(get_db)):
             is_google_user=True,
         )
         db.add(user)
-    user.last_login = datetime.utcnow()
+    user.last_login = datetime.now(timezone.utc)
     db.commit()
     db.refresh(user)
     token = create_access_token({"sub": user.id, "role": user.role})
@@ -73,6 +101,7 @@ def google_login(payload: GoogleLoginRequest, db: Session = Depends(get_db)):
 def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     if payload.password != payload.confirmPassword:
         raise BadRequestException("Passwords do not match", "PASSWORD_MISMATCH")
+    _validate_password(payload.password)
     if db.query(User).filter(User.email == payload.email).first():
         raise ConflictException("Email already registered", "EMAIL_EXISTS")
     user = User(
@@ -94,47 +123,46 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
 
 @router.post("/forgot-password")
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    import random
     user = db.query(User).filter(User.email == payload.email).first()
     if not user:
-        raise BadRequestException("No account found with this email", "USER_NOT_FOUND")
-    # Invalidate any existing unused tokens for this user
+        # Generic response to prevent user enumeration
+        return {"success": True, "message": "If the email is registered, an OTP has been sent"}
+    # Invalidate existing unused tokens
     db.query(PasswordResetToken).filter(
         PasswordResetToken.user_id == user.id,
         PasswordResetToken.used == False,
     ).update({"used": True})
-    # Generate 6-digit OTP
-    otp = str(random.randint(100000, 999999))
+    # Generate 6-digit OTP using cryptographically secure random
+    otp = str(secrets.randbelow(900000) + 100000)
     reset_token = PasswordResetToken(
         id=uuid.uuid4().hex,
         user_id=user.id,
         token=otp,
-        expires_at=datetime.utcnow() + timedelta(minutes=10),
+        expires_at=datetime.now(timezone.utc) + timedelta(minutes=5),
     )
     db.add(reset_token)
     db.commit()
-    # In production: send OTP via email. For dev, return it in response.
-    return {
-        "success": True,
-        "message": "OTP sent to your email",
-        "otp": otp,  # Remove this in production
-    }
+    logger.info(f"OTP generated for user {user.id}")
+    # In production: send OTP via email service (SendGrid, SES, etc.)
+    # For development only — remove in production:
+    return {"success": True, "message": "OTP sent to your email", "otp": otp}
 
 
 @router.post("/reset-password")
 def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
     if payload.newPassword != payload.confirmPassword:
         raise BadRequestException("Passwords do not match", "PASSWORD_MISMATCH")
+    _validate_password(payload.newPassword)
     user = db.query(User).filter(User.email == payload.email).first()
     if not user:
-        raise BadRequestException("No account found with this email", "USER_NOT_FOUND")
+        raise BadRequestException("Invalid request", "INVALID_REQUEST")
     record = (
         db.query(PasswordResetToken)
         .filter(
             PasswordResetToken.user_id == user.id,
             PasswordResetToken.token == payload.otp,
             PasswordResetToken.used == False,
-            PasswordResetToken.expires_at > datetime.utcnow(),
+            PasswordResetToken.expires_at > datetime.now(timezone.utc),
         )
         .first()
     )
@@ -143,8 +171,7 @@ def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db))
     user.hashed_password = hash_password(payload.newPassword)
     record.used = True
     db.commit()
-    # Debug: verify the new password works immediately after saving
-    print(f"[RESET] email={payload.email}, newPassword='{payload.newPassword}', verify={verify_password(payload.newPassword, user.hashed_password)}")
+    logger.info(f"Password reset for user {user.id}")
     return {"success": True, "message": "Password reset successful"}
 
 
@@ -155,5 +182,4 @@ def me(current_user: User = Depends(get_current_user)):
 
 @router.post("/logout")
 def logout(current_user: User = Depends(get_current_user)):
-    # JWT is stateless; client should discard token
     return {"success": True, "message": "Logged out successfully"}

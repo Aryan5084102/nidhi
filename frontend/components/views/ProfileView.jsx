@@ -185,7 +185,7 @@ export default function ProfileView() {
   const initials = (user?.name || "U").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="space-y-6">
       {/* Profile Header */}
       <div className="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
         <div className="h-28 bg-gradient-to-r from-success to-teal-500 relative">

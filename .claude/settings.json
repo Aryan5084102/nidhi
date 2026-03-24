@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx next:*)",
       "Bash(nvm ls:*)",
-      "Bash(fnm ls:*)"
+      "Bash(fnm ls:*)",
+      "Read(//home/aryan/Desktop/Glimmora\\\\ International/Glimmora\\\\ Nidhi/chit-fund/frontend/components/views/**)"
     ],
     "additionalDirectories": [
       "/home/aryan/Desktop/Glimmora International/Glimmora Nidhi/chit-fund/frontend/app/[...slug]",

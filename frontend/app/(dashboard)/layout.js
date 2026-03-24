@@ -84,7 +84,7 @@ export default function DashboardLayout({ children }) {
         <SmoothScroll
           ref={smoothRef}
           className="flex-1"
-          contentClassName="p-3 sm:p-4 md:p-6 pb-20 md:pb-6"
+          contentClassName="p-2 sm:p-3 md:p-4 pb-20 md:pb-4"
         >
           <div key={pathname} className="animate-page-enter">
             {children}

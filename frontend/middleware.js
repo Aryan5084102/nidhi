@@ -2,42 +2,50 @@ import { NextResponse } from "next/server";
 
 const COOKIE_NAME = "glimmora_session";
 
-// Routes that don't require authentication
-const PUBLIC_ROUTES = ["/login", "/auth-api"];
-
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Allow public routes and static assets
+  // Skip middleware for static assets and internal Next.js routes
   if (
-    PUBLIC_ROUTES.some((route) => pathname.startsWith(route)) ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/icon") ||
     pathname.startsWith("/favicon") ||
-    pathname === "/"
+    pathname.includes(".")
   ) {
-    // If user is logged in and trying to access /login, redirect to dashboard
-    if (pathname === "/login") {
-      const token = request.cookies.get(COOKIE_NAME)?.value;
-      if (token) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
+    return NextResponse.next();
+  }
+
+  // Allow auth-api routes (login, logout, session, google)
+  if (pathname.startsWith("/auth-api")) {
+    return NextResponse.next();
+  }
+
+  const token = request.cookies.get(COOKIE_NAME)?.value;
+
+  // Login page — allow unauthenticated, redirect authenticated to dashboard
+  if (pathname === "/login") {
+    if (token) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();
   }
 
-  // Check for auth cookie on protected routes
-  const token = request.cookies.get(COOKIE_NAME)?.value;
+  // Root path — redirect based on auth status
+  if (pathname === "/") {
+    if (token) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
+  // All other routes — require authentication
   if (!token) {
-    // No token — redirect to login
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Token exists — allow request
-  // For API routes, inject the Authorization header so the backend proxy gets the token
+  // For API routes, inject the Authorization header from cookie
   if (pathname.startsWith("/api/")) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set("Authorization", `Bearer ${token}`);
@@ -52,12 +60,8 @@ export function middleware(request) {
 export const config = {
   matcher: [
     /*
-     * Match all paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico
-     * - public files (icons, images)
+     * Match all paths except static files
      */
-    "/((?!_next/static|_next/image|favicon.ico|icon/).*)",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

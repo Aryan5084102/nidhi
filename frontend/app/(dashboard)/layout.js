@@ -46,13 +46,7 @@ export default function DashboardLayout({ children }) {
     }
   }, [user, isLoading, router]);
 
-  if (isLoading || !user) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-primary">
-        <div className="w-8 h-8 rounded-full border-2 border-slate-200 border-t-primary animate-spin" />
-      </div>
-    );
-  }
+  if (isLoading || !user) return null;
 
   const pageTitleMap = {
     enroll_chitfund: "Enroll in Chit Fund",

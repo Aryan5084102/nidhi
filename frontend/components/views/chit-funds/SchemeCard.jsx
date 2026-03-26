@@ -1,16 +1,31 @@
 import ProgressBar from "@/components/ui/ProgressBar";
 
+const BRACKET_STYLES = {
+  Low: "bg-success-50 text-success border-success-200/60",
+  Medium: "bg-blue-50 text-blue-600 border-blue-200",
+  "Upper Medium": "bg-warning-50 text-warning border-warning-200/60",
+  High: "bg-secondary-50 text-secondary border-secondary-200/60",
+};
+
+const METHOD_LABEL = {
+  Auction: "Auction (Bidding)",
+  "Lucky Draw": "Lucky Draw",
+  Both: "Auction + Lucky Draw",
+};
+
 export default function SchemeCard({ scheme, onEnroll, onViewMembers }) {
   const spotsLeft = scheme.totalMembers - scheme.enrolledMembers;
   const fillPct = (scheme.enrolledMembers / scheme.totalMembers) * 100;
   const isFull = scheme.status === "Full";
   const totalMonths = parseInt(scheme.duration) || 0;
   const rotationPct = totalMonths > 0 ? ((scheme.currentMonth || 0) / totalMonths) * 100 : 0;
+  const bracket = scheme.bracket || "Low";
+  const payoutMethod = scheme.payoutMethod || "Auction";
 
   return (
     <div className="bg-white rounded-2xl p-5 hover:shadow-md transition-all duration-300 group card-shadow border border-slate-100">
       {/* Header */}
-      <div className="flex justify-between items-start mb-3">
+      <div className="flex justify-between items-start mb-2">
         <div>
           <div className="text-[15px] font-bold text-heading">{scheme.name}</div>
           <span className="text-[11px] text-heading font-mono">{scheme.id}</span>
@@ -23,6 +38,19 @@ export default function SchemeCard({ scheme, onEnroll, onViewMembers }) {
           }`}
         >
           {isFull ? "Full" : `${spotsLeft} spots left`}
+        </span>
+      </div>
+
+      {/* Bracket & Payout Method Tags */}
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${BRACKET_STYLES[bracket] || BRACKET_STYLES.Low}`}>
+          {bracket}
+        </span>
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-slate-50 text-body border-slate-200">
+          {METHOD_LABEL[payoutMethod] || payoutMethod}
+        </span>
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border bg-primary-50 text-primary border-primary-200/60">
+          Max Discount: {scheme.maxDiscountPct || 30}%
         </span>
       </div>
 

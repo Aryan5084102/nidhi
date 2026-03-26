@@ -12,6 +12,8 @@ from ..models.deposit import Deposit
 from ..models.collection import Collection, Payment
 from ..models.user import User
 from ..models.compliance import ComplianceChecklist
+from ..models.chit_scheme import ChitScheme
+from ..models.chit_enrollment import ChitEnrollment
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
@@ -51,6 +53,19 @@ def get_dashboard_metrics(
     compliant = sum(1 for c in checklists if c.status == "Compliant")
     compliance_score = round((compliant / len(checklists)) * 100) if checklists else 0
 
+    # Chit-specific KPIs (GAP 9)
+    active_schemes = db.query(ChitScheme).filter(ChitScheme.status == "Open").count()
+    total_pot_value = sum(s.pot_size for s in db.query(ChitScheme).filter(ChitScheme.status == "Open").all()) or 0
+    monthly_collections = sum(s.monthly_amount * s.enrolled_members for s in db.query(ChitScheme).filter(ChitScheme.status == "Open").all()) or 0
+    withdrawn_count = db.query(ChitEnrollment).filter(ChitEnrollment.status == "Withdrawn").count()
+    pending_dereg = db.query(ChitEnrollment).filter(ChitEnrollment.deregistration_status == "Pending Deregistration").count()
+
+    # Bracket distribution for donut chart
+    bracket_dist = {}
+    for s in db.query(ChitScheme).filter(ChitScheme.status == "Open").all():
+        b = s.bracket or "Low"
+        bracket_dist[b] = bracket_dist.get(b, 0) + s.pot_size
+
     return {
         "success": True,
         "data": {
@@ -61,7 +76,15 @@ def get_dashboard_metrics(
                 {"label": "Liquidity Ratio", "value": liquidity_ratio, "change": 0},
                 {"label": "Risk Alerts", "value": high_risk, "change": 0},
                 {"label": "Compliance Score", "value": compliance_score, "change": 0},
-            ]
+            ],
+            "chitKpis": {
+                "activeSchemes": active_schemes,
+                "totalPotValue": total_pot_value,
+                "monthlyCollections": monthly_collections,
+                "withdrawalsThisMonth": withdrawn_count,
+                "pendingDeregistrations": pending_dereg,
+                "bracketDistribution": bracket_dist,
+            },
         },
     }
 

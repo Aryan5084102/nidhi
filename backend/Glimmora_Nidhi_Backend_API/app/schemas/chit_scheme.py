@@ -10,6 +10,9 @@ class ChitSchemeCreate(BaseModel):
     description: Optional[str] = None
     minSTI: Optional[int] = 50
     kycRequired: Optional[str] = "Verified"
+    bracket: Optional[str] = "Low"  # Low, Medium, Upper Medium, High
+    payoutMethod: Optional[str] = "Auction"  # Auction, Lucky Draw, Both
+    maxDiscountPct: Optional[float] = 30.0
 
 
 class ChitSchemeOut(BaseModel):
@@ -26,6 +29,10 @@ class ChitSchemeOut(BaseModel):
     minSTI: int
     kycRequired: str
     spotsLeft: int
+    bracket: Optional[str] = "Low"
+    payoutMethod: Optional[str] = "Auction"
+    maxDiscountPct: Optional[float] = 30.0
+    currentMonth: Optional[int] = 0
 
     class Config:
         from_attributes = True

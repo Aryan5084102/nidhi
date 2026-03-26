@@ -15,9 +15,11 @@ import PDFReportsTab from "./PDFReportsTab";
 import CSVExportsTab from "./CSVExportsTab";
 import BoardReportsTab from "./BoardReportsTab";
 import KPIsTab from "./KPIsTab";
+import ChitFundReportsTab from "./ChitFundReportsTab";
 
 const tabs = [
   { id: "financial", label: "Financial Reports" },
+  { id: "chitfund", label: "Chit Fund Reports" },
   { id: "loans", label: "Loan Performance" },
   { id: "deposits", label: "Deposit Analytics" },
   { id: "members", label: "Member Growth" },
@@ -35,6 +37,7 @@ export default function ReportsView() {
   const renderTab = () => {
     switch (activeTab) {
       case "financial": return <FinancialReportsTab />;
+      case "chitfund": return <ChitFundReportsTab />;
       case "loans": return <LoanPerformanceTab />;
       case "deposits": return <DepositAnalyticsTab />;
       case "members": return <MemberGrowthTab />;
@@ -52,7 +55,7 @@ export default function ReportsView() {
     <div className="animate-fade-in">
       <PageHeader
         title="Reports & Analytics"
-        description="Comprehensive reporting suite for Glimmora Nidhi operations. Generate financial statements, member reports, compliance summaries, and AI-powered business intelligence analytics."
+        description="Comprehensive reporting suite for Glimmora Nidhi operations. Generate financial statements, chit fund MIS reports, member reports, compliance summaries, and AI-powered business intelligence analytics."
       >
         <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
           <div className="text-lg font-bold text-primary font-mono">{reportsList.length}</div>

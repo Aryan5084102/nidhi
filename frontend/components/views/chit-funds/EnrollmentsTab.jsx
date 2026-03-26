@@ -197,7 +197,7 @@ export default function EnrollmentsTab() {
             )}
           </div>
           <div className="flex gap-2 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
-            {["All", "Pending", "Under Review", "Active", "Rejected"].map((f) => (
+            {["All", "Pending", "Under Review", "Active", "Rejected", "Withdrawn", "Cancelled"].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilterStatus(f)}
@@ -218,7 +218,7 @@ export default function EnrollmentsTab() {
           <table className="w-full text-left min-w-[900px]">
             <thead>
               <tr className="border-b border-slate-100">
-                {["Enrollment ID", "Member", "Scheme", "Monthly", "STI", "KYC", "Applied", "Status", "Actions"].map((col) => (
+                {["Enrollment ID", "Member", "Scheme", "Monthly", "STI", "KYC", "Payout", "Applied", "Status", "Actions"].map((col) => (
                   <th key={col} className="text-[10px] text-heading uppercase tracking-wider font-semibold pb-3 pr-4 whitespace-nowrap">{col}</th>
                 ))}
               </tr>
@@ -242,6 +242,13 @@ export default function EnrollmentsTab() {
                   <td className="py-3 pr-4 text-[12px] font-mono font-bold text-body">{enr.monthlyAmount}</td>
                   <td className="py-3 pr-4"><RiskTag level={enr.stiScore} /></td>
                   <td className="py-3 pr-4"><StatusBadge status={enr.kyc === "Verified" ? "Active" : enr.kyc} /></td>
+                  <td className="py-3 pr-4">
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                      enr.payoutMethod === "Lucky Draw" ? "bg-success-50 text-success border-success-200/60"
+                      : enr.payoutMethod === "Both" ? "bg-secondary-50 text-secondary border-secondary-200/60"
+                      : "bg-warning-50 text-warning border-warning-200/60"
+                    }`}>{enr.payoutMethod || "Auction"}</span>
+                  </td>
                   <td className="py-3 pr-4 text-[12px] text-heading">{enr.appliedDate}</td>
                   <td className="py-3 pr-4"><StatusBadge status={enr.status} /></td>
                   <td className="py-3 pr-4">
@@ -272,7 +279,7 @@ export default function EnrollmentsTab() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-8 text-center text-[13px] text-heading">No enrollment records found</td>
+                  <td colSpan={10} className="py-8 text-center text-[13px] text-heading">No enrollment records found</td>
                 </tr>
               )}
             </tbody>

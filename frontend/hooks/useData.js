@@ -142,13 +142,16 @@ export function useDashboardMetrics() {
   return useApi("/dashboard/metrics", {
     transform: (res) => {
       const items = res.data?.metrics || [];
-      return items.map((m) => ({
-        label: m.label,
-        value: fmtNumber(m.value),
-        change: m.change >= 0 ? `+${m.change}%` : `${m.change}%`,
-      }));
+      return {
+        metrics: items.map((m) => ({
+          label: m.label,
+          value: fmtNumber(m.value),
+          change: m.change >= 0 ? `+${m.change}%` : `${m.change}%`,
+        })),
+        chitKpis: res.data?.chitKpis || null,
+      };
     },
-    fallback: [],
+    fallback: { metrics: [], chitKpis: null },
   });
 }
 
@@ -253,6 +256,10 @@ function transformMember(m) {
     kyc: m.kyc,
     joinDate: fmtDate(m.joinDate),
     status: m.status,
+    nomineeName: m.nomineeName || null,
+    nomineeRelation: m.nomineeRelation || null,
+    nomineeAadhaar: m.nomineeAadhaar || null,
+    nomineePan: m.nomineePan || null,
   };
 }
 
@@ -286,16 +293,22 @@ function transformChitScheme(s) {
     id: s.id,
     name: s.name,
     monthlyAmount: fmtCurrency(s.monthlyAmount),
+    rawMonthlyAmount: s.monthlyAmount,
     duration: fmtDuration(s.duration),
+    rawDuration: s.duration,
     totalMembers: s.totalMembers,
     enrolledMembers: s.enrolledMembers,
     potSize: fmtCurrency(s.potSize),
+    rawPotSize: s.potSize,
     currentMonth: s.currentMonth || 0,
     nextPayout: s.nextAuction || "—",
     status: s.status,
     description: s.description,
     minSTI: s.minSTI,
     kycRequired: s.kycRequired,
+    bracket: s.bracket || "Low",
+    payoutMethod: s.payoutMethod || "Auction",
+    maxDiscountPct: s.maxDiscountPct || 30,
   };
 }
 
@@ -347,6 +360,8 @@ export function useChitEnrollments() {
         nomineeRelation: e.nomineeRelation || "—",
         appliedDate: fmtDate(e.appliedDate),
         status: e.status,
+        payoutMethod: e.payoutMethod || "Auction",
+        deregistrationStatus: e.deregistrationStatus || null,
       })),
     fallback: [],
   });
@@ -885,6 +900,8 @@ const CONFIG_LABELS = {
   maxRate: "Maximum Interest Rate", defaultThreshold: "Default Threshold (EMIs)",
   foremanCommission: "Foreman Commission %", minBidDecrement: "Min Bid Decrement %",
   maxSubscribers: "Max Subscribers", auctionFrequency: "Auction Frequency",
+  maxAuctionDiscount: "Max Auction Discount %", regulatoryFramework: "Regulatory Framework",
+  defaultPayoutMethod: "Default Payout Method",
   riskModelVersion: "Risk Model Version", fraudSensitivity: "Fraud Sensitivity",
   autoKYC: "Auto KYC Verification", stiRecalcFrequency: "STI Recalc Frequency",
   escalationThreshold: "Escalation Threshold",

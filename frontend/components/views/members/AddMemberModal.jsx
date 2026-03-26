@@ -11,11 +11,18 @@ export default function AddMemberModal({ onClose, onSave }) {
     address: "",
     risk: "Low",
     kyc: "Pending",
+    nomineeName: "",
+    nomineeRelation: "",
+    nomineeAadhaar: "",
+    nomineePan: "",
   });
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
+
+  const inputClass = "w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle";
+  const labelClass = "text-[11px] text-heading uppercase tracking-wide mb-1 block";
 
   return (
     <ModalBackdrop onClose={onClose}>
@@ -29,52 +36,53 @@ export default function AddMemberModal({ onClose, onSave }) {
             ✕
           </button>
         </div>
-        <div className="px-6 py-5 space-y-4">
+        <div className="px-6 py-5 space-y-4 max-h-[65vh] overflow-y-auto">
+          {/* Basic Info */}
           <div>
-            <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Full Name *</label>
+            <label className={labelClass}>Full Name *</label>
             <input
               value={form.name}
               onChange={(e) => handleChange("name", e.target.value)}
               placeholder="Enter member name"
-              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
+              className={inputClass}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Phone *</label>
+              <label className={labelClass}>Phone *</label>
               <input
                 value={form.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 placeholder="9876543210"
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Email</label>
+              <label className={labelClass}>Email</label>
               <input
                 value={form.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="email@example.com"
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
+                className={inputClass}
               />
             </div>
           </div>
           <div>
-            <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Address</label>
+            <label className={labelClass}>Address</label>
             <input
               value={form.address}
               onChange={(e) => handleChange("address", e.target.value)}
               placeholder="Enter address"
-              className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all placeholder:text-subtle"
+              className={inputClass}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">Risk Level</label>
+              <label className={labelClass}>Risk Level</label>
               <select
                 value={form.risk}
                 onChange={(e) => handleChange("risk", e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all cursor-pointer"
+                className={`${inputClass} cursor-pointer`}
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -82,16 +90,68 @@ export default function AddMemberModal({ onClose, onSave }) {
               </select>
             </div>
             <div>
-              <label className="text-[11px] text-heading uppercase tracking-wide mb-1 block">KYC Status</label>
+              <label className={labelClass}>KYC Status</label>
               <select
                 value={form.kyc}
                 onChange={(e) => handleChange("kyc", e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm text-body outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/10 transition-all cursor-pointer"
+                className={`${inputClass} cursor-pointer`}
               >
                 <option value="Verified">Verified</option>
                 <option value="Pending">Pending</option>
                 <option value="Review">Review</option>
               </select>
+            </div>
+          </div>
+
+          {/* Nominee Details — Chit Funds Act Requirement */}
+          <div className="pt-3 border-t border-slate-100">
+            <h4 className="text-[12px] font-bold text-heading uppercase tracking-wider mb-3">Nominee Details</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Nominee Name</label>
+                <input
+                  value={form.nomineeName}
+                  onChange={(e) => handleChange("nomineeName", e.target.value)}
+                  placeholder="Full name of nominee"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Relation</label>
+                <select
+                  value={form.nomineeRelation}
+                  onChange={(e) => handleChange("nomineeRelation", e.target.value)}
+                  className={`${inputClass} cursor-pointer`}
+                >
+                  <option value="">Select</option>
+                  <option value="Spouse">Spouse</option>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Son">Son</option>
+                  <option value="Daughter">Daughter</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Sister">Sister</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>Nominee Aadhaar</label>
+                <input
+                  value={form.nomineeAadhaar}
+                  onChange={(e) => handleChange("nomineeAadhaar", e.target.value)}
+                  placeholder="XXXX-XXXX-1234"
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Nominee PAN</label>
+                <input
+                  value={form.nomineePan}
+                  onChange={(e) => handleChange("nomineePan", e.target.value)}
+                  placeholder="ABCDE1234F"
+                  className={`${inputClass} uppercase`}
+                />
+              </div>
             </div>
           </div>
         </div>

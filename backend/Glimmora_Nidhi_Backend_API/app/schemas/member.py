@@ -10,6 +10,10 @@ class MemberCreate(BaseModel):
     address: Optional[str] = None
     risk: Optional[str] = "Low"
     kyc: Optional[str] = "Pending"
+    nomineeName: Optional[str] = None
+    nomineeRelation: Optional[str] = None
+    nomineeAadhaar: Optional[str] = None
+    nomineePan: Optional[str] = None
 
 
 class MemberUpdate(BaseModel):
@@ -20,6 +24,10 @@ class MemberUpdate(BaseModel):
     risk: Optional[str] = None
     kyc: Optional[str] = None
     status: Optional[str] = None
+    nomineeName: Optional[str] = None
+    nomineeRelation: Optional[str] = None
+    nomineeAadhaar: Optional[str] = None
+    nomineePan: Optional[str] = None
 
 
 class MemberOut(BaseModel):
@@ -35,6 +43,10 @@ class MemberOut(BaseModel):
     kyc: str
     joinDate: str
     status: str
+    nomineeName: Optional[str] = None
+    nomineeRelation: Optional[str] = None
+    nomineeAadhaar: Optional[str] = None
+    nomineePan: Optional[str] = None
 
     class Config:
         from_attributes = True

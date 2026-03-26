@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import Optional
+from datetime import datetime
 import uuid, math
 
 from ..core.database import get_db
@@ -54,6 +55,8 @@ def get_all_enrollments(
             "nomineeRelation": e.nominee_relationship,
             "appliedDate": e.enrolled_date,
             "status": e.status,
+            "payoutMethod": s.payout_method or "Auction",
+            "deregistrationStatus": e.deregistration_status,
         })
     return {
         "success": True,
@@ -167,6 +170,57 @@ def enroll_member(
     }
 
 
+@router.put("/chit-enrollments/{enrollment_id}/withdraw")
+def withdraw_enrollment(
+    enrollment_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(*STAFF_ROLES)),
+):
+    enrollment = db.query(ChitEnrollment).filter(ChitEnrollment.id == enrollment_id).first()
+    if not enrollment:
+        raise NotFoundException("Enrollment not found")
+    if enrollment.status not in ("Active",):
+        raise BadRequestException("Only active enrollments can be withdrawn", "INVALID_STATUS")
+    scheme = db.query(ChitScheme).filter(ChitScheme.id == enrollment.scheme_id).first()
+    # Calculate commission deduction and refund
+    commission_rate = 0.05  # 5% foreman commission
+    total_paid = scheme.monthly_amount * (scheme.current_month or 1)
+    commission_deduction = total_paid * commission_rate
+    refund = total_paid - commission_deduction
+    enrollment.status = "Withdrawn"
+    enrollment.withdrawal_date = datetime.utcnow().date().isoformat()
+    enrollment.withdrawal_commission = commission_deduction
+    enrollment.refund_amount = refund
+    enrollment.deregistration_status = "Pending Deregistration"
+    scheme.enrolled_members = max(0, scheme.enrolled_members - 1)
+    db.commit()
+    return {
+        "success": True,
+        "message": "Enrollment withdrawn successfully",
+        "data": {
+            "totalPaid": total_paid,
+            "commissionDeducted": commission_deduction,
+            "refundAmount": refund,
+            "deregistrationStatus": "Pending Deregistration",
+        },
+    }
+
+
+@router.put("/chit-enrollments/{enrollment_id}/deregister")
+def confirm_deregistration(
+    enrollment_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(*STAFF_ROLES)),
+):
+    enrollment = db.query(ChitEnrollment).filter(ChitEnrollment.id == enrollment_id).first()
+    if not enrollment:
+        raise NotFoundException("Enrollment not found")
+    enrollment.deregistration_status = "Deregistered"
+    enrollment.registrar_notified = True
+    db.commit()
+    return {"success": True, "message": "Deregistration confirmed and Registrar notified"}
+
+
 @router.get("/members/{member_id}/chit-enrollments")
 def get_member_enrollments(
     member_id: str,
@@ -191,6 +245,8 @@ def get_member_enrollments(
             "nextAuction": s.next_auction,
             "hasWonAuction": e.has_won_auction,
             "status": e.status,
+            "payoutMethod": s.payout_method or "Auction",
+            "bracket": s.bracket or "Low",
         }
         for e, s in enrollments
     ]

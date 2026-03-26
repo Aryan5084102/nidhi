@@ -21,11 +21,11 @@ export default function GovernanceView() {
   const { data: reviewData, loading: l2 } = useComplianceReview();
   const { data: auditLogs = [], loading: l3 } = useGovernanceAuditTrail();
 
-  const loading = l1 || l2 || l3;
+  const isTabLoading = (activeTab === "boardpack" && l1) || (activeTab === "governance" && l2) || (activeTab === "audit" && l3);
 
   return (
     <div className="animate-fade-in">
-      <PageHeader title="Governance & Board Pack" description="Board-level KPIs, compliance governance review, and audit trail for regulatory oversight.">
+      <PageHeader title="Governance & Board Pack" description="Board-level KPIs, compliance governance review, and audit trail for regulatory oversight. Covers Chit Funds Act, 1982 and Nidhi Company compliance.">
         <HeaderStat value={`${boardData?.complianceScore || 0}%`} label="Compliance" className="bg-slate-50 text-success" />
         <HeaderStat value={(reviewData?.rules || []).length} label="Rules" className="bg-slate-50 text-primary" />
         <HeaderStat value={auditLogs.length} label="Audit Entries" className="bg-slate-50 text-warning" />
@@ -33,7 +33,7 @@ export default function GovernanceView() {
 
       <TabBar tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-      {loading ? (
+      {isTabLoading ? (
         <div className="flex items-center justify-center py-24"><div className="w-8 h-8 rounded-full border-2 border-slate-200 border-t-primary animate-spin" /></div>
       ) : (
         <>

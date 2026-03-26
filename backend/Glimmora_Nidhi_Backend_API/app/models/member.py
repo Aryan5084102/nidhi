@@ -21,6 +21,12 @@ class Member(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Nominee details (Chit Funds Act requirement)
+    nominee_name = Column(String, nullable=True)
+    nominee_relation = Column(String, nullable=True)
+    nominee_aadhaar = Column(String, nullable=True)
+    nominee_pan = Column(String, nullable=True)
+
     # KYC detail fields
     pan_verified = Column(Boolean, default=False)
     aadhaar_verified = Column(Boolean, default=False)

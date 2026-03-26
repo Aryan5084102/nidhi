@@ -48,7 +48,18 @@ async function apiFetch(endpoint, options = {}) {
     throw error;
   }
 
-  const data = await res.json();
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    const error = new Error(
+      res.status >= 500
+        ? "Server is unavailable. Please try again later."
+        : "Unexpected response from server"
+    );
+    error.status = res.status;
+    throw error;
+  }
 
   if (!res.ok) {
     const error = new Error(data.error || data.message || "Something went wrong");

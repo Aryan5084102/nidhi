@@ -20,6 +20,13 @@ class ChitScheme(Base):
     min_sti = Column(Integer, default=50)
     kyc_required = Column(String, default="Verified")
     is_active = Column(Boolean, default=True)
+    # GAP 1: Scheme bracket classification
+    bracket = Column(String, default="Low")  # Low, Medium, Upper Medium, High
+    # GAP 2: Payout determination method
+    payout_method = Column(String, default="Auction")  # Auction, Lucky Draw, Both
+    # GAP 3: Maximum auction discount cap (%)
+    max_discount_pct = Column(Float, default=30.0)
+    current_month = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

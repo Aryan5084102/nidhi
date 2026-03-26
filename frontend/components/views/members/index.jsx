@@ -64,6 +64,10 @@ export default function MembersView() {
         address: form.address,
         risk: form.risk,
         kyc: form.kyc,
+        nomineeName: form.nomineeName || null,
+        nomineeRelation: form.nomineeRelation || null,
+        nomineeAadhaar: form.nomineeAadhaar || null,
+        nomineePan: form.nomineePan || null,
       });
       await refetch();
     } catch (err) {
@@ -82,6 +86,10 @@ export default function MembersView() {
         address: form.address,
         risk: form.risk,
         kyc: form.kyc,
+        nomineeName: form.nomineeName || null,
+        nomineeRelation: form.nomineeRelation || null,
+        nomineeAadhaar: form.nomineeAadhaar || null,
+        nomineePan: form.nomineePan || null,
       });
       await refetch();
     } catch (err) {

@@ -61,6 +61,9 @@ def _build_full_config(db: Session) -> dict:
             "minBidDecrement": _get_config_value(db, "chitFunds.minBidDecrement", 500),
             "maxSubscribers": _get_config_value(db, "chitFunds.maxSubscribers", 40),
             "auctionFrequency": _get_config_value(db, "chitFunds.auctionFrequency", "Monthly"),
+            "maxAuctionDiscount": _get_config_value(db, "chitFunds.maxAuctionDiscount", 30),
+            "regulatoryFramework": _get_config_value(db, "chitFunds.regulatoryFramework", "Chit Funds Act 1982"),
+            "defaultPayoutMethod": _get_config_value(db, "chitFunds.defaultPayoutMethod", "Auction"),
         },
         "ai": {
             "riskModelVersion": _get_config_value(db, "ai.riskModelVersion", "v2.4.1"),

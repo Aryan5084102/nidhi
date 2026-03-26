@@ -7,9 +7,12 @@ import { Download } from "lucide-react";
 
 const REGISTER_TABS = [
   "Subscriber Register",
+  "Chit Agreement Register",
+  "Draw Minutes Register",
   "Auction Proceedings",
   "Default Register",
   "Foreman Commission",
+  "Security Deposit Register",
 ];
 
 const subscriberData = [
@@ -57,9 +60,12 @@ const foremanCommissionData = [
 
 const LAST_UPDATED = {
   "Subscriber Register": "15 Mar 2026, 10:30 AM",
+  "Chit Agreement Register": "15 Mar 2026, 10:30 AM",
+  "Draw Minutes Register": "18 Mar 2026, 03:00 PM",
   "Auction Proceedings": "14 Mar 2026, 04:15 PM",
   "Default Register": "13 Mar 2026, 11:45 AM",
   "Foreman Commission": "12 Mar 2026, 09:00 AM",
+  "Security Deposit Register": "10 Mar 2026, 11:00 AM",
 };
 
 function RegisterTable({ headers, rows, renderRow }) {
@@ -185,11 +191,101 @@ function ForemanCommissionRegister() {
   );
 }
 
+const chitAgreementData = [
+  { sl: 1, schemeId: "CS-001", schemeName: "Vasuprada Sahaya 2L", agreementDate: "2025-10-01", filedWithRegistrar: "Yes", filingDate: "2025-10-10", registrationNo: "RoC/TS/2025/A001", status: "Filed" },
+  { sl: 2, schemeId: "CS-002", schemeName: "Vasuprada Sahaya 5L", agreementDate: "2025-10-05", filedWithRegistrar: "Yes", filingDate: "2025-10-12", registrationNo: "RoC/TS/2025/A002", status: "Filed" },
+  { sl: 3, schemeId: "CS-003", schemeName: "Vasuprada Samruddhi 10L", agreementDate: "2025-11-01", filedWithRegistrar: "Yes", filingDate: "2025-11-08", registrationNo: "RoC/TS/2025/A003", status: "Filed" },
+  { sl: 4, schemeId: "CS-005", schemeName: "Vasuprada Unnati 15L", agreementDate: "2026-01-15", filedWithRegistrar: "Yes", filingDate: "2026-01-22", registrationNo: "RoC/TS/2026/A004", status: "Filed" },
+  { sl: 5, schemeId: "CS-007", schemeName: "Vasuprada Shikhar 50L", agreementDate: "2026-02-01", filedWithRegistrar: "Yes", filingDate: "2026-02-10", registrationNo: "RoC/TS/2026/A005", status: "Filed" },
+  { sl: 6, schemeId: "CS-008", schemeName: "Vasuprada Shikhar 30L", agreementDate: "2026-03-01", filedWithRegistrar: "No", filingDate: "—", registrationNo: "—", status: "Pending" },
+];
+
+const drawMinutesRegisterData = [
+  { sl: 1, drawId: "DM-001", scheme: "Vasuprada Sahaya 2L", date: "2026-03-05", type: "Lucky Draw", winner: "M-1001 — Rajesh Kumar", amount: "₹1,85,000", witnesses: "Anita Desai, Suresh Babu", status: "Recorded" },
+  { sl: 2, drawId: "DM-002", scheme: "Vasuprada Sahaya 2L", date: "2026-02-05", type: "Lucky Draw", winner: "M-1005 — Deepa Iyer", amount: "₹1,90,000", witnesses: "Anita Desai, Kavitha Nambiar", status: "Recorded" },
+  { sl: 3, drawId: "DM-003", scheme: "Vasuprada Samruddhi 10L", date: "2026-03-10", type: "Auction", winner: "M-1002 — Priya Mehta", amount: "₹7,80,000", witnesses: "Anita Desai, Arun Pillai", status: "Recorded" },
+  { sl: 4, drawId: "DM-004", scheme: "Vasuprada Shikhar 30L", date: "2026-03-18", type: "Auction", winner: "M-1009 — Suresh Babu", amount: "₹24,00,000", witnesses: "Aryan Kumar, Anita Desai", status: "Recorded" },
+];
+
+const securityDepositData = [
+  { sl: 1, depositType: "Fixed Deposit", bankName: "State Bank of India", branch: "MG Road, Hyderabad", fdrNo: "FDR-2025-78901", amount: "₹5,00,000", depositDate: "2025-09-01", maturityDate: "2026-09-01", filedWithRegistrar: "Yes", status: "Active" },
+  { sl: 2, depositType: "Bank Guarantee", bankName: "HDFC Bank", branch: "Jubilee Hills, Hyderabad", fdrNo: "BG-2025-34567", amount: "₹3,00,000", depositDate: "2025-10-15", maturityDate: "2026-10-15", filedWithRegistrar: "Yes", status: "Active" },
+];
+
+function ChitAgreementRegister() {
+  return (
+    <RegisterTable
+      headers={["Sl No", "Scheme ID", "Scheme Name", "Agreement Date", "Filed", "Filing Date", "Registration No", "Status"]}
+      rows={chitAgreementData}
+      renderRow={(r) => (
+        <>
+          <Cell>{r.sl}</Cell>
+          <Cell mono>{r.schemeId}</Cell>
+          <Cell>{r.schemeName}</Cell>
+          <Cell>{r.agreementDate}</Cell>
+          <Cell>{r.filedWithRegistrar}</Cell>
+          <Cell>{r.filingDate}</Cell>
+          <Cell mono>{r.registrationNo}</Cell>
+          <td className="px-3 py-2.5"><StatusBadge status={r.status} /></td>
+        </>
+      )}
+    />
+  );
+}
+
+function DrawMinutesRegister() {
+  return (
+    <RegisterTable
+      headers={["Sl No", "Draw ID", "Scheme", "Date", "Type", "Winner", "Amount Disbursed", "Witnesses", "Status"]}
+      rows={drawMinutesRegisterData}
+      renderRow={(r) => (
+        <>
+          <Cell>{r.sl}</Cell>
+          <Cell mono>{r.drawId}</Cell>
+          <Cell>{r.scheme}</Cell>
+          <Cell>{r.date}</Cell>
+          <Cell>{r.type}</Cell>
+          <Cell>{r.winner}</Cell>
+          <Cell mono>{r.amount}</Cell>
+          <Cell>{r.witnesses}</Cell>
+          <td className="px-3 py-2.5"><StatusBadge status={r.status === "Recorded" ? "Active" : r.status} /></td>
+        </>
+      )}
+    />
+  );
+}
+
+function SecurityDepositRegister() {
+  return (
+    <RegisterTable
+      headers={["Sl No", "Deposit Type", "Bank", "Branch", "FDR/BG No", "Amount", "Deposit Date", "Maturity Date", "Filed with Registrar", "Status"]}
+      rows={securityDepositData}
+      renderRow={(r) => (
+        <>
+          <Cell>{r.sl}</Cell>
+          <Cell>{r.depositType}</Cell>
+          <Cell>{r.bankName}</Cell>
+          <Cell>{r.branch}</Cell>
+          <Cell mono>{r.fdrNo}</Cell>
+          <Cell mono>{r.amount}</Cell>
+          <Cell>{r.depositDate}</Cell>
+          <Cell>{r.maturityDate}</Cell>
+          <Cell>{r.filedWithRegistrar}</Cell>
+          <td className="px-3 py-2.5"><StatusBadge status={r.status} /></td>
+        </>
+      )}
+    />
+  );
+}
+
 const REGISTER_COMPONENTS = {
   "Subscriber Register": SubscriberRegister,
+  "Chit Agreement Register": ChitAgreementRegister,
+  "Draw Minutes Register": DrawMinutesRegister,
   "Auction Proceedings": AuctionRegister,
   "Default Register": DefaultRegister,
   "Foreman Commission": ForemanCommissionRegister,
+  "Security Deposit Register": SecurityDepositRegister,
 };
 
 export default function StatutoryRegisters() {
@@ -203,7 +299,7 @@ export default function StatutoryRegisters() {
           <div>
             <h3 className="text-[15px] font-bold text-heading mb-1">Statutory Registers</h3>
             <p className="text-[13px] text-heading">
-              Mandatory registers maintained as per Chit Fund Act and Nidhi Rules.
+              Mandatory registers maintained as per Chit Funds Act, 1982, Telangana State Chit Fund Rules, and Nidhi Rules 2014.
             </p>
           </div>
         </div>

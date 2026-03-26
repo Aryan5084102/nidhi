@@ -9,6 +9,8 @@ class ChitEnrollmentCreate(BaseModel):
     email: EmailStr
     nomineeName: Optional[str] = None
     nomineeRelationship: Optional[str] = None
+    nomineeAadhaar: Optional[str] = None
+    nomineePan: Optional[str] = None
     acceptedTerms: bool = False
     authorizedAutoDeduction: bool = False
 
@@ -22,7 +24,12 @@ class ChitEnrollmentOut(BaseModel):
     enrolledDate: str
     nomineeName: Optional[str] = None
     nomineeRelationship: Optional[str] = None
+    nomineeAadhaar: Optional[str] = None
+    nomineePan: Optional[str] = None
     status: str
+    deregistrationStatus: Optional[str] = None
+    withdrawalDate: Optional[str] = None
+    payoutMethod: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -39,3 +46,5 @@ class MemberChitEnrollmentOut(BaseModel):
     nextAuction: Optional[str] = None
     hasWonAuction: bool
     status: str
+    payoutMethod: Optional[str] = None
+    bracket: Optional[str] = None

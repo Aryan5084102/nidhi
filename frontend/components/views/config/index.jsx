@@ -63,7 +63,7 @@ export default function ConfigView() {
     <div className="animate-fade-in">
       <PageHeader
         title="Admin & Configuration"
-        description="System-wide settings for Glimmora Nidhi operations. Configure deposit schemes, loan parameters, chit fund rules, AI agent behaviour, and notification preferences. All settings are audited and comply with Nidhi Company regulatory requirements."
+        description="System-wide settings for Glimmora Nidhi operations. Configure deposit schemes, loan parameters, chit fund rules, AI agent behaviour, and notification preferences. All settings are audited and comply with Chit Funds Act 1982 and Nidhi Company regulatory requirements."
       >
         <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
           <div className="text-lg font-bold text-body font-mono">v2.4</div>

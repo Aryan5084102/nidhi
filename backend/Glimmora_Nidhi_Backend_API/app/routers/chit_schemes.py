@@ -30,6 +30,10 @@ def _scheme_out(s: ChitScheme) -> dict:
         "minSTI": s.min_sti,
         "kycRequired": s.kyc_required,
         "spotsLeft": s.spots_left,
+        "bracket": s.bracket or "Low",
+        "payoutMethod": s.payout_method or "Auction",
+        "maxDiscountPct": s.max_discount_pct or 30.0,
+        "currentMonth": s.current_month or 0,
     }
 
 
@@ -97,6 +101,9 @@ def create_scheme(
         min_sti=payload.minSTI or 50,
         kyc_required=payload.kycRequired or "Verified",
         status="Open",
+        bracket=payload.bracket or "Low",
+        payout_method=payload.payoutMethod or "Auction",
+        max_discount_pct=payload.maxDiscountPct or 30.0,
     )
     db.add(scheme)
     db.commit()

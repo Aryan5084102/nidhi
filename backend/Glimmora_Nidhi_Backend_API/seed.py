@@ -57,12 +57,24 @@ def seed():
         ("M-1009", "Suresh Babu", "9876543218", "suresh@email.com", "3, River View, Kolkata", 90, "Verified", "Low"),
         ("M-1010", "Kavitha Nambiar", "9876543219", "kavitha@email.com", "11, Mount Road, Chennai", 82, "Verified", "Low"),
     ]
+    nominee_data = {
+        "M-1001": ("Priya Kumar", "Spouse", "XXXX-XXXX-1234", "ABCDE1234F"),
+        "M-1002": ("Amit Mehta", "Spouse", "XXXX-XXXX-5678", "FGHIJ5678K"),
+        "M-1003": ("Meena Nair", "Spouse", "XXXX-XXXX-9012", "KLMNO9012P"),
+        "M-1004": ("Venkat Rao", "Husband", "XXXX-XXXX-3456", "PQRST3456U"),
+        "M-1005": ("Ravi Iyer", "Spouse", "XXXX-XXXX-7890", "UVWXY7890Z"),
+        "M-1009": ("Lakshmi Babu", "Spouse", "XXXX-XXXX-2345", "BCDEF2345G"),
+        "M-1010": ("Rajan Nambiar", "Husband", "XXXX-XXXX-6789", "HIJKL6789M"),
+    }
     for mid, name, phone, email, addr, sti, kyc, risk in members_data:
         if not db.query(Member).filter(Member.id == mid).first():
+            nom = nominee_data.get(mid, (None, None, None, None))
             m = Member(
                 id=mid, name=name, phone=phone, email=email, address=addr,
                 sti=sti, kyc=kyc, risk=risk, status="Active",
                 join_date="2025-01-15",
+                nominee_name=nom[0], nominee_relation=nom[1],
+                nominee_aadhaar=nom[2], nominee_pan=nom[3],
                 sti_payment_punctuality=sti, sti_account_activity=sti - 5,
                 sti_kyc_status=100 if kyc == "Verified" else 50,
                 sti_fraud_flags=100 if risk != "High" else 60,
@@ -73,22 +85,60 @@ def seed():
             db.add(m)
 
     # ------------------------------------------------------------ Chit Schemes
+    # Aligned to Vasuprada 4-bracket structure: Low (≤5L), Medium (≤10L), Upper Medium (15-25L), High (≤50L)
     schemes = [
-        ChitScheme(id="CS-001", name="Glimmora Gold 25", monthly_amount=5000, duration=25,
-                   total_members=25, enrolled_members=18, pot_size=125000,
-                   next_auction="2026-03-22", status="Open",
-                   description="Ideal for small savings with monthly contribution of Rs 5,000",
-                   min_sti=60, kyc_required="Verified"),
-        ChitScheme(id="CS-002", name="Glimmora Silver 20", monthly_amount=2000, duration=20,
-                   total_members=20, enrolled_members=12, pot_size=40000,
-                   next_auction="2026-03-25", status="Open",
-                   description="Entry-level chit fund scheme",
-                   min_sti=50, kyc_required="Pending"),
-        ChitScheme(id="CS-003", name="Glimmora Platinum 30", monthly_amount=10000, duration=30,
-                   total_members=30, enrolled_members=8, pot_size=300000,
-                   next_auction="2026-04-01", status="Open",
-                   description="Premium chit fund for high-value savings",
-                   min_sti=70, kyc_required="Verified"),
+        # LOW BRACKET (up to ₹5 Lakhs)
+        ChitScheme(id="CS-001", name="Vasuprada Sahaya 2L", monthly_amount=10000, duration=20,
+                   total_members=20, enrolled_members=18, pot_size=200000, current_month=6,
+                   next_auction="2026-04-05", status="Open",
+                   description="Entry-level chit for small savings — ₹2 Lakh pot with 20 subscribers",
+                   min_sti=50, kyc_required="Verified", bracket="Low",
+                   payout_method="Lucky Draw", max_discount_pct=30.0),
+        ChitScheme(id="CS-002", name="Vasuprada Sahaya 5L", monthly_amount=20000, duration=25,
+                   total_members=25, enrolled_members=22, pot_size=500000, current_month=10,
+                   next_auction="2026-04-08", status="Open",
+                   description="Popular low-bracket chit — ₹5 Lakh pot with monthly lucky draw",
+                   min_sti=55, kyc_required="Verified", bracket="Low",
+                   payout_method="Lucky Draw", max_discount_pct=30.0),
+        # MEDIUM BRACKET (up to ₹10 Lakhs)
+        ChitScheme(id="CS-003", name="Vasuprada Samruddhi 10L", monthly_amount=50000, duration=20,
+                   total_members=20, enrolled_members=15, pot_size=1000000, current_month=4,
+                   next_auction="2026-04-10", status="Open",
+                   description="Medium-bracket chit — ₹10 Lakh pot with auction-based payout",
+                   min_sti=60, kyc_required="Verified", bracket="Medium",
+                   payout_method="Auction", max_discount_pct=30.0),
+        ChitScheme(id="CS-004", name="Vasuprada Samruddhi 7.5L", monthly_amount=30000, duration=25,
+                   total_members=25, enrolled_members=25, pot_size=750000, current_month=12,
+                   next_auction="2026-04-12", status="Full",
+                   description="Fully subscribed medium-bracket chit — ₹7.5 Lakh pot",
+                   min_sti=60, kyc_required="Verified", bracket="Medium",
+                   payout_method="Auction", max_discount_pct=30.0),
+        # UPPER MEDIUM BRACKET (₹15-25 Lakhs)
+        ChitScheme(id="CS-005", name="Vasuprada Unnati 15L", monthly_amount=75000, duration=20,
+                   total_members=20, enrolled_members=12, pot_size=1500000, current_month=3,
+                   next_auction="2026-04-15", status="Open",
+                   description="Upper medium-bracket — ₹15 Lakh pot for business professionals",
+                   min_sti=70, kyc_required="Verified", bracket="Upper Medium",
+                   payout_method="Auction", max_discount_pct=35.0),
+        ChitScheme(id="CS-006", name="Vasuprada Unnati 25L", monthly_amount=100000, duration=25,
+                   total_members=25, enrolled_members=8, pot_size=2500000, current_month=0,
+                   next_auction="2026-05-01", status="Open",
+                   description="Premium upper-medium chit — ₹25 Lakh pot, ideal for asset building",
+                   min_sti=75, kyc_required="Verified", bracket="Upper Medium",
+                   payout_method="Both", max_discount_pct=35.0),
+        # HIGH BRACKET (up to ₹50 Lakhs)
+        ChitScheme(id="CS-007", name="Vasuprada Shikhar 50L", monthly_amount=200000, duration=25,
+                   total_members=25, enrolled_members=10, pot_size=5000000, current_month=0,
+                   next_auction="2026-05-10", status="Open",
+                   description="Flagship high-value chit — ₹50 Lakh pot for HNI members",
+                   min_sti=80, kyc_required="Verified", bracket="High",
+                   payout_method="Auction", max_discount_pct=35.0),
+        ChitScheme(id="CS-008", name="Vasuprada Shikhar 30L", monthly_amount=150000, duration=20,
+                   total_members=20, enrolled_members=16, pot_size=3000000, current_month=5,
+                   next_auction="2026-04-18", status="Open",
+                   description="High-bracket chit — ₹30 Lakh pot with competitive auctions",
+                   min_sti=75, kyc_required="Verified", bracket="High",
+                   payout_method="Auction", max_discount_pct=35.0),
     ]
     for s in schemes:
         if not db.query(ChitScheme).filter(ChitScheme.id == s.id).first():
@@ -99,12 +149,44 @@ def seed():
         ChitEnrollment(id="EN-001", scheme_id="CS-001", member_id="M-1001",
                        full_name="Rajesh Kumar", phone="9876543210", email="rajesh@email.com",
                        nominee_name="Priya Kumar", nominee_relationship="Spouse",
+                       nominee_aadhaar="XXXX-XXXX-1234", nominee_pan="ABCDE1234F",
                        accepted_terms=True, authorized_auto_deduction=True,
-                       has_won_auction=False, enrolled_date="2025-12-01", status="Active"),
+                       has_won_auction=True, enrolled_date="2025-12-01", status="Active",
+                       deregistration_status="Registered"),
         ChitEnrollment(id="EN-002", scheme_id="CS-001", member_id="M-1005",
                        full_name="Deepa Iyer", phone="9876543214", email="deepa@email.com",
+                       nominee_name="Ravi Iyer", nominee_relationship="Spouse",
+                       nominee_aadhaar="XXXX-XXXX-5678", nominee_pan="FGHIJ5678K",
                        accepted_terms=True, authorized_auto_deduction=True,
-                       has_won_auction=False, enrolled_date="2025-12-05", status="Active"),
+                       has_won_auction=False, enrolled_date="2025-12-05", status="Active",
+                       deregistration_status="Registered"),
+        ChitEnrollment(id="EN-003", scheme_id="CS-003", member_id="M-1002",
+                       full_name="Priya Mehta", phone="9876543211", email="priya@email.com",
+                       nominee_name="Amit Mehta", nominee_relationship="Spouse",
+                       accepted_terms=True, authorized_auto_deduction=True,
+                       has_won_auction=False, enrolled_date="2025-11-15", status="Active",
+                       deregistration_status="Registered"),
+        ChitEnrollment(id="EN-004", scheme_id="CS-005", member_id="M-1009",
+                       full_name="Suresh Babu", phone="9876543218", email="suresh@email.com",
+                       nominee_name="Lakshmi Babu", nominee_relationship="Spouse",
+                       accepted_terms=True, authorized_auto_deduction=True,
+                       has_won_auction=False, enrolled_date="2026-01-10", status="Active",
+                       deregistration_status="Registered"),
+        ChitEnrollment(id="EN-005", scheme_id="CS-007", member_id="M-1004",
+                       full_name="Sunita Rao", phone="9876543213", email="sunita@email.com",
+                       nominee_name="Venkat Rao", nominee_relationship="Husband",
+                       accepted_terms=True, authorized_auto_deduction=True,
+                       has_won_auction=False, enrolled_date="2026-02-01", status="Pending",
+                       deregistration_status=None),
+        # GAP 4: Withdrawn enrollment example
+        ChitEnrollment(id="EN-006", scheme_id="CS-002", member_id="M-1003",
+                       full_name="Vikram Nair", phone="9876543212", email="vikram@email.com",
+                       nominee_name="Meena Nair", nominee_relationship="Spouse",
+                       accepted_terms=True, authorized_auto_deduction=True,
+                       has_won_auction=False, enrolled_date="2025-10-01", status="Withdrawn",
+                       deregistration_status="Pending Deregistration",
+                       withdrawal_date="2026-03-15", withdrawal_commission=50000,
+                       refund_amount=150000, registrar_notified=False),
     ]
     for e in enrollments:
         if not db.query(ChitEnrollment).filter(ChitEnrollment.id == e.id).first():
@@ -112,9 +194,15 @@ def seed():
 
     # ----------------------------------------------------------------- Auctions
     auctions = [
-        Auction(id="AUC-001", scheme_id="CS-001", month=4, date="2026-03-22",
-                pot_size=125000, foreman_commission=6250, available_pot=118750,
-                min_bid=87500, status="Scheduled"),
+        Auction(id="AUC-001", scheme_id="CS-003", month=5, date="2026-04-10",
+                pot_size=1000000, foreman_commission=50000, available_pot=950000,
+                min_bid=650000, status="Scheduled"),
+        Auction(id="AUC-002", scheme_id="CS-005", month=4, date="2026-04-15",
+                pot_size=1500000, foreman_commission=75000, available_pot=1425000,
+                min_bid=975000, status="Scheduled"),
+        Auction(id="AUC-003", scheme_id="CS-008", month=6, date="2026-04-18",
+                pot_size=3000000, foreman_commission=150000, available_pot=2850000,
+                min_bid=1950000, status="Scheduled"),
     ]
     for a in auctions:
         if not db.query(Auction).filter(Auction.id == a.id).first():
@@ -211,26 +299,56 @@ def seed():
 
     # ---------------------------------------------------- Compliance Checklists
     rules = [
+        # Nidhi Company Rules
         ComplianceChecklist(id="CL-001", rule="Net Owned Funds >= Rs 20 Lakhs",
                             category="Capital Adequacy", status="Compliant",
                             last_audit="2026-03-01",
-                            details="Current NOF: Rs 1.2 Cr. Well above minimum threshold.", weight=20),
+                            details="Current NOF: Rs 1.2 Cr. Well above minimum threshold.", weight=10),
         ComplianceChecklist(id="CL-002", rule="Minimum 200 members within 1 year",
                             category="Membership", status="Compliant",
                             last_audit="2026-03-01",
-                            details="Current members: 12,450. Threshold met.", weight=15),
+                            details="Current members: 12,450. Threshold met.", weight=10),
         ComplianceChecklist(id="CL-003", rule="Deposits not more than 20x Net Owned Funds",
                             category="Deposit Limit", status="Compliant",
                             last_audit="2026-03-01",
-                            details="Current ratio: 15x. Within limit.", weight=15),
+                            details="Current ratio: 15x. Within limit.", weight=10),
         ComplianceChecklist(id="CL-004", rule="Loans only to members",
                             category="Lending", status="Compliant",
                             last_audit="2026-03-01",
-                            details="All loans issued exclusively to registered members.", weight=10),
+                            details="All loans issued exclusively to registered members.", weight=5),
         ComplianceChecklist(id="CL-005", rule="Annual NDH-1 filing",
                             category="Regulatory Filing", status="Warning",
                             last_audit="2026-03-01",
-                            details="NDH-1 due by Sept 30, 2026. Preparation in progress.", weight=10),
+                            details="NDH-1 due by Sept 30, 2026. Preparation in progress.", weight=5),
+        # Chit Funds Act 1982 Compliance (GAP 5)
+        ComplianceChecklist(id="CL-006", rule="Registrar of Chits — Registration Current",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="Registration No. RoC/TS/2024/1234. Valid until 2028.", weight=15),
+        ComplianceChecklist(id="CL-007", rule="Security Deposit Filed with Registrar",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="Security deposit of Rs 5 Lakh filed. FDR submitted.", weight=10),
+        ComplianceChecklist(id="CL-008", rule="Chit Agreement Filed per Scheme",
+                            category="Chit Funds Act 1982", status="Warning",
+                            last_audit="2026-03-10",
+                            details="7 of 8 schemes filed. CS-008 agreement pending filing.", weight=10),
+        ComplianceChecklist(id="CL-009", rule="Periodic Returns to Registrar",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="Quarterly return for Q3 FY26 filed on time.", weight=10),
+        ComplianceChecklist(id="CL-010", rule="Draw Minutes Maintained",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="Minutes recorded for all 32 draws conducted this year.", weight=5),
+        ComplianceChecklist(id="CL-011", rule="Subscriber Register Maintained",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="Digital subscriber register maintained per scheme.", weight=5),
+        ComplianceChecklist(id="CL-012", rule="Maximum Discount Cap Compliance (Sec. 21)",
+                            category="Chit Funds Act 1982", status="Compliant",
+                            last_audit="2026-03-10",
+                            details="All auctions within 35% max discount. No violations.", weight=5),
     ]
     for r in rules:
         if not db.query(ComplianceChecklist).filter(ComplianceChecklist.id == r.id).first():
@@ -259,12 +377,22 @@ def seed():
 
     # --------------------------------------------------------- Regulatory Filings
     filings = [
-        RegulatoryFiling(form="NDH-1", description="Return of Statutory Compliances",
+        RegulatoryFiling(form="NDH-1", description="Return of Statutory Compliances (Nidhi)",
                          frequency="Annual", due_date="2026-09-30",
                          status="Pending", last_filed="2025-09-28"),
-        RegulatoryFiling(form="NDH-3", description="Half-Yearly Return",
+        RegulatoryFiling(form="NDH-3", description="Half-Yearly Return (Nidhi)",
                          frequency="Half-Yearly", due_date="2026-03-31",
                          status="Due Soon", last_filed="2025-09-30"),
+        # Chit Fund Act filings
+        RegulatoryFiling(form="Form A", description="Chit Agreement Registration — Chit Funds Act Sec. 4",
+                         frequency="Per Scheme", due_date="2026-04-30",
+                         status="Filed", last_filed="2026-03-01"),
+        RegulatoryFiling(form="Form D", description="Quarterly Return to Registrar of Chits — Sec. 61",
+                         frequency="Quarterly", due_date="2026-06-30",
+                         status="Pending", last_filed="2026-03-28"),
+        RegulatoryFiling(form="Draw Minutes", description="Minutes of each Draw/Auction — Sec. 22",
+                         frequency="Per Draw", due_date="2026-04-15",
+                         status="On Time", last_filed="2026-03-22"),
     ]
     if db.query(RegulatoryFiling).count() == 0:
         for f in filings:

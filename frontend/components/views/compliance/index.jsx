@@ -55,7 +55,7 @@ export default function ComplianceView() {
     <div className="animate-fade-in">
       <PageHeader
         title="Compliance Center"
-        description="Monitor regulatory compliance status across all Nidhi Company rules. AI-powered compliance tracking ensures adherence to Nidhi Rules 2014, Nidhi (Amendment) Rules 2022, and MCA filing requirements."
+        description="Monitor regulatory compliance status across Chit Funds Act, 1982, Telangana State Chit Fund Rules, Nidhi Rules 2014, and MCA filing requirements. AI-powered compliance tracking ensures adherence to all applicable regulations."
       >
         <div className="bg-slate-50 rounded-xl px-3 py-2 text-center">
           <div className="text-lg font-bold text-success font-mono">{complianceScore.overall}%</div>

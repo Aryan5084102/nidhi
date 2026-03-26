@@ -30,6 +30,10 @@ def _member_out(m: Member) -> dict:
         "kyc": m.kyc,
         "joinDate": m.join_date,
         "status": m.status,
+        "nomineeName": m.nominee_name,
+        "nomineeRelation": m.nominee_relation,
+        "nomineeAadhaar": m.nominee_aadhaar,
+        "nomineePan": m.nominee_pan,
     }
 
 
@@ -106,6 +110,10 @@ def create_member(
         sti=50,
         join_date=datetime.utcnow().date().isoformat(),
         status="Active",
+        nominee_name=payload.nomineeName,
+        nominee_relation=payload.nomineeRelation,
+        nominee_aadhaar=payload.nomineeAadhaar,
+        nominee_pan=payload.nomineePan,
     )
     db.add(member)
     db.commit()
@@ -127,12 +135,15 @@ def update_member(
     m = db.query(Member).filter(Member.id == member_id).first()
     if not m:
         raise NotFoundException("Member not found")
+    camel_to_snake = {
+        "nomineeName": "nominee_name",
+        "nomineeRelation": "nominee_relation",
+        "nomineeAadhaar": "nominee_aadhaar",
+        "nomineePan": "nominee_pan",
+    }
     for field, val in payload.model_dump(exclude_none=True).items():
-        camel_to_snake = {
-            "name": "name", "phone": "phone", "email": "email",
-            "address": "address", "risk": "risk", "kyc": "kyc", "status": "status",
-        }
-        setattr(m, field, val)
+        attr = camel_to_snake.get(field, field)
+        setattr(m, attr, val)
     db.commit()
     db.refresh(m)
     return {

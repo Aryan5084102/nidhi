@@ -11,6 +11,8 @@ const agent = require('../public/icon/agent.png')
 const config = require('../public/icon/config.png')
 const assistant = require('../public/icon/assistant.png')
 const collection = require('../public/icon/collection.png')
+const collateral = require('../public/icon/collateral.png')
+const governance = require('../public/icon/governance.png')
 
 
 
@@ -567,8 +569,8 @@ export const navItems = [
   { icon: alert, label: "Fraud Intel", id: "fraud" },
   { icon: liquidity, label: "Reports", id: "reports" },
   { icon: config, label: "Config", id: "config" },
-  { icon: compliance, label: "Collateral", id: "collateral" },
-  { icon: executive, label: "Governance", id: "governance" },
+  { icon: collateral, label: "Collateral", id: "collateral" },
+  { icon: governance, label: "Governance", id: "governance" },
   // Member portal navigation
   { icon: executive, label: "Dashboard", id: "member_dashboard" },
   { icon: fund, label: "My Chit Funds", id: "my_chitfunds" },

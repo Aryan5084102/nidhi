@@ -69,24 +69,49 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
 @router.post("/google")
 def google_login(payload: GoogleLoginRequest, db: Session = Depends(get_db)):
-    # TODO: In production, verify the Google token via Google's tokeninfo API:
-    #   https://oauth2.googleapis.com/tokeninfo?id_token=<token>
-    # For development, we simulate with a derived email.
+    import httpx
+
+    # Verify Google ID token with Google's API
     if not payload.googleToken or len(payload.googleToken) < 10:
         raise BadRequestException("Invalid Google token", "INVALID_GOOGLE_TOKEN")
-    fake_email = f"google_{payload.googleToken[:8]}@gmail.com"
-    user = db.query(User).filter(User.email == fake_email).first()
+
+    try:
+        resp = httpx.get(
+            f"https://oauth2.googleapis.com/tokeninfo?id_token={payload.googleToken}",
+            timeout=10,
+        )
+        if resp.status_code != 200:
+            raise BadRequestException("Google token verification failed", "GOOGLE_VERIFY_FAILED")
+        google_data = resp.json()
+    except httpx.RequestError:
+        raise BadRequestException("Could not verify Google token", "GOOGLE_VERIFY_ERROR")
+
+    email = google_data.get("email")
+    name = google_data.get("name", "Google User")
+    picture = google_data.get("picture")
+
+    if not email:
+        raise BadRequestException("Google account has no email", "NO_EMAIL")
+
+    user = db.query(User).filter(User.email == email).first()
     is_new = False
     if not user:
         is_new = True
         user = User(
             id=f"U-{uuid.uuid4().hex[:6].upper()}",
-            name="Google User",
-            email=fake_email,
+            name=name,
+            email=email,
             role="MEMBER",
             is_google_user=True,
+            avatar=picture,
         )
         db.add(user)
+    else:
+        # Update name/avatar on each login
+        user.name = name
+        if picture:
+            user.avatar = picture
+
     user.last_login = datetime.now(timezone.utc)
     db.commit()
     db.refresh(user)

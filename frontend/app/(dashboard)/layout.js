@@ -38,14 +38,21 @@ export default function DashboardLayout({ children }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Redirect to login if not authenticated
+  // Middleware handles redirect to /login if no cookie.
+  // This is a fallback for edge cases (e.g., cookie expired mid-session).
   useEffect(() => {
     if (!isLoading && !user) {
       router.replace("/login");
     }
   }, [user, isLoading, router]);
 
-  if (isLoading || !user) return null;
+  if (isLoading || !user) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-primary">
+        <div className="w-8 h-8 rounded-full border-2 border-slate-200 border-t-primary animate-spin" />
+      </div>
+    );
+  }
 
   const pageTitleMap = {
     enroll_chitfund: "Enroll in Chit Fund",

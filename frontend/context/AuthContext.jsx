@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { ROLES, ROLE_LABELS, hasPermission, hasNavAccess, getDefaultNav } from "@/lib/roles";
-import { login as apiLogin, logout as apiLogout, get, getToken, clearAuth } from "@/lib/api";
+import { login as apiLogin, logout as apiLogout, loginWithGoogle as apiGoogleLogin, getSession, clearAuth } from "@/lib/api";
 import { clearApiCache } from "@/hooks/useData";
 
 const AuthContext = createContext(null);
@@ -31,29 +31,19 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // On mount, check if we have a valid token and restore session
+  // On mount, validate session via HTTP-only cookie
   useEffect(() => {
     async function restoreSession() {
-      const token = getToken();
-      if (!token) {
-        // No token — clear any stale user data and show login
-        clearAuth();
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        // Validate token by fetching current user profile
-        const data = await get("/auth/me");
-        if (data.success && data.data) {
-          const userData = mapBackendUser(data.data);
+        const sessionUser = await getSession();
+        if (sessionUser) {
+          const userData = mapBackendUser(sessionUser);
           setUser(userData);
           localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
         } else {
           clearAuth();
         }
       } catch {
-        // Token expired or invalid — clear and let user re-login
         clearAuth();
       }
       setIsLoading(false);
@@ -76,19 +66,29 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const loginWithGoogle = useCallback((googleUser) => {
-    const userData = {
-      ...googleUser,
-      role: googleUser.role || ROLES.MEMBER,
-    };
-    setUser(userData);
-    localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
+  const loginWithGoogle = useCallback(async (credential) => {
+    try {
+      const data = await apiGoogleLogin(credential);
+      if (data.success && data.data?.user) {
+        const userData = mapBackendUser(data.data.user);
+        setUser(userData);
+        localStorage.setItem("glimmora_current_user", JSON.stringify(userData));
+        return { success: true, user: userData, isNewUser: data.data.isNewUser };
+      }
+      return { success: false, error: data.error || "Google login failed" };
+    } catch (err) {
+      return { success: false, error: err.message || "Google login failed" };
+    }
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
     setUser(null);
-    apiLogout();
+    await apiLogout();
     clearApiCache();
+    // Redirect to login after logout
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   }, []);
 
   const can = useCallback(

@@ -7,42 +7,31 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { useAuth } from "@/context/AuthContext";
-import { ROLES } from "@/lib/roles";
 
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
 export default function LoginPage() {
   const [view, setView] = useState("login");
   const { loginWithGoogle } = useAuth();
 
   const handleGoogleCredential = useCallback(
-    (response) => {
-      const base64Url = response.credential.split(".")[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const payload = JSON.parse(atob(base64));
-
-      const googleUser = {
-        email: payload.email,
-        name: payload.name,
-        picture: payload.picture,
-        role: ROLES.MEMBER,
-      };
-
-      const users = JSON.parse(localStorage.getItem("glimmora_users") || "[]");
-      if (!users.find((u) => u.email === googleUser.email)) {
-        users.push({ ...googleUser, password: null, role: ROLES.MEMBER });
-        localStorage.setItem("glimmora_users", JSON.stringify(users));
+    async (response) => {
+      const result = await loginWithGoogle(response.credential);
+      if (result.success) {
+        const msg = result.isNewUser
+          ? `Welcome, ${result.user.name}! Account created via Google.`
+          : `Welcome back, ${result.user.name}!`;
+        toast.success(msg);
+      } else {
+        toast.error(result.error || "Google sign-in failed");
       }
-
-      toast.success(`Welcome, ${googleUser.name}! Signed in with Google.`);
-      loginWithGoogle(googleUser);
     },
     [loginWithGoogle]
   );
 
   // Load Google Identity Services script
   useEffect(() => {
-    if (document.getElementById("google-gsi-script")) return;
+    if (!GOOGLE_CLIENT_ID || document.getElementById("google-gsi-script")) return;
 
     const script = document.createElement("script");
     script.id = "google-gsi-script";
@@ -61,22 +50,21 @@ export default function LoginPage() {
   }, [handleGoogleCredential]);
 
   const handleGoogleLogin = () => {
+    if (!GOOGLE_CLIENT_ID) {
+      toast.error("Google Client ID not configured. Set NEXT_PUBLIC_GOOGLE_CLIENT_ID in .env.local");
+      return;
+    }
     if (window.google) {
       window.google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
           // Fallback: use popup mode if One Tap is blocked
-          window.google.accounts.id.renderButton(
-            document.createElement("div"),
-            { type: "standard" }
-          );
-          // Use OAuth2 popup as fallback
           const client = window.google.accounts.oauth2.initCodeClient({
             client_id: GOOGLE_CLIENT_ID,
             scope: "email profile",
             ux_mode: "popup",
             callback: (response) => {
-              if (response.code) {
-                toast.info("Google sign-in processing...");
+              if (response.credential) {
+                handleGoogleCredential(response);
               }
             },
           });

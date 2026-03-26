@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoginPage from "@/components/LoginPage";
 import { useAuth } from "@/context/AuthContext";
 import { getPathFromNavId } from "@/hooks/useNavigation";
@@ -9,13 +9,16 @@ import { getPathFromNavId } from "@/hooks/useNavigation";
 export default function Login() {
   const { user, isLoading, defaultNav } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (!isLoading && user) {
-      const path = getPathFromNavId(defaultNav) || "/dashboard";
+      // Redirect to callbackUrl (set by middleware) or default dashboard
+      const callbackUrl = searchParams.get("callbackUrl");
+      const path = callbackUrl || getPathFromNavId(defaultNav) || "/dashboard";
       router.replace(path);
     }
-  }, [user, isLoading, defaultNav, router]);
+  }, [user, isLoading, defaultNav, router, searchParams]);
 
   if (isLoading || user) return null;
 
